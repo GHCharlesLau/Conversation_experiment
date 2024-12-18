@@ -1,0 +1,49 @@
+{{ block title }}Survey_SocialPresenceTest{{ endblock }}
+{{ block content }}
+
+    <p >
+        <span style="color:black; font-size: 18px; font-weight: bold;">
+            How much do you agree with the following statements:
+        </span> 
+    </p>
+    <hr>
+
+    <!-- {{ formfields }} -->
+
+    <!-- <p>
+        Least &nbsp;
+        {{ for choice in form.q1 }}
+            {{ choice }}
+        {{ endfor }}
+        &nbsp; Most
+    </p> -->
+
+    <!-- Single line of the scale. -->
+    <!-- <tr>
+        <th>{{ form.q1.label }}</th>
+        &nbsp; Completely Disagree
+        {{ for choice in form.q1 }}
+            <td>{{ choice }}</td>
+        {{ endfor }}
+        &nbsp; Completely Agree
+        <hr>
+    </tr> -->
+
+    <!-- Multiple lines of the scale. -->
+    <table class="table">
+        {{ for field in form }}
+            <tr>
+                <th>{{ field.label }}</th>
+                <td>Completely Disagree</td>
+                {{ for choice in field }}
+                    <td>{{ choice }}</td>
+                {{ endfor }}
+                <td>Completely Agree</td>
+            </tr>
+            
+        {{ endfor }}
+    </table>
+
+    {{ next_button }}
+
+{{ endblock }}
