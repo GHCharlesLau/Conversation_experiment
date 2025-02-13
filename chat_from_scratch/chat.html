@@ -1,0 +1,61 @@
+<!-- div displaying chat messages -->
+<div class="textBox">
+    <div id="chat_messages"></div>
+</div>
+
+<!-- text input -->
+<div class="inputBox">
+    <div class="typeInputBox">
+        <input type="text" id="chat_input" style="text-align:right;" autofocus>
+        <button type="button" onclick="sendMsg()">Send</button>
+    </div>
+</div>
+<br><br>
+
+<!-- oTree timer -->
+<p align="center">
+    Page will auto-advance in:
+    <span style="color:red; font-weight: bold">
+        <span class="otree-timer__time-left"></span>
+    </span>
+    <br>
+<button class="btn btn-primary btn-large">
+    Next Page
+</button>
+</p>
+
+<script>
+
+    let chat_input = document.getElementById('chat_input');
+
+    chat_input.addEventListener("keydown", function (event) {
+        if (event.key === "Enter") {
+            sendMsg();
+        }
+    });
+
+    function sendMsg() {
+        let text = chat_input.value.trim();
+        if (text) {
+            liveSend({'text': text});
+        }
+        chat_input.value = '';
+    }
+
+    let chat_messages = document.getElementById('chat_messages');
+
+    function liveRecv(messages) {
+        for (let msg of messages) {
+            let msgSpan = document.createElement('span');
+            msgSpan.textContent = msg.text;
+            let sender = msg.sender === js_vars.my_id ? 'Me' : `Player ${msg.sender}`;
+            let row = `<div><b>${sender}</b>: ${msgSpan.innerHTML}</div>`;
+            chat_messages.insertAdjacentHTML('beforeend', row);
+        }
+    }
+
+    document.addEventListener("DOMContentLoaded", function (event) {
+        liveSend({});
+    });
+
+</script>

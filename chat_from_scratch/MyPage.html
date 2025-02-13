@@ -1,0 +1,94 @@
+{{ block content }}
+
+{{ include_sibling 'chat.html' }}
+
+{{ endblock }}
+
+{{ block app_styles }}
+
+<style>
+    /* timer */
+    .otree-timer {
+        display: none;
+    }
+
+  /* -------------------- div styles -------------------- */ 
+
+  /* general text box */
+  .textBox {
+    background: white;
+    /* border-color: lightgrey;
+    border-style: solid; */
+    border: 2px solid lightgrey;
+    border-radius: 0.5rem;
+    padding: 1rem;
+    height: 50vh;
+    position:relative; 
+    overflow:auto;  
+  }
+
+  .chat_messages {
+    padding: 0.5rem;
+    border-radius: 1rem;
+    margin-bottom: 0.5rem;
+    max-width: 80%; 
+  }
+
+  .inputBox {
+    display: flex;
+    align-items: center;
+    margin-top: 1rem;
+  }
+
+  .typeInputBox {
+    flex: 1;
+    display: flex;
+    align-items: center;
+  }
+
+  /* -------------------- button styles -------------------- */ 
+
+  input[type="text"] {
+    flex: 1;
+    padding: 0.5rem;
+    border: 2px solid lightgrey;
+    border-radius: 0.5rem;
+    margin-right: 0.5rem;
+  }
+
+  input[type=button] {
+    background-color: #38A1F3;
+    border: none;
+    color: white;
+    font-size: 18px;
+    padding: 5px 12px;
+    text-decoration: none;
+    margin: 4px 2px;
+    cursor: pointer;
+  }
+
+  button[type="button"] {
+    background-color: lightgrey;
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: 0.5rem;
+    cursor: pointer;
+  }
+ 
+  .textBox::-webkit-scrollbar {
+    width: 1vw;
+  }
+  
+  .textBox::-webkit-scrollbar-thumb {
+    background: #667;    
+    border-radius: 2vw;
+  }
+
+  .textBox::-webkit-scrollbar-track {
+    background: #ddd;
+    border-radius: 2vw;
+  }
+
+</style>
+
+{{ endblock }}

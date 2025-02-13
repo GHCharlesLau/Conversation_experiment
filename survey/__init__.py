@@ -15,7 +15,7 @@ class Group(BaseGroup):
     pass
 
 
-def make_field(label):
+def make_field(label):  # Reduce the amount of repeated code by defining a function that returns a field
     return models.IntegerField(
         choices=[1,2,3,4,5,6,7],
         label=label,
