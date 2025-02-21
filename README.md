@@ -2,9 +2,8 @@
 
 This is a conversation experiment developed by oTree, which is an open-source framework of experimental platforms.
 
-
-
-# Update
+# ToDo
 
 * [X] Creat a survey demo.
-* [ ] Integrate chatrooms into the platform.
+* [X] Integrate chatrooms into the platform.
+* [ ] Add specific materials and scales.
