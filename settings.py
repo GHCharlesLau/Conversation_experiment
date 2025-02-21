@@ -3,7 +3,7 @@ from os import environ
 
 SESSION_CONFIGS = [
     dict(
-        name='HMCvsHHC', app_sequence=['chatGPT', 'chat_from_scratch', 'survey', 'payment_info'], num_demo_participants=2
+        name='HMCvsHHC', app_sequence=['chatGPT', 'chat_HHC', 'survey', 'payment_info'], num_demo_participants=4
     ),
 ]
 
@@ -29,13 +29,23 @@ USE_POINTS = True
 
 ROOMS = [
     dict(
-        name='econ101',
-        display_name='Econ 101 class',
+        name='Room_A',
+        display_name='Room A',
         participant_label_file='_rooms/econ101.txt',
         use_secure_urls=True,
     ),
-    dict(name='live_demo_experiment', 
-         display_name='Room for live demo (no participant labels)'),
+    dict(
+        name='Room_B', 
+        display_name='Room B (no participant labels)',
+    ),
+    dict(
+        name='Room_C', 
+        display_name='Room C (no participant labels)',
+    ),
+    dict(
+        name='Room_D', 
+        display_name='Room D (no participant labels)',
+    ),
 ]
 
 ADMIN_USERNAME = 'admin'

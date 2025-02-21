@@ -13,8 +13,8 @@ This app can also help you learn about live pages in general.
 
 
 class C(BaseConstants):
-    NAME_IN_URL = 'chat_from_scratch'
-    PLAYERS_PER_GROUP = None
+    NAME_IN_URL = 'chat_H'
+    PLAYERS_PER_GROUP = 2  # All players are in the same group or it's a single-player game if this is None.
     NUM_ROUNDS = 1
 
 
