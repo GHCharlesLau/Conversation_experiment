@@ -119,12 +119,12 @@ def custom_export(players):
 
 
 # openAI chat gpt key 
-OPENAI_KEY = environ.get('OPENAI_KEY')
+OPENAI_API_KEY = environ.get('OPENAI_API_KEY')
 
 # function to run messages
 def runGPT(inputMessage):
     client = OpenAI(
-        api_key = OPENAI_KEY  # set chatgpt api key
+        api_key = OPENAI_API_KEY  # set chatgpt api key
     )
     completion = client.chat.completions.create(
         model = C.MODEL, 
