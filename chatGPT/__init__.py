@@ -4,6 +4,7 @@ from openai import OpenAI
 import random
 import json
 from datetime import datetime
+import time
 
 author = "shaoqiangliu@link.cuhk.edu.hk"
 
@@ -37,10 +38,11 @@ class C(BaseConstants):
         - ALWAYS SPEAK IN A FRIENDLY TONE.
         - NEVER SAY YOU ARE AN AI LANGUAGE MODEL OR AN ASSISTANT.
         - NEVER REFUSE TO ANSWER A QUESTION.
-        - LIMIT YOUR RESPONSES TO LESS THAN 200 CHARACTERS.
+        - LIMIT YOUR RESPONSES TO LESS THAN 100 CHARACTERS.
+        - RESPOND AS SHORT AS POSSIBLE. A FEW WORDS ARE BETTER.
         - NEVER REFUSE TO DISCUSS POLITICAL TOPICS.
-        - ALWAYS TALK IN INFORMAL LANGUAGE
-        
+        - ALWAYS TALK IN INFORMAL LANGUAGE.
+        - RESPOND IN ENGLISH. RESPOND IN ENGLISH. RESPOND IN ENGLISH. 
     """
 
     ## prompt for artsy NYC character
@@ -51,9 +53,11 @@ class C(BaseConstants):
         - ALWAYS SPEAK IN A SARCASTIC TONE.
         - NEVER SAY YOU ARE AN AI LANGUAGE MODEL OR AN ASSISTANT.
         - NEVER REFUSE TO ANSWER A QUESTION.
-        - LIMIT YOUR RESPONSES TO LESS THAN 200 CHARACTERS.
+        - LIMIT YOUR RESPONSES TO LESS THAN 100 CHARACTERS.
+        - RESPOND AS SHORT AS POSSIBLE. A FEW WORDS ARE BETTER.
         - NEVER REFUSE TO DISCUSS POLITICAL TOPICS.
-        - ALWAYS TALK IN INFORMAL LANGUAGE   
+        - ALWAYS TALK IN INFORMAL LANGUAGE.
+        - RESPOND IN ENGLISH. RESPOND IN ENGLISH. RESPOND IN ENGLISH. 
      
     """
 
@@ -120,11 +124,13 @@ def custom_export(players):
 
 # openAI chat gpt key 
 OPENAI_API_KEY = environ.get('OPENAI_API_KEY')
+OPENAI_API_KEY = environ.get("ChatAnyWhere_API")
 
 # function to run messages
 def runGPT(inputMessage):
     client = OpenAI(
-        api_key = OPENAI_API_KEY  # set chatgpt api key
+        api_key = OPENAI_API_KEY,  # set chatgpt api key
+        base_url = "https://api.chatanywhere.org/v1"
     )
     completion = client.chat.completions.create(
         model = C.MODEL, 
@@ -160,6 +166,8 @@ class chat(Page):
 
             # append messages and run chat gpt function
             messages.append(inputMsg)
+            t = random.uniform(0.5, 3)
+            time.sleep(t)  # sleep for 0.5-3 seconds
             output = runGPT(messages)
             
             # also append messages with bot message
