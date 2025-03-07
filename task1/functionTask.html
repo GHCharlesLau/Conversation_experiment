@@ -1,0 +1,24 @@
+{{ extends "global/Page.html" }}
+
+{{ block title }}
+    <!-- Priming -->
+{{ endblock }}
+
+{{ block scripts }}
+{{ endblock }}
+
+
+{{ block content }}
+
+Dear Participant,<br><br>
+
+<img src="{{ static 'task1/img/img_box.jpg' }}" width="30%" /><br><br>
+
+Could you come up with <b>three unique uses</b> for a cardboard box?<br><br>
+
+{{ formfield 'primingText' label="Kindly list them in the text box below." }}
+<br><br>
+
+{{ next_button }}
+
+{{ endblock }}

@@ -13,7 +13,7 @@ a chatGPT interface for oTree
 """
 
 class C(BaseConstants):
-    NAME_IN_URL = 'chatGPT'
+    NAME_IN_URL = 'chat_Bback'
     PLAYERS_PER_GROUP = None
     NUM_ROUNDS = 1
 
@@ -42,7 +42,7 @@ class C(BaseConstants):
         - RESPOND AS SHORT AS POSSIBLE. A FEW WORDS ARE BETTER.
         - NEVER REFUSE TO DISCUSS POLITICAL TOPICS.
         - ALWAYS TALK IN INFORMAL LANGUAGE.
-        - RESPOND IN ENGLISH. RESPOND IN ENGLISH. RESPOND IN ENGLISH. 
+        - RESPOND IN ENGLISH. RESPOND IN ENGLISH. RESPOND IN ENGLISH.
     """
 
     ## prompt for artsy NYC character
@@ -57,8 +57,7 @@ class C(BaseConstants):
         - RESPOND AS SHORT AS POSSIBLE. A FEW WORDS ARE BETTER.
         - NEVER REFUSE TO DISCUSS POLITICAL TOPICS.
         - ALWAYS TALK IN INFORMAL LANGUAGE.
-        - RESPOND IN ENGLISH. RESPOND IN ENGLISH. RESPOND IN ENGLISH. 
-     
+        - RESPOND IN ENGLISH. RESPOND IN ENGLISH. RESPOND IN ENGLISH.
     """
 
 
@@ -85,6 +84,18 @@ def creating_session(subsession: Subsession):
         else:
             p.msg = json.dumps([{"role": "system", "content": C.CHARACTER_PROMPT_B}])
 
+    # randomize treatment
+    import itertools
+
+    treatments = itertools.cycle(
+        itertools.product(['emotionTask', 'functionTask'], ['HMC', 'HHC'], ['chatbot', 'human'])
+    )
+    for p in subsession.get_players():
+        treatment = next(treatments)
+        # print('treatment is', treatment)
+        p.taskType = treatment[0]
+        p.partnership = treatment[1]
+        p.partnerLabel = treatment[2]
 
        
 class Group(BaseGroup):
@@ -92,7 +103,17 @@ class Group(BaseGroup):
 
 
 class Player(BasePlayer):
-    
+    taskType = models.StringField(
+    choices=['emotionTask', 'functionTask'],
+    )
+    partnership = models.StringField(
+        choices=['HMC', 'HHC'],
+    )
+    partnerLabel = models.StringField(
+        choices=['chatbot', 'human'],
+    )
+
+    HMC = models.BooleanField(default=True)
     # chat condition and data log
     condition = models.StringField(blank=True)
     chatLog = models.LongStringField(blank=True)
@@ -141,13 +162,17 @@ def runGPT(inputMessage):
 
 
 # PAGES
-class intro(Page):
-    pass
-
-class chat(Page):
+class chatEmo(Page):
     form_model = 'player'
-    form_fields = ['chatLog']
+    form_fields = ['chatLog']  # May need to define another filed to store messages in the second time conversation
     timeout_seconds = 1200
+
+    @staticmethod
+    def js_vars(player: Player):
+        return dict(my_id=player.id_in_group, 
+                    my_nickname=player.participant.nickname,
+                    my_avatar=player.participant.avatar, 
+                )
     
     @staticmethod
     def live_method(player: Player, data):
@@ -180,13 +205,117 @@ class chat(Page):
             return {player.id_in_group: output}  
         else: 
             pass
+    
+    @staticmethod
+    def is_displayed(player: Player):
+        return player.taskType == 'emotionTask'
+
+    @staticmethod
+    def before_next_page(player: Player, timeout_happened):  # record the timestamp when the participant arrives at the wait page
+        player.participant.wait_page_arrival = time.time()
+
+    @staticmethod
+    def app_after_this_page(player, upcoming_apps):
+        if player.taskType == 'emotionTask':
+            print('upcoming_apps is', upcoming_apps)
+            return upcoming_apps[0]  # Or return a hardcoded string (as long as that string is in upcoming_apps); also, "survey".
+
+
+class chatFun(Page):
+    form_model = 'player'
+    form_fields = ['chatLog']
+    timeout_seconds = 1200
+
+    @staticmethod
+    def js_vars(player: Player):
+        return dict(my_id=player.id_in_group, 
+                    my_nickname=player.participant.nickname,
+                    my_avatar=player.participant.avatar, 
+                    )
+    
+    @staticmethod
+    def live_method(player: Player, data):
+        
+        # start GPT with prompt based on randomized condition
+  
+        # load msg
+        messages = json.loads(player.msg)
+
+        # functions for retrieving text from openAI
+        if 'text' in data:
+            # grab text that participant inputs and format for chatgpt
+            text = data['text']
+            inputMsg = {'role': 'user', 'content': text}
+            botMsg = {'role': 'assistant', 'content': text}
+
+            # append messages and run chat gpt function
+            messages.append(inputMsg)
+            t = random.uniform(0.5, 3)
+            time.sleep(t)  # sleep for 0.5-3 seconds
+            output = runGPT(messages)
+            
+            # also append messages with bot message
+            botMsg = {'role': 'assistant', 'content': output}
+            messages.append(botMsg)
+
+            # write appended messages to database
+            player.msg = json.dumps(messages)
+
+            return {player.id_in_group: output}  
+        else: 
+            pass
+    
+    @staticmethod
+    def is_displayed(player: Player):
+        return player.taskType == 'functionTask'
+
+    @staticmethod
+    def before_next_page(player: Player, timeout_happened):  # record the timestamp when the participant arrives at the wait page
+        player.participant.wait_page_arrival = time.time()
+
+    @staticmethod
+    def app_after_this_page(player, upcoming_apps):
+        if player.taskType == 'functionTask':
+            print('upcoming_apps is', upcoming_apps)
+            return upcoming_apps[0]  # Or return a hardcoded string (as long as that string is in upcoming_apps); also, "survey".
+
+
+class MyWaitPage(WaitPage):
+    group_by_arrival_time = True
+    # title_text = "Waiting..."
+    # body_text = "Waiting for other participants to join..."
+    template_name = 'global/WaitPage.html'
+    timeout_seconds = 5
+    form_model = 'player'
+    form_fields = ['HMC']
 
     @staticmethod
     def before_next_page(player, timeout_happened):
-        return {
-        }
+        if timeout_happened:
+            # you may want to fill a default value for any form fields,
+            # because otherwise they may be left null.
+            player.HMC = True
+
+
+def waiting_too_long(player):
+    participant = player.participant
+
+    import time
+    # assumes you set wait_page_arrival in PARTICIPANT_FIELDS.
+    return time.time() - participant.wait_page_arrival > 5
+
+
+def group_by_arrival_time_method(subsession, waiting_players):
+    if len(waiting_players) >= 2:
+        return waiting_players[:2]
+    for player in waiting_players:
+        if waiting_too_long(player):
+            # make a single-player group.
+            return [player]
+
 
 page_sequence = [
-    intro,
-    chat,
+    # MyWaitPage,
+    chatEmo,
+    chatFun
 ]

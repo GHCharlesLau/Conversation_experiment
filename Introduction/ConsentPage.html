@@ -1,0 +1,43 @@
+{{ extends "global/Page.html" }}
+
+{{ block title }}
+    Informed Consent
+{{ endblock }}
+
+{{ block scripts }}
+{{ endblock }}
+
+
+{{ block content }}
+
+Dear Participants,<br><br>
+
+Hello! Welcome to our experimental study. 
+In this study, you will collaborate with a partner to complete two tasks. 
+Afterward, we will ask you about your thoughts and experiences. 
+<br><br>
+
+There are no risks involved in participating in this study, and we are committed to protecting your privacy. 
+Your personal information will not be collected, and you have the right to withdraw from the experiment at any time. 
+Your participation will contribute positively to the academia. 
+<br><br>
+
+If you have any questions, please feel free to contact us:<br><br>
+Dr. Hai Liang<br>
+hailiang@cuhk.edu.hk<br>
+The Chinese University of Hong Kong</span>
+<br><br>
+
+
+ <!-- {{ formfields }} -->
+
+ <p>Do you agree to participate in this study?</p>
+<button name="agreement" value="True">Yes</button>
+<button name="agreement" value="False">No</button>  
+<!-- if settig type="button", Nothing will happen when participants click "No".  -->
+
+{{ endblock }}
+
+
+
+

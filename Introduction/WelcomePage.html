@@ -1,0 +1,40 @@
+{{ extends "global/Page.html" }}
+
+{{ block title }}
+    Welcome to join this experiment!
+{{ endblock }}
+
+
+{{ block scripts }}
+{{ endblock }}
+
+{{ block app_stypes }}
+<style>
+    .container{
+        width: 100%; 
+        margin: 0 auto;
+        padding: 20px;
+        /* background-color: #f0f0f0; */
+        text-align: left;
+    }
+
+    .controls{
+        display: flex;
+        justify-content: left;
+        align-items: left;
+        margin-bottom: 20px;
+    }
+</style>
+{{ endblock }}
+
+
+{{ block content }}
+<div class="container">
+    <!-- <p>Please choose your avatar</p> -->
+    {{ formfields }}
+
+<br><br>
+    {{ next_button }}
+</div>
+
+{{ endblock }}

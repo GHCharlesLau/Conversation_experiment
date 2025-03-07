@@ -1,0 +1,32 @@
+{{ extends "global/Page.html" }}
+
+{{ block title }}
+    <!-- Priming -->
+{{ endblock }}
+
+{{ block scripts }}
+{{ endblock }}
+
+
+{{ block content }}
+
+Dear Participant,<br><br>
+
+<img src="{{ static 'task1/img/img_sad.png' }}" width="30%" /><br><br>
+
+Have you recently encountered any worries or concerns?<br><br>
+
+Please take a moment to carefully reflect on any difficulties you have faced and describe them in detail in the text box below. 
+The more detailed, the better (at least 50 words).<br><br>
+
+If you haven't had any recent concerns, perhaps a friend of yours has? You are also welcome to describe your friend's concerns.<br><br>
+
+We assure you that your privacy will be fully protected, so there is no need to worry about confidentiality.
+<br><br>
+
+{{ formfield 'primingText' label="Kindly type them in the text box below."}}
+<br><br>
+
+{{ next_button }}
+
+{{ endblock }}
