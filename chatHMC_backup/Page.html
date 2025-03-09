@@ -3,10 +3,9 @@
 
 {{ block app_styles }}
 
-
 <!-- load Roboto font -->
 <link href='https://fonts.googleapis.com/css?family=Roboto:400,100,100italic,300,300italic,400italic,500,500italic,700,700italic,900italic,900' rel='stylesheet' type='text/css'>
-  
+
 <style>
 
   /* -------------------- global oTree styles -------------------- */ 
@@ -105,33 +104,56 @@
   /* -------------------- text span styles -------------------- */ 
 
   .selfText {
-    background: lightgray;
+    background: skyblue;
+    color: white;
     display: inline-block;
     position: relative;
-    left: 100%;
+    left: 97%;
     transform: translateX(-100%);
     text-align: right;
     margin-bottom: 5px;
-    padding: 10px 10px 10px 12px;
+    padding: 10px 10px 12px 12px;
     border-radius: 20px;
     max-width: 80%;
     height: 100%;
   }
 
   .botText {
-    background: #38A1F3;
+    background: lightgray;
     color: white;
-    left: 0;
+    position: relative;
+    left: 3%;
     display: inline-block;
     margin-bottom: 5px;
-    padding: 10px 10px 10px 12px;
+    padding: 10px 10px 12px 12px;
     border-radius: 20px;
     max-width: 80%;
     height: 100%;
   }
 
+  .senderAvatar {
+    background: white;
+    color: gray;
+    font-size: 14px;
+    position: relative;
+    right: 0;
+    text-align: right;
+    /* border-radius: 20%; */
+    margin-right: 0;
+  }
 
+  .receiverAvatar {
+    background: white;
+    color: gray;
+    font-size: 14px;
+    position: relative;
+    left: 0;
+    text-align: left;
+    /* border-radius: 20%; */
+    margin-left: 0;
+  }
 
+  
   /* -------------------- button styles -------------------- */ 
 
   input[type="text"] {

@@ -21,36 +21,14 @@ class C(BaseConstants):
 class Subsession(BaseSubsession):
     pass
 
-# factorial experiment: balanced design
-def creating_session(subsession):  
-    import itertools
-
-    treatments = itertools.cycle(
-        itertools.product(['emotionTask', 'functionTask'], ['HMC', 'HHC'], ['chatbot', 'human'])
-    )
-    for p in subsession.get_players():
-        treatment = next(treatments)
-        # print('treatment is', treatment)
-        p.taskType = treatment[0]
-        p.partnership = treatment[1]
-        p.partnerLabel = treatment[2]
 
 class Group(BaseGroup):
     pass
 
 
 class Player(BasePlayer):
-    taskType = models.StringField(
-    choices=['emotionTask', 'functionTask'],
-    )
-    partnership = models.StringField(
-        choices=['HMC', 'HHC'],
-    )
-    partnerLabel = models.StringField(
-        choices=['chatbot', 'human'],
-    )
-
     HHC_2r = models.BooleanField(default=True)
+    chatLog = models.LongStringField(blank=True)
     pass
 
 
@@ -65,6 +43,17 @@ def to_dict(msg: Message):
 
 
 # PAGES
+class pairingSuc(Page):
+    @staticmethod
+    def vars_for_template(player: Player):
+        alter = player.get_others_in_group()[0]
+        return dict(
+                    alter_id = alter.id_in_group,
+                    alter_nickname=alter.participant.nickname,
+                    alter_avatar=alter.participant.avatar,
+                    )
+
+
 class chatEmo(Page):
     timeout_seconds = 1200
     
@@ -91,10 +80,11 @@ class chatEmo(Page):
     
     @staticmethod
     def is_displayed(player: Player):
-        return player.taskType == 'emotionTask'
+        return player.participant.taskType == 'emotionTask'
+    
     @staticmethod
     def app_after_this_page(player, upcoming_apps):
-        if player.taskType == 'emotionTask':
+        if player.participant.taskType == 'emotionTask':
             print('upcoming_apps is', upcoming_apps)
             return upcoming_apps[1]  # Or return a hardcoded string (as long as that string is in upcoming_apps); also, "survey".
 
@@ -125,10 +115,11 @@ class chatFun(Page):
     
     @staticmethod
     def is_displayed(player: Player):
-        return player.taskType == 'functionTask'
+        return player.participant.taskType == 'functionTask'
+    
     @staticmethod
     def app_after_this_page(player, upcoming_apps):
-        if player.taskType == 'functionTask':
+        if player.participant.taskType == 'functionTask':
             print('upcoming_apps is', upcoming_apps)
             return upcoming_apps[1]  # Or return a hardcoded string (as long as that string is in upcoming_apps); also, "survey".
 

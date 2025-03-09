@@ -11,6 +11,20 @@ class C(BaseConstants):
 class Subsession(BaseSubsession):
     pass
 
+# factorial experiment: balanced design
+def creating_session(subsession):  
+    import itertools
+
+    treatments = itertools.cycle(
+        itertools.product(['emotionTask', 'functionTask'], ['HMC', 'HHC'], ['chatbot', 'human'])
+    )
+    for p in subsession.get_players():
+        treatment = next(treatments)
+        # print('treatment is', treatment)
+        p.taskType = treatment[0]
+        p.partnership = treatment[1]
+        p.partnerLabel = treatment[2]
+
 
 class Group(BaseGroup):
     pass
@@ -28,6 +42,15 @@ class Player(BasePlayer):
     )
     nickname = models.StringField(
         label='Please enter your nickname',
+    )
+    taskType = models.StringField(
+        choices=['emotionTask', 'functionTask'],
+    )
+    partnership = models.StringField(
+        choices=['HMC', 'HHC'],
+    )
+    partnerLabel = models.StringField(
+        choices=['chatbot', 'human'],
     )
 
 
@@ -53,6 +76,10 @@ class WelcomePage(Page):
         player.participant.avatar = player.avatar
         player.participant.nickname = player.nickname
         print(f"The player's (idInGroup: {player.id_in_group}) nickname is {player.participant.nickname}")
+        # Transfer players's propertities to the participant object for later use
+        player.participant.taskType = player.taskType
+        player.participant.partnership = player.partnership
+        player.participant.partnerLabel = player.partnerLabel
 
 
 page_sequence = [ConsentPage, WelcomePage]

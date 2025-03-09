@@ -38,6 +38,10 @@
         </div>
         <br><br>
 
+        <!-- hidden input to save chat log -->
+        <input type='hidden' name='chatLog' value='' id='id_chatLog'/>
+        <br><br>
+
         <!-- oTree timer -->
         <p align="center">
             Page will auto-advance in:
@@ -55,8 +59,13 @@
 
 {{ block scripts }}
 <script>
+    // list of chat messages as JSON dictionaries
+    var chatLogData = [];
 
-    let chat_input = document.getElementById('chat_input');
+    // timestamp of page loading to determine when messages were sent
+    var timeBase = Date.now();
+
+    var chat_input = document.getElementById('chat_input');
 
     chat_input.addEventListener("keydown", function (event) {
         if (event.key === "Enter") {
@@ -64,25 +73,65 @@
         }
     });
 
+    // function to log chat
+    function logChat(sender, chatText) {
+        let timestamp = (Date.now() - timeBase) / 1000;
+        
+        // create dictionary for current message info
+        var currentMsg = {
+            sender: sender,
+            text: chatText,
+            timestamp: timestamp
+    };
+
+    // append chatLogData
+    chatLogData.push(currentMsg);
+
+    // write chatLog to input field
+    document.getElementById('id_chatLog').value = JSON.stringify(chatLogData);
+    }
+
+    // function to append text in webpage
     function sendMsg() {
-        let text = chat_input.value.trim();
+        var text = chat_input.value.trim();
         if (text) {
             liveSend({'text': text});
+            let msgSpan = document.createElement('span');
+            msgSpan.textContent = text;
+            let sender = `${js_vars.my_nickname}${js_vars.my_avatar}`;
+            let row = `<div><div class="senderAvatar">${sender}</div><div class="msg selfText">${msgSpan.innerHTML}</div></div><br>`;
+            chat_messages.insertAdjacentHTML('beforeend', row); 
+            
+            // scroll messages to bottom
+            chat_messages.scrollIntoView({ behavior: 'smooth', block: 'end', inline: 'start' })
+
+            // append chat log
+            logChat(js_vars.my_nickname, text)
         }
         chat_input.value = '';
     }
 
-    let chat_messages = document.getElementById('chat_messages');
+    var chat_messages = document.getElementById('chat_messages');
 
+    // function for live receiving from server
     function liveRecv(messages) {
         for (let msg of messages) {
-            let msgSpan = document.createElement('span');
-            msgSpan.textContent = msg.text;
-            let sender = msg.sender === js_vars.my_id ? `${js_vars.my_avatar}${js_vars.my_nickname}` : `${js_vars.alter_avatar}${js_vars.alter_nickname}`;
-            let row = `<div><b>${sender}</b>: ${msgSpan.innerHTML}</div>`;
-            chat_messages.insertAdjacentHTML('beforeend', row);
+            // Only display messages sent by the other player
+            if (msg.sender != js_vars.my_id) {
+                let msgSpan = document.createElement('span');
+                msgSpan.textContent = msg.text;
+                let sender = `${js_vars.alter_avatar}${js_vars.alter_nickname}`;
+                let row = `<div><div class="receiverAvatar">${sender}</div><div class="msg botText">${msgSpan.innerHTML}</div></div><br>`;
+                chat_messages.insertAdjacentHTML('beforeend', row);
+            }
         }
-    }
+
+        // scroll messages to bottom
+        chat_messages.scrollIntoView({ behavior: 'smooth', block: 'end', inline: 'start' })
+        
+        // append chat log
+        logChat(js_vars.alter_nickname, data)
+    };
 
     document.addEventListener("DOMContentLoaded", function (event) {
         liveSend({});

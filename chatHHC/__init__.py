@@ -21,36 +21,14 @@ class C(BaseConstants):
 class Subsession(BaseSubsession):
     pass
 
-# factorial experiment: balanced design
-def creating_session(subsession):  
-    import itertools
-
-    treatments = itertools.cycle(
-        itertools.product(['emotionTask', 'functionTask'], ['HMC', 'HHC'], ['chatbot', 'human'])
-    )
-    for p in subsession.get_players():
-        treatment = next(treatments)
-        # print('treatment is', treatment)
-        p.taskType = treatment[0]
-        p.partnership = treatment[1]
-        p.partnerLabel = treatment[2]
 
 class Group(BaseGroup):
     pass
 
 
 class Player(BasePlayer):
-    taskType = models.StringField(
-    choices=['emotionTask', 'functionTask'],
-    )
-    partnership = models.StringField(
-        choices=['HMC', 'HHC'],
-    )
-    partnerLabel = models.StringField(
-        choices=['chatbot', 'human'],
-    )
-
     HHC = models.BooleanField(default=True)
+    chatLog = models.LongStringField(blank=True)
 
 
 class Message(ExtraModel):
@@ -64,7 +42,20 @@ def to_dict(msg: Message):
 
 
 # PAGES
+class pairingSuc(Page):
+    @staticmethod
+    def vars_for_template(player: Player):
+        alter = player.get_others_in_group()[0]
+        return dict(
+                    alter_id = alter.id_in_group,
+                    alter_nickname=alter.participant.nickname,
+                    alter_avatar=alter.participant.avatar,
+                    )
+
+
 class chatEmo(Page):
+    form_model = 'player'
+    form_fields = ['chatLog']
     timeout_seconds = 1200
     
     @staticmethod
@@ -90,9 +81,12 @@ class chatEmo(Page):
     
     @staticmethod
     def is_displayed(player: Player):
-        return player.taskType == 'emotionTask' and player.partnership == 'HHC'
+        return player.participant.taskType == 'emotionTask' and player.participant.partnership == 'HHC'
+
 
 class chatFun(Page):
+    form_model = 'player'
+    form_fields = ['chatLog']
     timeout_seconds = 1200
     
     @staticmethod
@@ -118,7 +112,7 @@ class chatFun(Page):
     
     @staticmethod
     def is_displayed(player: Player):
-        return player.taskType == 'functionTask' and player.partnership == 'HHC'
+        return player.participant.taskType == 'functionTask' and player.participant.partnership == 'HHC'
 
 
 # Setting a WaitPage to group_by_arrival_time=True
@@ -137,11 +131,12 @@ class MyWaitPage(WaitPage):
             # you may want to fill a default value for any form fields,
             # because otherwise they may be left null.
             player.HHC = False
+            player.participant.partnership = "HMC"  # If timeout happened, the subject should be assigned to a chat room with a bot.
     @staticmethod
     def app_after_this_page(player, upcoming_apps):  # If waiting too long, the subject should be assigned to a chat room with a bot.
         print('upcoming_apps is', upcoming_apps)
         if player.HHC == False:
-            return "chatHMC_backup"
+            return "chatHMC"
         
 
 def waiting_too_long(player):
@@ -161,4 +156,4 @@ def group_by_arrival_time_method(subsession, waiting_players):
             return [player]
 
 
-page_sequence = [MyWaitPage, chatEmo, chatFun]
+page_sequence = [MyWaitPage, pairingSuc,chatEmo, chatFun]

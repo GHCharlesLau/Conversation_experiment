@@ -4,9 +4,9 @@ from os import environ
 SESSION_CONFIGS = [
     dict(
         name='HMCvsHHC',
-        app_sequence=['Introduction', 'task1', 'chatHMC', 'chatHHC', 
+        app_sequence=['Introduction', 'task1', 'chatHHC', 'chatHMC', 
                       'task2', 'chatHHC_2r', 'chatHMC_backup', 'survey', 'payment_info'], 
-        num_demo_participants=8,
+        num_demo_participants=100,
     ),
 ]
 

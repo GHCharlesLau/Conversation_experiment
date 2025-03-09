@@ -21,8 +21,7 @@
             }
         });
     
-        
-    
+
         // function to log chat
         function logChat(sender, chatText) {
             let timestamp = (Date.now() - timeBase) / 1000;
@@ -49,8 +48,8 @@
                 liveSend({'text': text});
                 let msgSpan = document.createElement('span');
                 msgSpan.textContent = text;
-                // let sender = msg.sender === js_vars.my_id ? `${js_vars.my_nickname}${js_vars.my_avatar}` : `Bot`;
-                let row = `<div class="msg selfText">${msgSpan.innerHTML}</div><br>`;
+                let sender = `${js_vars.my_nickname}${js_vars.my_avatar}`;
+                let row = `<div><div class="senderAvatar">${sender}</div><div class="msg selfText">${msgSpan.innerHTML}</div></div><br>`;
                 chat_messages.insertAdjacentHTML('beforeend', row);    
                 
                 // scroll messages to bottom
@@ -60,8 +59,7 @@
                 logChat('Participant', text)
                 
             }
-            chat_input.value = '';
-            
+            chat_input.value = ''; 
         }
     
         // specify messages element
@@ -71,7 +69,7 @@
         function liveRecv(data) {
             let msgSpan = document.createElement('span');
             msgSpan.textContent = data;
-            let row = `<div class="msg botText">${msgSpan.innerHTML}</div><br>`;
+            let row = `<div><div class="receiverAvatar">🤖MyBot</div><div class="msg botText">${msgSpan.innerHTML}</div></div><br>`;
             chat_messages.insertAdjacentHTML('beforeend', row);
             
             // scroll messages to bottom
@@ -93,9 +91,9 @@
 {{ block content }}
    <div class="container">
         <div class="left">
-            <!-- <h2>Chat Instruction</h2><br> -->
+            <!-- <h2>Chat with CaringBot</h2><br> -->
             <span style="color:black; font-size: 15px;">
-                We encourage you to share any difficulties you have encountered.<br><br>
+                We encourage you to share any difficulties you have encountered with <span style="color:red; font-weight:bold">the AI chatbot</span>.<br><br>
 
                 Feel free to engage in multiple rounds of conversation until you feel ready to conclude the interaction.<br><br>
                 

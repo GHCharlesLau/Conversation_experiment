@@ -13,32 +13,11 @@ class C(BaseConstants):
 class Subsession(BaseSubsession):
     pass
 
-def creating_session(subsession):  
-    import itertools
-
-    treatments = itertools.cycle(
-        itertools.product(['emotionTask', 'functionTask'], ['HMC', 'HHC'], ['chatbot', 'human'])
-    )
-    for p in subsession.get_players():
-        treatment = next(treatments)
-        # print('treatment is', treatment)
-        p.taskType = treatment[0]
-        p.partnership = treatment[1]
-        p.partnerLabel = treatment[2]
 
 class Group(BaseGroup):
     pass
 
 class Player(BasePlayer):
-    taskType = models.StringField(
-        choices=['emotionTask', 'functionTask'],
-    )
-    partnership = models.StringField(
-        choices=['HMC', 'HHC'],
-    )
-    partnerLabel = models.StringField(
-        choices=['chatbot', 'human'],
-    )
     primingText2 = models.LongStringField()
     # pass
 
@@ -46,7 +25,7 @@ class Player(BasePlayer):
 class chatInstruct_emo_AI(Page):
     @staticmethod
     def is_displayed(player: Player):  # Only display this page if the player will converse with a chatbot
-        return player.taskType == 'emotionTask' and player.partnership == 'HMC'
+        return player.participant.taskType == 'emotionTask' and player.participant.partnership == 'HMC'
     # pass
     @staticmethod
     def before_next_page(player: Player, timeout_happened):  # record the timestamp when the participant arrives at the wait page
@@ -55,7 +34,7 @@ class chatInstruct_emo_AI(Page):
 class chatInstruct_emo_human(Page):
     @staticmethod
     def is_displayed(player: Player):  # Only display this page if the player will converse with a chatbot
-        return player.taskType == 'emotionTask' and player.partnership == 'HHC'
+        return player.participant.taskType == 'emotionTask' and player.participant.partnership == 'HHC'
     # pass
     @staticmethod
     def before_next_page(player: Player, timeout_happened):  # record the timestamp when the participant arrives at the wait page
@@ -64,7 +43,7 @@ class chatInstruct_emo_human(Page):
 class chatInstruct_fun_AI(Page):
     @staticmethod
     def is_displayed(player: Player):  # Only display this page if the player will converse with a chatbot
-        return player.taskType == 'functionTask' and player.partnership == 'HMC'
+        return player.participant.taskType == 'functionTask' and player.participant.partnership == 'HMC'
     # pass
     @staticmethod
     def before_next_page(player: Player, timeout_happened):  # record the timestamp when the participant arrives at the wait page
@@ -73,7 +52,7 @@ class chatInstruct_fun_AI(Page):
 class chatInstruct_fun_human(Page):
     @staticmethod
     def is_displayed(player: Player):  # Only display this page if the player will converse with a chatbot
-        return player.taskType == 'functionTask' and player.partnership == 'HHC'
+        return player.participant.taskType == 'functionTask' and player.participant.partnership == 'HHC'
     # pass
     @staticmethod
     def before_next_page(player: Player, timeout_happened):  # record the timestamp when the participant arrives at the wait page

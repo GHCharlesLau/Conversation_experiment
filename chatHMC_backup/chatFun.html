@@ -49,7 +49,8 @@
                 liveSend({'text': text});
                 let msgSpan = document.createElement('span');
                 msgSpan.textContent = text;
-                let row = `<div class="msg selfText">${msgSpan.innerHTML}</div><br>`;
+                let sender = `${js_vars.my_nickname}${js_vars.my_avatar}`;
+                let row = `<div><div class="senderAvatar">${sender}</div><div class="msg selfText">${msgSpan.innerHTML}</div></div><br>`;
                 chat_messages.insertAdjacentHTML('beforeend', row);    
                 
                 // scroll messages to bottom
@@ -70,7 +71,7 @@
         function liveRecv(data) {
             let msgSpan = document.createElement('span');
             msgSpan.textContent = data;
-            let row = `<div class="msg botText">${msgSpan.innerHTML}</div><br>`;
+            let row = `<div><div class="receiverAvatar">🤖MyBot</div><div class="msg botText">${msgSpan.innerHTML}</div></div><br>`;
             chat_messages.insertAdjacentHTML('beforeend', row);  
             
             // scroll messages to bottom

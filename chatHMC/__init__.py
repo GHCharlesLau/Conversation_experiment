@@ -84,35 +84,12 @@ def creating_session(subsession: Subsession):
         else:
             p.msg = json.dumps([{"role": "system", "content": C.CHARACTER_PROMPT_B}])
 
-    # randomize treatment
-    import itertools
 
-    treatments = itertools.cycle(
-        itertools.product(['emotionTask', 'functionTask'], ['HMC', 'HHC'], ['chatbot', 'human'])
-    )
-    for p in subsession.get_players():
-        treatment = next(treatments)
-        # print('treatment is', treatment)
-        p.taskType = treatment[0]
-        p.partnership = treatment[1]
-        p.partnerLabel = treatment[2]
-
-       
 class Group(BaseGroup):
     pass
 
 
 class Player(BasePlayer):
-    taskType = models.StringField(
-    choices=['emotionTask', 'functionTask'],
-    )
-    partnership = models.StringField(
-        choices=['HMC', 'HHC'],
-    )
-    partnerLabel = models.StringField(
-        choices=['chatbot', 'human'],
-    )
-
     HMC = models.BooleanField(default=True)
     # chat condition and data log
     condition = models.StringField(blank=True)
@@ -145,7 +122,6 @@ def custom_export(players):
                 yield [session.code, participant.code, p.condition, sndr, txt, time]
 
 
-
 # openAI chat gpt key 
 OPENAI_API_KEY = environ.get('OPENAI_API_KEY')
 OPENAI_API_KEY = environ.get("ChatAnyWhere_API")
@@ -167,7 +143,7 @@ def runGPT(inputMessage):
 # PAGES
 class chatEmo(Page):
     form_model = 'player'
-    form_fields = ['chatLog']  # May need to define another filed to store messages in the second time conversation
+    form_fields = ['chatLog']  # May need to define another field to store messages in the second time conversation
     timeout_seconds = 1200
 
     @staticmethod
@@ -211,7 +187,7 @@ class chatEmo(Page):
     
     @staticmethod
     def is_displayed(player: Player):
-        return player.taskType == 'emotionTask' and player.partnership == 'HMC'
+        return player.participant.taskType == 'emotionTask' and player.participant.partnership == 'HMC'
 
     @staticmethod
     def before_next_page(player: Player, timeout_happened):  # record the timestamp when the participant arrives at the wait page
@@ -219,9 +195,9 @@ class chatEmo(Page):
 
     @staticmethod
     def app_after_this_page(player, upcoming_apps):
-        if player.taskType == 'emotionTask' and player.partnership == 'HMC':
+        if player.participant.taskType == 'emotionTask' and player.participant.partnership == 'HMC':
             print('upcoming_apps is', upcoming_apps)
-            return upcoming_apps[1]  # Or return a hardcoded string (as long as that string is in upcoming_apps)
+            return upcoming_apps[0]  # Or return a hardcoded string (as long as that string is in upcoming_apps)
 
 
 class chatFun(Page):
@@ -253,8 +229,8 @@ class chatFun(Page):
 
             # append messages and run chat gpt function
             messages.append(inputMsg)
-            t = random.uniform(0.5, 3)
-            time.sleep(t)  # sleep for 0.5-3 seconds
+            t = random.uniform(0, 2)
+            time.sleep(t)  # sleep for 0-2 seconds
             output = runGPT(messages)
             
             # also append messages with bot message
@@ -270,11 +246,17 @@ class chatFun(Page):
     
     @staticmethod
     def is_displayed(player: Player):
-        return player.taskType == 'functionTask' and player.partnership == 'HMC'
+        return player.participant.taskType == 'functionTask' and player.participant.partnership == 'HMC'
 
     @staticmethod
     def before_next_page(player: Player, timeout_happened):  # record the timestamp when the participant arrives at the wait page
         player.participant.wait_page_arrival = time.time()
+
+    @staticmethod
+    def app_after_this_page(player, upcoming_apps):
+        if player.participant.taskType == 'functionTask' and player.participant.partnership == 'HMC':
+            print('upcoming_apps is', upcoming_apps)
+            return upcoming_apps[0]  # Or return a hardcoded string, i.e., "task2" (as long as that string is in upcoming_apps)
 
 
 class MyWaitPage(WaitPage):

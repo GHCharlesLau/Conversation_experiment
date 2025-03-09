@@ -1,0 +1,96 @@
+{{ extends "global/Page.html" }}
+
+{{ block title }}
+<!-- Pairing Success -->
+{{ endblock }}
+
+{{ block app_styles }}
+<style>
+    /* Basic styles */
+    body {
+        margin: 0;
+        padding: 0;
+        height: 100vh; /* 使 body 高度为视口高度 */
+        display: flex;
+        justify-content: center; /* 水平居中 */
+        align-items: center; /* 垂直居中 */
+        background-color: #f4f4f9;
+    }
+
+    ._otree-content {
+        margin-top: 30%;
+        padding: 0;
+        font-family: Arial, sans-serif;
+        background-color: #f4f4f9;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        /* height: 100vh; */
+    }
+
+    .success-container {
+        /* display: flex; */
+        /* justify-content: center;
+        align-items: center; */
+        text-align: center;
+        background-color: #ffffff;
+        padding: 50px;
+        border-radius: 10px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        max-width: 400px;
+        width: 100%;
+    }
+
+    .success-icon {
+        font-size: 48px;
+        color: #4caf50;
+        background-color: #e8f5e9;
+        width: 80px;
+        height: 80px;
+        border-radius: 50%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin: 0 auto 20px;
+    }
+
+    .success-title {
+        font-size: 24px;
+        color: #333333;
+        margin-bottom: 10px;
+    }
+
+    .success-message {
+        font-size: 16px;
+        color: #666666;
+        margin-bottom: 20px;
+    }
+
+    .success-button {
+        background-color: #4caf50;
+        color: #ffffff;
+        border: none;
+        padding: 10px 20px;
+        font-size: 16px;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+    }
+
+    .success-button:hover {
+        background-color: #45a049;
+    }
+</style>
+{{ endblock }}
+
+
+{{ block content }}
+<div class="success-container">
+    <h1 class="success-title">Pairing Successful!</h1><br>
+    <div class="success-icon">✓</div><br>
+
+    <p class="success-message">Player {{ alter_id }} <b>{{ alter_nickname }}</b> has arrived.</p>
+
+    <button class="success-button">Continue</button>
+</div>
+{{ endblock }}
