@@ -122,7 +122,7 @@ def custom_export(players):
 
 # openAI chat gpt key 
 OPENAI_API_KEY = environ.get('OPENAI_API_KEY')
-OPENAI_API_KEY = environ.get("ChatAnyWhere_API")
+OPENAI_API_KEY = environ.get("CHATANYWHERE_API_KEY")
 
 # function to run messages
 def runGPT(inputMessage):
@@ -139,6 +139,10 @@ def runGPT(inputMessage):
 
 
 # PAGES
+class pairingSuc(Page):
+    pass
+
+
 class chatEmo(Page):
     form_model = 'player'
     form_fields = ['chatLog']  # May need to define another filed to store messages in the second time conversation
@@ -146,7 +150,8 @@ class chatEmo(Page):
 
     @staticmethod
     def js_vars(player: Player):
-        return dict(my_id=player.id_in_group, 
+        return dict(my_id=player.id_in_group,
+                    my_code=player.participant.code,  # participant code (exclusive)
                     my_nickname=player.participant.nickname,
                     my_avatar=player.participant.avatar, 
                 )
@@ -205,7 +210,8 @@ class chatFun(Page):
 
     @staticmethod
     def js_vars(player: Player):
-        return dict(my_id=player.id_in_group, 
+        return dict(my_id=player.id_in_group,
+                    my_code=player.participant.code,  # participant code (exclusive)
                     my_nickname=player.participant.nickname,
                     my_avatar=player.participant.avatar, 
                     )
@@ -257,14 +263,44 @@ class chatFun(Page):
             return upcoming_apps[0]  # Or return a hardcoded string (as long as that string is in upcoming_apps); also, "survey".
 
 
+# WaitPage Messages
+# chatInstruct_emo_AI
+body_textA = '''Next, you will be paired with <span style="color:red; font-weight:bold">another participant in this survey</span> and engage in another conversation.<br><br>
+
+We encourage you to <span style="color:red; font-weight:bold">share your difficulties again with your new conversation partner.</span><br><br>
+
+Feel free to engage in <span style="color:red; font-weight:bold">multiple rounds</span> of conversation until you feel ready to conclude the interaction.<br><br>
+
+Now, let's begin!<br><br>'''
+
+# chatInstruct_fun_AI
+body_textB = '''Next, <span style="color:red; font-weight:bold">you will be paired with another participant in this survey</span> to form a team and compete against others.<br><br>
+
+Your task remains the same: brainstorm as many unique uses for a cardboard box as possible.<br><br>
+
+The current high score is still held by Alex.<br><br>
+
+Feel free to engage in multiple rounds of conversation until you're confident in surpassing Alex's high score.<br><br>
+
+Now, let's begin!<br><br>'''
+
 class MyWaitPage(WaitPage):
-    group_by_arrival_time = True
+    # group_by_arrival_time = True
     # title_text = "Waiting..."
     # body_text = "Waiting for other participants to join..."
-    template_name = 'global/WaitPage.html'
-    timeout_seconds = 5
+    template_name = 'chatHMC/MyWaitPage.html'
+    timeout_seconds = 7
     form_model = 'player'
     form_fields = ['HMC']
+
+    @staticmethod
+    def vars_for_template(player):
+        if player.participant.taskType == 'emotionTask' and player.participant.partnership == 'HMC':
+            return dict(body_text=body_textA)
+        elif player.participant.taskType == 'functionTask' and player.participant.partnership == 'HMC':
+            return dict(body_text=body_textB)
+        else:
+            pass
 
     @staticmethod
     def before_next_page(player, timeout_happened):
@@ -293,6 +329,7 @@ def group_by_arrival_time_method(subsession, waiting_players):
 
 page_sequence = [
     # MyWaitPage,
+    pairingSuc,
     chatEmo,
     chatFun
 ]

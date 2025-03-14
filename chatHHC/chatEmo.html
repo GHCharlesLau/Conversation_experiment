@@ -5,20 +5,20 @@
 {{ block content }}
 <!-- div displaying chat messages -->
 <div class="container">
-    <div class="left">
+    <div class="topPart">
         <!-- <h2>Chat Instruction</h2><br> -->
         <span style="color:black; font-size: 15px;">
-            We encourage you to <span style="color: red; font-weight:bold">share any difficulties you have encountered with the participant.</span><br><br>
+            We encourage you to <span style="color: red; font-weight:bold">share any difficulties you have encountered with the participant.</span><br>
 
-            Feel free to engage in multiple rounds of conversation until you feel ready to conclude the interaction.<br><br>
+            Feel free to engage in multiple rounds of conversation until you feel ready to conclude the interaction.<br>
             
-            Now, let's get started!<br><br>
+            Now, let's get started!<br>
 
             <!-- Type <span style="color:red; font-weight: bold;">“Hello”</span> to start your discussion. -->
         </span>
     </div>
     
-    <div class="right">
+    <div class="downPart">
         <!-- div displaying chat messages -->
         <div class="textBox">
             <div id="chat_messages">
@@ -36,15 +36,14 @@
 
         <!-- hidden input to save chat log -->
         <input type='hidden' name='chatLog' value='' id='id_chatLog'/>
-        <br><br>
 
         <!-- oTree timer -->
         <p align="center">
-            Page will auto-advance in:
+            <!-- Page will auto-advance in:
             <span style="color:red; font-weight: bold">
                 <span class="otree-timer__time-left"></span>
-            </span>
-            <br>
+            </span> -->
+            <!-- <br> -->
         <button class="btn btn-primary btn-large">
             Next Page
         </button>
@@ -102,7 +101,7 @@
             chat_messages.scrollIntoView({ behavior: 'smooth', block: 'end', inline: 'start' })
 
             // append chat log
-            logChat(js_vars.my_nickname, text)
+            logChat(js_vars.my_code, text)
         }
         chat_input.value = '';
     }
@@ -119,14 +118,14 @@
                 let sender = `${js_vars.alter_avatar}${js_vars.alter_nickname}`;
                 let row = `<div><div class="receiverAvatar">${sender}</div><div class="msg botText">${msgSpan.innerHTML}</div></div><br>`;
                 chat_messages.insertAdjacentHTML('beforeend', row);
+
+                // append chat log
+                logChat(js_vars.alter_code, msg.text)
             }
         }
 
         // scroll messages to bottom
         chat_messages.scrollIntoView({ behavior: 'smooth', block: 'end', inline: 'start' })
-        
-        // append chat log
-        logChat(js_vars.alter_nickname, data)
     };
 
     document.addEventListener("DOMContentLoaded", function (event) {

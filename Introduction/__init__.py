@@ -37,7 +37,7 @@ class Player(BasePlayer):
     )
     avatar = models.StringField(
         label='Please choose your avatar',
-        choices=["🐱", "🦁", "🐯", "🦊"],
+        choices=["👩‍🦰", "👨‍🦰", "👩‍🦱", "👨‍🦱"],
         widget=widgets.RadioSelectHorizontal
     )
     nickname = models.StringField(

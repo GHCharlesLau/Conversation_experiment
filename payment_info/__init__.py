@@ -33,6 +33,10 @@ class PaymentInfo(Page):
     def vars_for_template(player: Player):
         participant = player.participant
         return dict(redemption_code=participant.label or participant.code)
+    
+    @staticmethod
+    def before_next_page(player: Player, timeout_happened):
+        player.participant.finished = True
 
 
 page_sequence = [PaymentInfo]

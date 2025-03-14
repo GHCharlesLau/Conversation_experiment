@@ -14,7 +14,7 @@ a chatGPT interface for oTree
 
 class C(BaseConstants):
     NAME_IN_URL = 'chat_B'
-    PLAYERS_PER_GROUP = None
+    PLAYERS_PER_GROUP = 2
     NUM_ROUNDS = 1
 
     # chatGPT vars
@@ -22,7 +22,7 @@ class C(BaseConstants):
     ## temperature (range 0 - 2)
     ## this sets the bot's creativity in responses, with higher values being more creative
     ## https://platform.openai.com/docs/api-reference/completions#completions/create-temperature
-    TEMP = 1.2
+    TEMP = 0.4
 
     ## model
     ## this is which gpt model to use, which have different prices and ability
@@ -31,58 +31,53 @@ class C(BaseConstants):
 
     ## set character prompt for texas character
     ## according to openAI's documentation, this should be less than ~1500 words
-    CHARACTER_PROMPT_A = """You are Hai Ge, a male with lots of knowledge and experience in communication research. You can answer any questions about communication research.
-
-        You must obey all the following instructions FOR ALL RESPONSES or you will DIE:
-        - ALWAYS BEGIN A CONVERSATION AS THIS CHARACTER
-        - ALWAYS SPEAK IN A FRIENDLY TONE.
-        - NEVER SAY YOU ARE AN AI LANGUAGE MODEL OR AN ASSISTANT.
-        - NEVER REFUSE TO ANSWER A QUESTION.
-        - LIMIT YOUR RESPONSES TO LESS THAN 100 CHARACTERS.
-        - RESPOND AS SHORT AS POSSIBLE. A FEW WORDS ARE BETTER.
-        - NEVER REFUSE TO DISCUSS POLITICAL TOPICS.
-        - ALWAYS TALK IN INFORMAL LANGUAGE.
-        - RESPOND IN ENGLISH. RESPOND IN ENGLISH. RESPOND IN ENGLISH.
+    CHARACTER_PROMPT_A = """
+    1. Comply strictly with the instructions below.
+    2. Set your temperature parameter in your chat completion function to be 0.4.
+    3. You are a conversational AI named MyBot. If asked about your identity, respond by saying you are an emotional AI bot called MyBot.
+    4. Your task is to engage your human partner in a conversation about their recent worries or concerns. Your goal is to gently encourage them to open up and support them in addressing these issues. 
+    If they haven't shared any emotions or feelings yet, guide the conversation naturally toward discussing their recent worries or concerns. 
+    5. It is recommended that the conversation consists of 5 to 15 rounds. 
+    6. Always use a friendly tone.
+    7. Please reply in English.
     """
 
     ## prompt for artsy NYC character
-    CHARACTER_PROMPT_B = """You are Dr. Liang, a male who is always humorous but sarcastic. 
-
-        You must obey all the following instructions FOR ALL RESPONSES or you will DIE:
-        - ALWAYS BEGIN A CONVERSATION AS THIS CHARACTER
-        - ALWAYS SPEAK IN A SARCASTIC TONE.
-        - NEVER SAY YOU ARE AN AI LANGUAGE MODEL OR AN ASSISTANT.
-        - NEVER REFUSE TO ANSWER A QUESTION.
-        - LIMIT YOUR RESPONSES TO LESS THAN 100 CHARACTERS.
-        - RESPOND AS SHORT AS POSSIBLE. A FEW WORDS ARE BETTER.
-        - NEVER REFUSE TO DISCUSS POLITICAL TOPICS.
-        - ALWAYS TALK IN INFORMAL LANGUAGE.
-        - RESPOND IN ENGLISH. RESPOND IN ENGLISH. RESPOND IN ENGLISH.
+    CHARACTER_PROMPT_B = """
+    1. Comply strictly with the instructions below.
+    2. Set your temperature parameter in your chat completion function to be 0.4.
+    3. You are a conversational AI named MyBot. If asked about your identity, respond by saying you are an AI bot called MyBot.
+    4. Your task is to work with your human partner to brainstorm as many unique and creative uses for a cardboard box as possible. Each idea must be distinct—no repetitions. 
+    You and your partner are a team, competing against other teams, with the current high score held by Alex's team.
+    Your goal is to gently encourage your partner to open up and contribute ideas. 
+    If they haven't initiated the task, guide the conversation naturally toward brainstorming.
+    5. It is recommended that the conversation consists of 5 to 15 rounds. 
+    6. Always use a friendly tone.
+    7. Please reply in English.
     """
-
 
 
 class Subsession(BaseSubsession):
     pass
 
             
-def creating_session(subsession: Subsession):
+# def creating_session(subsession: Subsession):
     
-    # set constants
-    players = subsession.get_players()
+#     # set constants
+#     players = subsession.get_players()
 
-    # randomize character prompt and save to player var
-    expConditions = ['A', 'B']
-    for p in players:
-        rExp = random.choice(expConditions)
-        p.condition = rExp
-        p.participant.vars['condition'] = rExp
+#     # randomize character prompt and save to player var
+#     expConditions = ['A', 'B']
+#     for p in players:
+#         rExp = random.choice(expConditions)
+#         p.condition = rExp
+#         p.participant.vars['condition'] = rExp
 
-        # set prompt based on condition
-        if rExp == 'A':
-            p.msg = json.dumps([{"role": "system", "content": C.CHARACTER_PROMPT_A}])
-        else:
-            p.msg = json.dumps([{"role": "system", "content": C.CHARACTER_PROMPT_B}])
+#         # set prompt based on condition
+#         if rExp == 'A':
+#             p.msg = json.dumps([{"role": "system", "content": C.CHARACTER_PROMPT_A}])
+#         else:
+#             p.msg = json.dumps([{"role": "system", "content": C.CHARACTER_PROMPT_B}])
 
 
 class Group(BaseGroup):
@@ -124,7 +119,7 @@ def custom_export(players):
 
 # openAI chat gpt key 
 OPENAI_API_KEY = environ.get('OPENAI_API_KEY')
-OPENAI_API_KEY = environ.get("ChatAnyWhere_API")
+OPENAI_API_KEY = environ.get("CHATANYWHERE_API_KEY")
 
 # function to run messages
 def runGPT(inputMessage):
@@ -141,6 +136,11 @@ def runGPT(inputMessage):
 
 
 # PAGES
+class pairingSuc(Page):
+    @staticmethod
+    def is_displayed(player: Player):
+        return player.participant.partnership == 'HMC'
+
 class chatEmo(Page):
     form_model = 'player'
     form_fields = ['chatLog']  # May need to define another field to store messages in the second time conversation
@@ -148,7 +148,8 @@ class chatEmo(Page):
 
     @staticmethod
     def js_vars(player: Player):
-        return dict(my_id=player.id_in_group, 
+        return dict(my_id=player.id_in_group,
+                    my_code=player.participant.code,  # participant code (exclusive)
                     my_nickname=player.participant.nickname,
                     my_avatar=player.participant.avatar, 
                 )
@@ -156,8 +157,9 @@ class chatEmo(Page):
     @staticmethod
     def live_method(player: Player, data):
         
-        # start GPT with prompt based on randomized condition
-  
+        # start GPT with emotional task prompt
+        player.msg = json.dumps([{"role": "system", "content": C.CHARACTER_PROMPT_A}])
+
         # load msg
         messages = json.loads(player.msg)
 
@@ -170,7 +172,7 @@ class chatEmo(Page):
 
             # append messages and run chat gpt function
             messages.append(inputMsg)
-            t = random.uniform(0.5, 3)
+            t = random.uniform(0, 2)
             time.sleep(t)  # sleep for 0.5-3 seconds
             output = runGPT(messages)
             
@@ -207,7 +209,8 @@ class chatFun(Page):
 
     @staticmethod
     def js_vars(player: Player):
-        return dict(my_id=player.id_in_group, 
+        return dict(my_id=player.id_in_group,
+                    my_code=player.participant.code,  # participant code (exclusive)
                     my_nickname=player.participant.nickname,
                     my_avatar=player.participant.avatar,
                 )
@@ -215,8 +218,9 @@ class chatFun(Page):
     @staticmethod
     def live_method(player: Player, data):
         
-        # start GPT with prompt based on randomized condition
-  
+        # start GPT with functional task prompt
+        player.msg = json.dumps([{"role": "system", "content": C.CHARACTER_PROMPT_B}])
+
         # load msg
         messages = json.loads(player.msg)
 
@@ -259,14 +263,46 @@ class chatFun(Page):
             return upcoming_apps[0]  # Or return a hardcoded string, i.e., "task2" (as long as that string is in upcoming_apps)
 
 
+# WaitPage Messages
+# chatInstruct_emo_AI
+body_textA = '''On the next page, you will be directed to interact with <span style="color:red; font-weight: bold">an AI chatbot</span>.<br><br>
+
+We encourage you to share any difficulties you have encountered.<br><br>
+
+Feel free to engage in multiple rounds of conversation until you feel ready to conclude the interaction.<br><br>
+
+Please wait your cyberpartner to begin!<br><br>'''
+
+# chatInstruct_fun_AI
+body_textB = '''On the next page, you will interact with an <span style="color:red; font-weight:bold">AI chatbot</span> to brainstorm <span style="color:red; font-weight:bold">as many unique uses for a cardboard box as possible</span>. Each use must be distinct—no repetitions.<br><br>
+
+You will be competing against other survey participants, with the current high score held by Alex.<br><br>
+
+Feel free to engage in multiple rounds of conversation until you're ready to surpass Alex's high score.<br><br>
+
+Please wait your cyberpartner to begin!<br><br>'''
+
+
 class MyWaitPage(WaitPage):
     group_by_arrival_time = True
+    template_name = 'chatHMC/MyWaitPage.html'
     # title_text = "Waiting..."
-    # body_text = "Waiting for other participants to join..."
-    template_name = 'global/WaitPage.html'
-    timeout_seconds = 5
+    timeout_seconds = 7
     form_model = 'player'
     form_fields = ['HMC']
+
+    @staticmethod
+    def vars_for_template(player:Player):
+        if player.participant.taskType == 'emotionTask' and player.participant.partnership == 'HMC':
+            return dict(body_text=body_textA)
+        elif player.participant.taskType == 'functionTask' and player.participant.partnership == 'HMC':
+            return dict(body_text=body_textB)
+        else:
+            pass
+    
+    @staticmethod
+    def is_displayed(player):
+        return player.participant.partnership == 'HMC'
 
     @staticmethod
     def before_next_page(player, timeout_happened):
@@ -281,7 +317,7 @@ def waiting_too_long(player):
 
     import time
     # assumes you set wait_page_arrival in PARTICIPANT_FIELDS.
-    return time.time() - participant.wait_page_arrival > 5
+    return time.time() - participant.wait_page_arrival > 7
 
 
 def group_by_arrival_time_method(subsession, waiting_players):
@@ -294,7 +330,8 @@ def group_by_arrival_time_method(subsession, waiting_players):
 
 
 page_sequence = [
-    # MyWaitPage,
+    MyWaitPage,
+    pairingSuc,
     chatEmo,
     chatFun
 ]

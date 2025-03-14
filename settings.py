@@ -5,8 +5,8 @@ SESSION_CONFIGS = [
     dict(
         name='HMCvsHHC',
         app_sequence=['Introduction', 'task1', 'chatHHC', 'chatHMC', 
-                      'task2', 'chatHHC_2r', 'chatHMC_backup', 'survey', 'payment_info'], 
-        num_demo_participants=100,
+                      'chatHHC_2r', 'chatHMC_backup', 'survey', 'payment_info'], 
+        num_demo_participants=16,
     ),
 ]
 
@@ -19,7 +19,7 @@ SESSION_CONFIG_DEFAULTS = dict(
     real_world_currency_per_point=1.00, participation_fee=0.5, doc=""
 )
 
-PARTICIPANT_FIELDS = ["wait_page_arrival", "avatar", "nickname", "taskType", "partnership", "partnerLabel"]
+PARTICIPANT_FIELDS = ["wait_page_arrival", "avatar", "nickname", "taskType", "partnership", "partnerLabel", "finished"]
 SESSION_FIELDS = []
 
 # ISO-639 code

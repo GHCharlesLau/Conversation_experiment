@@ -57,9 +57,9 @@
                 chat_messages.scrollIntoView({ behavior: 'smooth', block: 'end', inline: 'start' })
     
                 // append chat log
-                logChat('Participant', text)
-                
+                logChat(js_vars.my_code, text)
             }
+            
             chat_input.value = '';
             
         }
@@ -92,22 +92,22 @@
 
 {{ block content }}
    <div class="container">
-        <div class="left">
+        <div class="topPart">
             <!-- <h2>Chat Instruction</h2><br> -->
             <span style="color:black; font-size: 15px;">
-                you are interacting with an <span style="color:red; font-weight:bold">AI chatbot</span> to brainstorm <span style="color:red; font-weight:bold">as many unique uses for a cardboard box as possible</span>. Each use must be distinct—no repetitions.<br><br>
+                you are interacting with an <span style="color:red; font-weight:bold">AI chatbot</span> to brainstorm <span style="color:red; font-weight:bold">as many unique uses for a cardboard box as possible</span>. Each use must be distinct—no repetitions.<br>
 
-                You will be competing against other survey participants, with the current high score held by Alex.<br><br>
+                You will be competing against other survey participants, with the current high score held by Alex.<br>
 
-                Feel free to engage in multiple rounds of conversation until you're ready to surpass Alex's high score.<br><br>
+                Feel free to engage in multiple rounds of conversation until you're ready to surpass Alex's high score.<br>
 
-                Now, let's get started!<br><br>
+                Now, let's get started!<br>
 
                 <!-- Type <span style="color:red; font-weight: bold;">“Hello”</span> to start your discussion. -->
             </span>
         </div>
 
-        <div class="right">
+        <div class="downPart">
             <!-- div displaying chat messages -->
             <div class="textBox">
                 <div id="chat_messages">
@@ -124,14 +124,13 @@
             
             <!-- hidden input to save chat log -->
             <input type='hidden' name='chatLog' value='' id='id_chatLog'/>
-            <br><br>
 
             <!-- oTree timer -->
             <p align="center">
-                Page will auto-advance in:
+                <!-- Page will auto-advance in:
                 <span style="color:red; font-weight: bold">
                     <span class="otree-timer__time-left"></span>
-                </span>
+                </span> -->
                 <br>
             <button class="btn btn-primary btn-large">
                 Next Page

@@ -33,6 +33,10 @@ class emotionTask(Page):
     @staticmethod
     def is_displayed(player: Player):
         return player.participant.taskType == 'emotionTask'
+    
+    @staticmethod
+    def before_next_page(player: Player, timeout_happened):  # record the timestamp when the participant arrives at the wait page
+        player.participant.wait_page_arrival = time.time()
     # pass
 
 class functionTask(Page):
@@ -42,6 +46,10 @@ class functionTask(Page):
     @staticmethod
     def is_displayed(player: Player):
         return player.participant.taskType == 'functionTask'
+    
+    @staticmethod
+    def before_next_page(player: Player, timeout_happened):  # record the timestamp when the participant arrives at the wait page
+        player.participant.wait_page_arrival = time.time()
     # pass
 
 
@@ -112,4 +120,11 @@ class chatInstruct_fun_human(Page):
             return "chatHHC"  # Or return a hardcoded string (as long as that string is in upcoming_apps)
 
 
-page_sequence = [emotionTask, functionTask, chatInstruct_emo_AI, chatInstruct_emo_human, chatInstruct_fun_AI, chatInstruct_fun_human]
+page_sequence = [
+    emotionTask, 
+    functionTask, 
+    # chatInstruct_emo_AI, 
+    # chatInstruct_emo_human, 
+    # chatInstruct_fun_AI, 
+    # chatInstruct_fun_human
+    ]
