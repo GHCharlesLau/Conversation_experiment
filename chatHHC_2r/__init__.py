@@ -1,4 +1,5 @@
 from otree.api import *
+import json
 
 
 doc = """
@@ -139,31 +140,12 @@ class chatFun(Page):
 # WaitPage Messages
 # chatInstruct_emo_human
 body_textA = '''
-<p>1. You will be paired with <span style="color:red; font-weight:bold">nother participant</span> in this survey. If your partner asks who you are, say that you are also a participant in this survey.
-<span style="color:red; font-weight:bold">Your task remains the same:</span> share any emotional problems you've had or encourage the other participant to talk about their recent worries or concerns. 
-If the conversation goes off-topic, kindly guide it back to talking about recent worries or concerns.</p>
-
-<p>2. It is recommended that the conversation consists of 5 to 15 rounds.</p>
-
-<p>3. Always use a friendly tone.</p>
-
-<p>4. Please reply in English.</p>
-
+<p>Please wait for your partner to arrive.</p>
 '''
 
 # chatInstruct_fun_human
 body_textB = '''
-<p>1. You will be paired with <span style="color:red; font-weight:bold">another participant</span> in this survey to form a team and compete against others. If your partner asks who you are, say that you are also a participant in this survey.
-<span style="color:red; font-weight:bold">Your task remains the same:</span> to work together to come up with as many unique and creative uses for a cardboard box as possible. Each idea should be different—no repeats. You and your partner are a team competing against other teams. Right now, Alex’s team holds the high score.
-
-<p>2. You can lead the conversation or gently encourage your partner to share ideas.
-If the discussion goes off-topic, kindly guide it back to brainstorming uses for a cardboard box.</p>
-
-<p>3. It is recommended that the conversation consists of 5 to 15 rounds.</p>
-
-<p>4. Always use a friendly tone.</p>
-
-<p>5. Please reply in English.</p>
+<p>Please wait for your partner to arrive.</p>
 '''
 
 # Setting a WaitPage to group_by_arrival_time=True
@@ -223,10 +205,33 @@ def group_by_arrival_time_method(subsession, waiting_players):
 
     if len(waiting_players) >= 2:
         return waiting_players[:2]
+    else:
+        pass
     for player in waiting_players:
         if waiting_too_long(player):
+            player.HHC_2r = False  # If timeout happened, the subject should be assigned to a chat room with a bot.
             # make a single-player group.
             return [player]
+
+
+# custom export of chatLog
+def custom_export(players):
+    # header row
+    yield ['session_code', 'participant_code', 'nickname', 'taskType', 'partnership', 'sender', 'text', 'timestamp']
+    for p in players:
+        participant = p.participant
+        session = p.session
+
+        # expand chatLog
+        log = p.field_maybe_none('chatLog')
+        if log:    
+            json_log = json.loads(log)
+            print(json_log)
+            for r in json_log:
+                sndr = r['sender']
+                txt = r['text']
+                time = r['timestamp']
+                yield [session.code, participant.code, participant.vars.get('nickname', None), participant.vars.get('taskType', None), participant.vars.get('partnership', None), sndr, txt, time]
 
 
 page_sequence = [MyWaitPage, pairingSuc, chatEmo, chatFun]

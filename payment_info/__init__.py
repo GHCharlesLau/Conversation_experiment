@@ -1,4 +1,5 @@
 from otree.api import *
+import random
 
 
 
@@ -23,16 +24,23 @@ class Group(BaseGroup):
 
 
 class Player(BasePlayer):
+    finishCode = models.IntegerField()
     pass
 
 
 # FUNCTIONS
 # PAGES
 class PaymentInfo(Page):
+    form_model = 'player'
+    form_fields = ['finishCode']
+
     @staticmethod
     def vars_for_template(player: Player):
         participant = player.participant
-        return dict(redemption_code=participant.label or participant.code)
+        player.finishCode = random.randint(100000, 999999)
+        return dict(redemption_code=participant.label or participant.code,
+                    finishCode=player.finishCode
+                    )
     
     @staticmethod
     def before_next_page(player: Player, timeout_happened):

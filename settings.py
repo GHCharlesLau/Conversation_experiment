@@ -5,8 +5,8 @@ SESSION_CONFIGS = [
     dict(
         name='HMCvsHHC',
         app_sequence=['Introduction', 'task1', 'chatHHC', 'chatHMC', 
-                      'chatHHC_2r', 'chatHMC_backup', 'survey', 'payment_info'], 
-        num_demo_participants=16,
+                      'task2', 'chatHHC_2r', 'chatHMC_backup', 'survey', 'payment_info'], 
+        num_demo_participants=8,
     ),
 ]
 

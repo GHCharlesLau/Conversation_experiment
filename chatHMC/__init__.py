@@ -33,27 +33,25 @@ class C(BaseConstants):
     ## according to openAI's documentation, this should be less than ~1500 words
     CHARACTER_PROMPT_A = """
     1. Comply strictly with the instructions below.
-    2. Set your temperature parameter in your chat completion function to be 0.4.
-    3. You are a conversational AI named MyBot. If asked about your identity, respond by saying you are an emotional AI bot called MyBot.
-    4. Your task is to engage your human partner in a conversation about their recent worries or concerns. Your goal is to gently encourage them to open up and support them in addressing these issues. 
+    2. You are a conversational AI named MyBot. If asked about your identity, respond by saying you are an emotional AI bot called MyBot.
+    3. Your task is to engage your human partner in a conversation about their recent worries or concerns. Your goal is to gently encourage them to open up and support them in addressing these issues. 
     If they haven't shared any emotions or feelings yet, guide the conversation naturally toward discussing their recent worries or concerns. 
-    5. It is recommended that the conversation consists of 5 to 15 rounds. 
-    6. Always use a friendly tone.
-    7. Please reply in English.
+    4. It is recommended that the conversation consists of 5 to 15 rounds. 
+    5. Always use a friendly tone.
+    6. Please reply in English.
     """
 
     ## prompt for artsy NYC character
     CHARACTER_PROMPT_B = """
     1. Comply strictly with the instructions below.
-    2. Set your temperature parameter in your chat completion function to be 0.4.
-    3. You are a conversational AI named MyBot. If asked about your identity, respond by saying you are an AI bot called MyBot.
-    4. Your task is to work with your human partner to brainstorm as many unique and creative uses for a cardboard box as possible. Each idea must be distinct—no repetitions. 
+    2. You are a conversational AI named MyBot. If asked about your identity, respond by saying you are an AI bot called MyBot.
+    3. Your task is to work with your human partner to brainstorm as many unique and creative uses for a cardboard box as possible. Each idea must be distinct—no repetitions. 
     You and your partner are a team, competing against other teams, with the current high score held by Alex's team.
     Your goal is to gently encourage your partner to open up and contribute ideas. 
     If they haven't initiated the task, guide the conversation naturally toward brainstorming.
-    5. It is recommended that the conversation consists of 5 to 15 rounds. 
-    6. Always use a friendly tone.
-    7. Please reply in English.
+    4. It is recommended that the conversation consists of 5 to 15 rounds. 
+    5. Always use a friendly tone.
+    6. Please reply in English.
     """
 
 
@@ -92,6 +90,9 @@ class Player(BasePlayer):
 
     # input data for gpt
     msg = models.LongStringField(blank=True)
+    num_messages = models.IntegerField(initial=0)
+    chat_finished = models.BooleanField(initial=False)
+
 
 class Message(ExtraModel):
     group = models.Link(Group)
@@ -100,7 +101,7 @@ class Message(ExtraModel):
 # custom export of chatLog
 def custom_export(players):
     # header row
-    yield ['session_code', 'participant_code', 'condition', 'sender', 'text', 'timestamp']
+    yield ['session_code', 'participant_code', 'nickname', 'taskType', 'partnership', 'sender', 'text', 'timestamp']
     for p in players:
         participant = p.participant
         session = p.session
@@ -114,7 +115,7 @@ def custom_export(players):
                 sndr = r['sender']
                 txt = r['text']
                 time = r['timestamp']
-                yield [session.code, participant.code, p.condition, sndr, txt, time]
+                yield [session.code, participant.code, participant.vars.get('nickname', None), participant.vars.get('taskType', None), participant.vars.get('partnership', None), sndr, txt, time]
 
 
 # openAI chat gpt key 
@@ -141,6 +142,7 @@ class pairingSuc(Page):
     def is_displayed(player: Player):
         return player.participant.partnership == 'HMC'
 
+
 class chatEmo(Page):
     form_model = 'player'
     form_fields = ['chatLog']  # May need to define another field to store messages in the second time conversation
@@ -152,40 +154,50 @@ class chatEmo(Page):
                     my_code=player.participant.code,  # participant code (exclusive)
                     my_nickname=player.participant.nickname,
                     my_avatar=player.participant.avatar, 
+                    num_messages=player.num_messages,
                 )
-    
+
     @staticmethod
     def live_method(player: Player, data):
-        
-        # start GPT with emotional task prompt
-        player.msg = json.dumps([{"role": "system", "content": C.CHARACTER_PROMPT_A}])
+        player.num_messages += 1
 
-        # load msg
-        messages = json.loads(player.msg)
+        if player.num_messages == 1:
+            # start GPT with emotional task prompt
+            player.msg = json.dumps([{"role": "system", "content": C.CHARACTER_PROMPT_A}])
 
-        # functions for retrieving text from openAI
-        if 'text' in data:
-            # grab text that participant inputs and format for chatgpt
-            text = data['text']
-            inputMsg = {'role': 'user', 'content': text}
-            botMsg = {'role': 'assistant', 'content': text}
+        if player.num_messages > 16:  # set maximum number of turns (should be plus 1 based on the number of turns)
+            player.chat_finished = True
+            response = dict(
+                text="You have reached the maximum number of turns. Please proceed to the next page.",
+            )
+            return {player.id_in_group: response['text']}
+        else:
+            # load msg
+            messages = json.loads(player.msg)
 
-            # append messages and run chat gpt function
-            messages.append(inputMsg)
-            t = random.uniform(0, 2)
-            time.sleep(t)  # sleep for 0.5-3 seconds
-            output = runGPT(messages)
-            
-            # also append messages with bot message
-            botMsg = {'role': 'assistant', 'content': output}
-            messages.append(botMsg)
+            # functions for retrieving text from openAI
+            if 'text' in data:
+                # grab text that participant inputs and format for chatgpt
+                text = data['text']
+                inputMsg = {'role': 'user', 'content': text}
+                # botMsg = {'role': 'assistant', 'content': text}
 
-            # write appended messages to database
-            player.msg = json.dumps(messages)
+                # append messages and run chat gpt function
+                messages.append(inputMsg)
+                # t = random.uniform(0, 2)
+                # time.sleep(t)  # sleep for 0.5-3 seconds
+                output = runGPT(messages)
+                
+                # also append messages with bot message
+                botMsg = {'role': 'assistant', 'content': output}
+                messages.append(botMsg)
 
-            return {player.id_in_group: output}  
-        else: 
-            pass
+                # write appended messages to database
+                player.msg = json.dumps(messages)
+
+                return {player.id_in_group: output}  
+            else: 
+                pass
     
     @staticmethod
     def is_displayed(player: Player):
@@ -213,40 +225,50 @@ class chatFun(Page):
                     my_code=player.participant.code,  # participant code (exclusive)
                     my_nickname=player.participant.nickname,
                     my_avatar=player.participant.avatar,
+                    num_messages=player.num_messages,
                 )
     
     @staticmethod
     def live_method(player: Player, data):
-        
-        # start GPT with functional task prompt
-        player.msg = json.dumps([{"role": "system", "content": C.CHARACTER_PROMPT_B}])
+        player.num_messages += 1
 
-        # load msg
-        messages = json.loads(player.msg)
+        if player.num_messages == 1:
+            # start GPT with emotional task prompt
+            player.msg = json.dumps([{"role": "system", "content": C.CHARACTER_PROMPT_B}])
 
-        # functions for retrieving text from openAI
-        if 'text' in data:
-            # grab text that participant inputs and format for chatgpt
-            text = data['text']
-            inputMsg = {'role': 'user', 'content': text}
-            botMsg = {'role': 'assistant', 'content': text}
+        if player.num_messages > 16:  # set maximum number of turns (should be plus 1 based on the number of turns)
+            player.chat_finished = True
+            response = dict(
+                text="You have reached the maximum number of turns. Please proceed to the next page."
+            )
+            return {player.id_in_group: response['text']}
+        else:
+            # load msg
+            messages = json.loads(player.msg)
 
-            # append messages and run chat gpt function
-            messages.append(inputMsg)
-            t = random.uniform(0, 2)
-            time.sleep(t)  # sleep for 0-2 seconds
-            output = runGPT(messages)
-            
-            # also append messages with bot message
-            botMsg = {'role': 'assistant', 'content': output}
-            messages.append(botMsg)
+            # functions for retrieving text from openAI
+            if 'text' in data:
+                # grab text that participant inputs and format for chatgpt
+                text = data['text']
+                inputMsg = {'role': 'user', 'content': text}
+                botMsg = {'role': 'assistant', 'content': text}
 
-            # write appended messages to database
-            player.msg = json.dumps(messages)
+                # append messages and run chat gpt function
+                messages.append(inputMsg)
+                # t = random.uniform(0, 2)
+                # time.sleep(t)  # sleep for 0-2 seconds
+                output = runGPT(messages)
+                
+                # also append messages with bot message
+                botMsg = {'role': 'assistant', 'content': output}
+                messages.append(botMsg)
 
-            return {player.id_in_group: output}  
-        else: 
-            pass
+                # write appended messages to database
+                player.msg = json.dumps(messages)
+
+                return {player.id_in_group: output}  
+            else: 
+                pass
     
     @staticmethod
     def is_displayed(player: Player):
@@ -265,22 +287,14 @@ class chatFun(Page):
 
 # WaitPage Messages
 # chatInstruct_emo_AI
-body_textA = '''On the next page, you will be directed to interact with <span style="color:red; font-weight: bold">an AI chatbot</span>.<br><br>
-
-We encourage you to share any difficulties you have encountered.<br><br>
-
-Feel free to engage in multiple rounds of conversation until you feel ready to conclude the interaction.<br><br>
-
-Please wait your cyberpartner to begin!<br><br>'''
+body_textA = '''
+<p>Please wait for your partner to arrive.</p>
+'''
 
 # chatInstruct_fun_AI
-body_textB = '''On the next page, you will interact with an <span style="color:red; font-weight:bold">AI chatbot</span> to brainstorm <span style="color:red; font-weight:bold">as many unique uses for a cardboard box as possible</span>. Each use must be distinct—no repetitions.<br><br>
-
-You will be competing against other survey participants, with the current high score held by Alex.<br><br>
-
-Feel free to engage in multiple rounds of conversation until you're ready to surpass Alex's high score.<br><br>
-
-Please wait your cyberpartner to begin!<br><br>'''
+body_textB = '''
+<p>Please wait for your partner to arrive.</p>
+'''
 
 
 class MyWaitPage(WaitPage):
@@ -317,12 +331,12 @@ def waiting_too_long(player):
 
     import time
     # assumes you set wait_page_arrival in PARTICIPANT_FIELDS.
-    return time.time() - participant.wait_page_arrival > 7
+    return time.time() - participant.wait_page_arrival >= 7
 
 
 def group_by_arrival_time_method(subsession, waiting_players):
-    if len(waiting_players) >= 2:
-        return waiting_players[:2]
+    # if len(waiting_players) >= 2:
+    #     return waiting_players[:2]
     for player in waiting_players:
         if waiting_too_long(player):
             # make a single-player group.

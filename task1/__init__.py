@@ -123,8 +123,8 @@ class chatInstruct_fun_human(Page):
 page_sequence = [
     emotionTask, 
     functionTask, 
-    # chatInstruct_emo_AI, 
-    # chatInstruct_emo_human, 
-    # chatInstruct_fun_AI, 
-    # chatInstruct_fun_human
+    chatInstruct_emo_AI, 
+    chatInstruct_emo_human, 
+    chatInstruct_fun_AI, 
+    chatInstruct_fun_human
     ]

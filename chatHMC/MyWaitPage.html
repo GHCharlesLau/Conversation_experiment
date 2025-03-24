@@ -1,6 +1,17 @@
 {{ extends 'otree/WaitPage.html' }}
 {{ block title }}Please wait...{{ endblock }}
 
+{{ block scripts }}
+<script>
+        window.onload = function() {
+            // Refresh every single second (it works!)
+            setInterval(function() {
+                location.reload();
+            }, 1000); 
+        };
+</script>
+{{ endblock }}
+
 {{ block content }}
     {{ body_text }}
 {{ endblock }}

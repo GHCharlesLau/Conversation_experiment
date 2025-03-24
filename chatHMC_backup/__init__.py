@@ -61,7 +61,6 @@ class C(BaseConstants):
     """
 
 
-
 class Subsession(BaseSubsession):
     pass
 
@@ -119,7 +118,6 @@ def custom_export(players):
                 yield [session.code, participant.code, p.condition, sndr, txt, time]
 
 
-
 # openAI chat gpt key 
 OPENAI_API_KEY = environ.get('OPENAI_API_KEY')
 OPENAI_API_KEY = environ.get("CHATANYWHERE_API_KEY")
@@ -173,8 +171,8 @@ class chatEmo(Page):
 
             # append messages and run chat gpt function
             messages.append(inputMsg)
-            t = random.uniform(0.5, 3)
-            time.sleep(t)  # sleep for 0.5-3 seconds
+            # t = random.uniform(0.5, 3)
+            # time.sleep(t)  # sleep for 0.5-3 seconds
             output = runGPT(messages)
             
             # also append messages with bot message

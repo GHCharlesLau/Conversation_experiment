@@ -1,11 +1,18 @@
-{{ block title }}Thank you{{ endblock }}
+{{ block title }}Thank you!{{ endblock }}
 {{ block content }}
 
     <div class="panel panel-default" style="margin-bottom:10px">
         <div class="panel-body">
             <p>Thank you for taking part in this study.</p>
+
+            <p style="font-weight: bold">Please copy the code below and return to Prolific to redeem your payment.</p>
+
+            <p style="font-weight: bold; text-indent: 25%; font-size: 25px">{{ finishCode }}</p>
+
             <p>The purpose of this research was to explore how conversational styles vary with different partners and tasks. Some details were not shared at the beginning to avoid influencing your responses.</p>
+            
             <p>All information you provided will be kept confidential and used solely for research purposes.</p>
+            
             <p>Thank you again for your participation!</p>
         </div>
     </div>
