@@ -30,11 +30,23 @@
 
 {{ block content }}
 <div class="container">
-    <!-- <p>Please choose your avatar</p> -->
-    {{ formfields }}
+    <p>Please choose your avatar:</p>
+    {{ for image in image_data }}
+        <label style="text-align: center">
+            <img src="{{ static image.path }}" width="200px">
+            <br>
+            <input type="radio" name="avatar" value="{{ image.path }}" class="persist">
+        </label>
+    {{ endfor }}
+    {{ formfield_errors 'avatar' }}
+    
+    <br><br>
+    {{ formfield 'nickname' }}
 
 <br><br>
     {{ next_button }}
 </div>
+
+<script src="{{ static 'persist-raw.js' }}"></script>
 
 {{ endblock }}

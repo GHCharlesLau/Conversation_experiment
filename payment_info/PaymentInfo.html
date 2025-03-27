@@ -5,9 +5,8 @@
         <div class="panel-body">
             <p>Thank you for taking part in this study.</p>
 
-            <p style="font-weight: bold">Please copy the code below and return to Prolific to redeem your payment.</p>
-
-            <p style="font-weight: bold; text-indent: 25%; font-size: 25px">{{ finishCode }}</p>
+            {{ formfield "redemptionCode" label="<b>Please input your Prolific ID below and return to Prolific to redeem your payment.</b>" }}
+            <br>
 
             <p>The purpose of this research was to explore how conversational styles vary with different partners and tasks. Some details were not shared at the beginning to avoid influencing your responses.</p>
             
@@ -16,6 +15,9 @@
             <p>Thank you again for your participation!</p>
         </div>
     </div>
+    <br>
+
+    <button class="btn btn-primary" type="submit">Finish!</button>
 
 {{ endblock }}
 

@@ -70,8 +70,16 @@ class chatEmo(Page):
                     my_code=player.participant.code,
                     my_nickname=player.participant.nickname,
                     my_avatar=player.participant.avatar,
-                    alther_code=alter.participant.code,
+                    alter_code=alter.participant.code,
                     alter_nickname=alter.participant.nickname,
+                    alter_avatar=alter.participant.avatar,
+                    )
+
+    @staticmethod
+    def vars_for_template(player: Player):
+        alter = player.get_others_in_group()[0]
+        return dict(
+                    my_avatar=player.participant.avatar,
                     alter_avatar=alter.participant.avatar,
                     )
 
@@ -105,6 +113,14 @@ class chatFun(Page):
                     my_avatar=player.participant.avatar,
                     alter_code=alter.participant.code,
                     alter_nickname=alter.participant.nickname,
+                    alter_avatar=alter.participant.avatar,
+                    )
+
+    @staticmethod
+    def vars_for_template(player: Player):
+        alter = player.get_others_in_group()[0]
+        return dict(
+                    my_avatar=player.participant.avatar,
                     alter_avatar=alter.participant.avatar,
                     )
 
@@ -224,4 +240,4 @@ def custom_export(players):
                 yield [session.code, participant.code, participant.vars.get('nickname', None), participant.vars.get('taskType', None), participant.vars.get('partnership', None), sndr, txt, time]
 
 
-page_sequence = [MyWaitPage, pairingSuc,chatEmo, chatFun]
+page_sequence = [MyWaitPage, pairingSuc, chatEmo, chatFun]

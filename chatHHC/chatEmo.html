@@ -36,7 +36,7 @@
                 <button type="button" onclick="sendMsg()">Send</button>
             </div>
         </div>
-        <br><br>
+        <br>
 
         <!-- hidden input to save chat log -->
         <input type='hidden' name='chatLog' value='' id='id_chatLog'/>
@@ -48,10 +48,14 @@
             <span style="color:red; font-weight: bold">
                 <span class="otree-timer__time-left"></span>
             </span> -->
-        <button class="btn btn-primary btn-large">
+        <button class="btn btn-primary btn-large" id="next_button">
             Next Page
         </button>
         </p>
+
+        <div class="exit-notification" id="exitNotification">
+            Your partner has left. Please proceed to the next page.
+        </div>
     </div>
 </div>
 {{ endblock }}
@@ -97,7 +101,7 @@
             liveSend({'text': text});
             let msgSpan = document.createElement('span');
             msgSpan.textContent = text;
-            let sender = `${js_vars.my_nickname}${js_vars.my_avatar}`;
+            let sender = `${js_vars.my_nickname} <img src="{{ static my_avatar }}" width="45px" />`;
             let row = `<div><div class="senderAvatar">${sender}</div><div class="msg selfText">${msgSpan.innerHTML}</div></div><br>`;
             chat_messages.insertAdjacentHTML('beforeend', row); 
             
@@ -114,17 +118,21 @@
 
     // function for live receiving from server
     function liveRecv(messages) {
-        for (let msg of messages) {
-            // Only display messages sent by the other player
-            if (msg.sender != js_vars.my_id) {
-                let msgSpan = document.createElement('span');
-                msgSpan.textContent = msg.text;
-                let sender = `${js_vars.alter_avatar}${js_vars.alter_nickname}`;
-                let row = `<div><div class="receiverAvatar">${sender}</div><div class="msg botText">${msgSpan.innerHTML}</div></div><br>`;
-                chat_messages.insertAdjacentHTML('beforeend', row);
+        if (messages.text === 'user_exit') {
+            showExitNotification();
+            } else {
+            for (let msg of messages) {
+                // Only display messages sent by the other player
+                if (msg.sender != js_vars.my_id) {
+                    let msgSpan = document.createElement('span');
+                    msgSpan.textContent = msg.text;
+                    let sender = `<img src="{{ static alter_avatar }}" width="45px" /> ${js_vars.alter_nickname}`;
+                    let row = `<div><div class="receiverAvatar">${sender}</div><div class="msg botText">${msgSpan.innerHTML}</div></div><br>`;
+                    chat_messages.insertAdjacentHTML('beforeend', row);
 
-                // append chat log
-                logChat(js_vars.alter_code, msg.text)
+                    // append chat log
+                    logChat(js_vars.alter_code, msg.text)
+                }
             }
         }
 
@@ -135,6 +143,24 @@
     document.addEventListener("DOMContentLoaded", function (event) {
         liveSend({});
     });
+
+
+    // User leaving
+    document.getElementById('next_button').addEventListener('click', function() {
+        liveSend({'text': 'user_exit'})
+    });
+    
+    // Notification for partner leaving
+    function showExitNotification() {
+        const notification = document.getElementById('exitNotification');
+        // Show notification
+        notification.style.display = 'block';
+        
+        // Hide after 5 seconds
+        setTimeout(() => {
+            notification.style.display = 'none';
+        }, 5000);
+        }
 
 </script>
 {{ endblock }}

@@ -36,12 +36,17 @@ class Player(BasePlayer):
         widget=widgets.RadioSelectHorizontal,
     )
     avatar = models.StringField(
-        label='Please choose your avatar',
-        choices=["👩‍🦰", "👨‍🦰", "👩‍🦱", "👨‍🦱"],
-        widget=widgets.RadioSelectHorizontal
+        label='Please choose your avatar:',
+        # choices=["👩‍🦰", "👨‍🦰", "👩‍🦱", "👨‍🦱"],
+        # choices=["<img src='{{ static 'avatar/Woman1.jpg' }}'/>", 
+        #          "<img src='{{ static 'avatar/Man1.jpg' }}'/>",
+        #          "<img src='{{ static 'avatar/Woman2.jpg' }}'/>",
+        #          "<img src='{{ static 'avatar/Man2.jpg' }}'/>",
+        #          ],
+        # widget=widgets.RadioSelectHorizontal
     )
     nickname = models.StringField(
-        label='Please enter your nickname',
+        label='Please enter your nickname:',
     )
     taskType = models.StringField(
         choices=['emotionTask', 'functionTask'],
@@ -65,6 +70,8 @@ class ConsentPage(Page):
         if player.agreement == False:
             return upcoming_apps[-1]
 
+def make_image_data(image_names):
+    return [dict(name=name, path='avatar/{}'.format(name), index=i) for i, name in enumerate(image_names)]
 
 class WelcomePage(Page):
     form_model = 'player'
@@ -80,6 +87,16 @@ class WelcomePage(Page):
         player.participant.taskType = player.taskType
         player.participant.partnership = player.partnership
         player.participant.partnerLabel = player.partnerLabel
+
+    @staticmethod
+    def vars_for_template(player: Player):
+        image_names = [
+            'Woman1.png',
+            'Man1.png',
+            'Woman2.png',
+            'Man2.png',
+        ]
+        return dict(image_data=make_image_data(image_names))
 
 
 page_sequence = [ConsentPage, WelcomePage]

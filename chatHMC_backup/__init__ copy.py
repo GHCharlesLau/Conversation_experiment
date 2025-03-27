@@ -359,7 +359,7 @@ def group_by_arrival_time_method(subsession, waiting_players):
 
 
 page_sequence = [
-    MyWaitPage,
+    # MyWaitPage,
     pairingSuc,
     chatEmo,
     chatFun

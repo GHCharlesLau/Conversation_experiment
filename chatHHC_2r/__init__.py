@@ -77,6 +77,14 @@ class chatEmo(Page):
                     )
 
     @staticmethod
+    def vars_for_template(player: Player):
+        alter = player.get_others_in_group()[0]
+        return dict(
+                    my_avatar=player.participant.avatar,
+                    alter_avatar=alter.participant.avatar,
+                    )
+
+    @staticmethod
     def live_method(player: Player, data):
         my_id = player.id_in_group
         group = player.group
@@ -112,6 +120,14 @@ class chatFun(Page):
                     my_avatar=player.participant.avatar,
                     alter_code=alter.participant.code,
                     alter_nickname=alter.participant.nickname,
+                    alter_avatar=alter.participant.avatar,
+                    )
+
+    @staticmethod
+    def vars_for_template(player: Player):
+        alter = player.get_others_in_group()[0]
+        return dict(
+                    my_avatar=player.participant.avatar,
                     alter_avatar=alter.participant.avatar,
                     )
 
