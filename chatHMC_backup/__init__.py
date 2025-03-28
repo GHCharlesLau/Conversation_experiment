@@ -13,7 +13,7 @@ a chatGPT interface for oTree
 """
 
 class C(BaseConstants):
-    NAME_IN_URL = 'chat_B'
+    NAME_IN_URL = 'chat_Bback'
     PLAYERS_PER_GROUP = 2
     NUM_ROUNDS = 1
 
