@@ -52,10 +52,6 @@
             Next Page
         </button>
         </p>
-
-        <div class="exit-notification" id="exitNotification">
-            Your partner has left. Please proceed to the next page.
-        </div>
     </div>
 </div>
 {{ endblock }}
@@ -118,9 +114,18 @@
 
     // function for live receiving from server
     function liveRecv(messages) {
-        if (messages.text === 'user_exit') {
-            showExitNotification();
-            } else {
+        console.log("received:", messages);  
+        let text = messages.text;
+        // check if the chat is finished
+        if (text === "chat_exceeded") {
+            reminder = "Your chat is finished. Please click 'Next Page' to continue.";
+            showNotification(reminder);
+            // document.getElementById('form').submit();
+        } else if (text === "user_exited") {
+            reminder = "Your partner has left. Please click 'Next Page' to continue.";
+            showNotification(reminder);
+            // document.getElementById('form').submit();
+        } else {
             for (let msg of messages) {
                 // Only display messages sent by the other player
                 if (msg.sender != js_vars.my_id) {
@@ -132,9 +137,9 @@
 
                     // append chat log
                     logChat(js_vars.alter_code, msg.text)
-                }
-            }
-        }
+                };
+            };
+        };
 
         // scroll messages to bottom
         chat_messages.scrollIntoView({ behavior: 'smooth', block: 'end', inline: 'start' })
@@ -147,20 +152,26 @@
 
     // User leaving
     document.getElementById('next_button').addEventListener('click', function() {
-        liveSend({'text': 'user_exit'})
+        liveSend({'text': 'user_exited'})
     });
     
-    // Notification for partner leaving
-    function showExitNotification() {
-        const notification = document.getElementById('exitNotification');
-        // Show notification
-        notification.style.display = 'block';
+    // function for system notification
+    function showNotification(text) {
+        const chatBox = document.getElementById('chat_messages');
+        const notification = document.createElement('div');
+        notification.className = 'notification';
+        notification.textContent = text;
         
-        // Hide after 5 seconds
+        chatBox.appendChild(notification);
+        
+        // Remove notification after 7 seconds
         setTimeout(() => {
-            notification.style.display = 'none';
-        }, 5000);
-        }
+            notification.remove();
+        }, 100000);
+        
+        // Scroll to the bottom
+        chatBox.scrollTop = chatBox.scrollHeight;
+    };
 
 </script>
 {{ endblock }}

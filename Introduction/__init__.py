@@ -45,6 +45,9 @@ class Player(BasePlayer):
         #          ],
         # widget=widgets.RadioSelectHorizontal
     )
+    prolificID = models.StringField(
+        label='Please enter your prolific ID:',
+    )
     nickname = models.StringField(
         label='Please enter your nickname:',
     )
@@ -75,11 +78,12 @@ def make_image_data(image_names):
 
 class WelcomePage(Page):
     form_model = 'player'
-    form_fields = ['avatar', 'nickname']
+    form_fields = ['prolificID', 'avatar', 'nickname']
     
     @staticmethod
     def before_next_page(player: Player, timeout_happened):  # record the timestamp when the participant arrives at the wait page
         player.participant.wait_page_arrival = time.time()
+        player.participant.prolificID = player.prolificID
         player.participant.avatar = player.avatar
         player.participant.nickname = player.nickname
         print(f"The player's (idInGroup: {player.id_in_group}) nickname is {player.participant.nickname}")

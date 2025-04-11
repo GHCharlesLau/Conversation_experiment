@@ -176,9 +176,10 @@ class chatEmo(Page):
         if player.num_messages > 16:  # set maximum number of turns (should be plus 1 based on the number of turns)
             player.chat_finished = True
             response = dict(
-                text="You have reached the maximum number of turns. Please proceed to the next page.",
+                text="chat_exceeded",
             )
-            return {player.id_in_group: response['text']}
+            # return {player.id_in_group: response['text']}
+            return {0: response}
         else:
             # load msg
             messages = json.loads(player.msg)

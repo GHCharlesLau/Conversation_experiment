@@ -38,9 +38,9 @@ class PaymentInfo(Page):
     @staticmethod
     def vars_for_template(player: Player):
         participant = player.participant
-        # player.finishCode = random.randint(100000, 999999)
+        participant.redemptionCode = random.randint(100000, 999999)
         return dict(
-                    redemptionCode=player.field_maybe_none('redemptionCode'),
+                    redemptionCode=participant.redemptionCode,
                     finishCode=player.finishCode
                     )
     

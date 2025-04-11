@@ -31,6 +31,9 @@ class Player(BasePlayer):
     HHC = models.BooleanField(default=True)
     chatLog = models.LongStringField(blank=True)
 
+    num_messages = models.IntegerField(initial=0)
+    chat_finished = models.BooleanField(initial=False)
+
 
 class Message(ExtraModel):
     group = models.Link(Group)
@@ -85,13 +88,27 @@ class chatEmo(Page):
 
     @staticmethod
     def live_method(player: Player, data):
+        player.num_messages += 1
         my_id = player.id_in_group
         group = player.group
 
-        if 'text' in data:
-            text = data['text']
-            msg = Message.create(group=group, sender=player, text=text)
-            return {0: [to_dict(msg)]}
+        if data["text"] == "user_exited":
+            response = dict(
+                text="user_exited",
+            )
+            return {0: response}  # Broadcast to all players
+        elif player.num_messages > 16:  # set maximum number of turns (should be plus 1 based on the number of turns)
+            player.chat_finished = True
+            response = dict(
+                text="chat_exceeded",
+            )
+            # return {player.id_in_group: response['text']}
+            return {0: response}
+        else:
+            if 'text' in data:
+                text = data['text']
+                msg = Message.create(group=group, sender=player, text=text)
+                return {0: [to_dict(msg)]}
         return {my_id: [to_dict(msg) for msg in Message.filter(group=group)]}
     
     @staticmethod
@@ -126,13 +143,27 @@ class chatFun(Page):
 
     @staticmethod
     def live_method(player: Player, data):
+        player.num_messages += 1
         my_id = player.id_in_group
         group = player.group
 
-        if 'text' in data:
-            text = data['text']
-            msg = Message.create(group=group, sender=player, text=text)
-            return {0: [to_dict(msg)]}
+        if data["text"] == "user_exited":
+            response = dict(
+                text="user_exited",
+            )
+            return {0: response}  # Broadcast to all players
+        elif player.num_messages > 16:  # set maximum number of turns (should be plus 1 based on the number of turns)
+            player.chat_finished = True
+            response = dict(
+                text="chat_exceeded",
+            )
+            # return {player.id_in_group: response['text']}
+            return {0: response}
+        else:
+            if 'text' in data:
+                text = data['text']
+                msg = Message.create(group=group, sender=player, text=text)
+                return {0: [to_dict(msg)]}
         return {my_id: [to_dict(msg) for msg in Message.filter(group=group)]}
     
     @staticmethod

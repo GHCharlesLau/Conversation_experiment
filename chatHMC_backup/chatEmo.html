@@ -69,21 +69,48 @@
     
         // function for live receiving from server
         function liveRecv(data) {
-            let msgSpan = document.createElement('span');
-            msgSpan.textContent = data;
-            let row = `<div><div class="receiverAvatar"><img src="{{ static 'avatar/myBot.png' }}" width="45px" /> MyBot</div><div class="msg botText">${msgSpan.innerHTML}</div></div><br>`;
-            chat_messages.insertAdjacentHTML('beforeend', row);  
-            
-            // scroll messages to bottom
-            chat_messages.scrollIntoView({ behavior: 'smooth', block: 'end', inline: 'start' })
-            
-            // append chat log
-            logChat('Bot', data)
+            console.log("received:", data);  
+            let text = data.text;
+            // check if the chat is finished
+            if (text === "chat_exceeded") {
+                reminder = "Your chat is finished. Please click 'Next Page' to continue.";
+                showNotification(reminder);
+                // document.getElementById('form').submit();
+            } else {
+                let msgSpan = document.createElement('span');
+                msgSpan.textContent = data;
+                let row = `<div><div class="receiverAvatar"><img src="{{ static 'avatar/myBot.png' }}" width="45px" /> MyBot</div><div class="msg botText">${msgSpan.innerHTML}</div></div><br>`;
+                chat_messages.insertAdjacentHTML('beforeend', row);  
+                
+                // scroll messages to bottom
+                chat_messages.scrollIntoView({ behavior: 'smooth', block: 'end', inline: 'start' })
+                
+                // append chat log
+                logChat('Bot', data)
+            };
         };
     
         document.addEventListener("DOMContentLoaded", function (event) {
             liveSend({});
         });
+
+    // function for system notification
+    function showNotification(text) {
+        const chatBox = document.getElementById('chat_messages');
+        const notification = document.createElement('div');
+        notification.className = 'notification';
+        notification.textContent = text;
+        
+        chatBox.appendChild(notification);
+        
+        // Remove notification after 7 seconds
+        setTimeout(() => {
+            notification.remove();
+        }, 100000);
+        
+        // Scroll to the bottom
+        chatBox.scrollTop = chatBox.scrollHeight;
+    };
     
     </script>
 
