@@ -1,4 +1,4 @@
-{{ block title }}Survey_SocialPresenceTest{{ endblock }}
+{{ block title }}{{ endblock }}
 {{ block content }}
 
     <p >
@@ -12,7 +12,7 @@
 
     <!-- <p>
         Least &nbsp;
-        {{ for choice in form.SP_1 }}
+        {{ for choice in form.senA_1 }}
             {{ choice }}
         {{ endfor }}
         &nbsp; Most
@@ -20,9 +20,9 @@
 
     <!-- Single line of the scale. -->
     <!-- <tr>
-        <th>{{ form.SP_1.label }}</th>
+        <th>{{ form.senA_1.label }}</th>
         &nbsp; Completely Disagree
-        {{ for choice in form.SP_1 }}
+        {{ for choice in form.senA_1 }}
             <td>{{ choice }}</td>
         {{ endfor }}
         &nbsp; Completely Agree

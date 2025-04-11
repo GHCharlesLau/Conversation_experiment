@@ -30,6 +30,22 @@ class Player(BasePlayer):
     SP_3 = make_field('You are in the setting with an intelligent being.')
     SP_4 = make_field('An intelligent being is responding to you.')
 
+    # Sense of Agency
+    senA_1 = make_field('The conversational partner in the first round is capable of thought.')
+    senA_2 = make_field('The conversational partner in the first round is capable of planning.')
+    senA_3 = make_field('The conversational partner in the first round has the ability to solve problems.')
+    senA_4 = make_field('The conversational partner in the first round has its own personality.')
+    senA_5 = make_field('The conversational partner in the first round is capable of communication.')
+    senA_6 = make_field('The conversational partner in the first round can experience emotions.')
+    senA_7 = make_field('The conversational partner in the first round  is capable of memory.')
+    senA_8 = make_field('The conversational partner in the first round is capable of acting morally.')
+
+    # Feeling Heard
+    fh_1 = make_field('The conversational partner in the first round is interested in what I have to say.')
+    fh_2 = make_field('The conversational partner in the first round encourages me to speak openly.')
+    fh_3 = make_field('The conversational partner in the first round understands my thoughts.')
+    fh_4 = make_field('The conversational partner in the first round cares about me.')
+
     # Demographics
     name = models.StringField(label='What is your name?')
     age = models.IntegerField(label='What is your age?', min=13, max=125)
@@ -48,12 +64,14 @@ class survey_prompt(Page):
 
 class survey_variables(Page):
     form_model = 'player'
-    form_fields = ['SP_1', 'SP_2', 'SP_3', 'SP_4']
+    form_fields = ['senA_1', 'senA_2', 'senA_3', 'senA_4', 'senA_5', 'senA_6', 'senA_7', 'senA_8',
+                #    'fh_1', 'fh_2', 'fh_3', 'fh_4',
+                   ]
 
 
 class Demographics(Page):
     form_model = 'player'
-    form_fields = ["name", 'age', 'gender']
+    form_fields = ['age', 'gender']
 
 
 page_sequence = [survey_prompt, survey_variables, Demographics]
