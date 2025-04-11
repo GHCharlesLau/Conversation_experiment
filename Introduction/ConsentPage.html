@@ -9,32 +9,25 @@
 
 
 {{ block content }}
+<div style="font-size: 20px;">
+    Dear Participants,<br><br>
+    Welcome to our study!<br><br>
+    <span style="color:red;">You will work with two different partners to complete the same task twice.</span> Afterward, we'll ask you to share your thoughts and experiences.<br><br>
+    There are no risks involved in participating in this study, and we are committed to protecting your privacy. Your personal information will not be collected, and you have the right to withdraw from the study at any time. Your participation will contribute positively to the academia.<br><br>
+    If you have any questions, please feel free to contact us:<br><br>
+    <p>Dr. Hai Liang<br>
+    hailiang@cuhk.edu.hk<br>
+    The Chinese University of Hong Kong</p><br>
 
-Dear Participants,<br><br>
-
-Hello! Welcome to our experimental study. 
-In this study, you will collaborate with a partner to complete two tasks. 
-Afterward, we will ask you about your thoughts and experiences. 
-<br><br>
-
-There are no risks involved in participating in this study, and we are committed to protecting your privacy. 
-Your personal information will not be collected, and you have the right to withdraw from the experiment at any time. 
-Your participation will contribute positively to the academia. 
-<br><br>
-
-If you have any questions, please feel free to contact us:<br><br>
-Dr. Hai Liang<br>
-hailiang@cuhk.edu.hk<br>
-The Chinese University of Hong Kong</span>
-<br><br>
-
-
- <!-- {{ formfields }} -->
-
- <p>Do you agree to participate in this study?</p>
-<button name="agreement" value="True">Yes</button>
-<button name="agreement" value="False">No</button>  
-<!-- if settig type="button", Nothing will happen when participants click "No".  -->
+    <!-- {{ formfields }} -->
+    
+    <div style="text-align: center;">
+        <p>Do you agree to participate in this study?</p>
+        <button name="agreement" value="True">Yes</button> &nbsp;
+        <button name="agreement" value="False">No</button>
+        <!-- if settig type="button", Nothing will happen when participants click "No".  -->
+    </div>
+</div>
 
 {{ endblock }}
 
