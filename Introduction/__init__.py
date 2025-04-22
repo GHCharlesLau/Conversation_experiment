@@ -61,6 +61,10 @@ class Player(BasePlayer):
         choices=['chatbot', 'human'],
     )
 
+def prolificID_error_message(player, value):
+    if len(value) != 24:
+        return 'Please enter a valid Prolific ID (24 characters).'
+
 
 # FUNCTIONS
 # PAGES
@@ -73,8 +77,14 @@ class ConsentPage(Page):
         if player.agreement == False:
             return upcoming_apps[-1]
 
+    @staticmethod
+    def before_next_page(player: Player, timeout_happened):
+        if player.agreement == False:
+            player.participant.finished = False
+
 def make_image_data(image_names):
     return [dict(name=name, path='avatar/{}'.format(name), index=i) for i, name in enumerate(image_names)]
+
 
 class WelcomePage(Page):
     form_model = 'player'
@@ -95,10 +105,10 @@ class WelcomePage(Page):
     @staticmethod
     def vars_for_template(player: Player):
         image_names = [
-            'Woman1.png',
-            'Man1.png',
-            'Woman2.png',
-            'Man2.png',
+            'fox.png',
+            'lion.png',
+            'rabbit.png',
+            'tiger.png',
         ]
         return dict(image_data=make_image_data(image_names))
 

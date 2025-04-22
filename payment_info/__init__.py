@@ -24,8 +24,7 @@ class Group(BaseGroup):
 
 
 class Player(BasePlayer):
-    redemptionCode = models.StringField()
-    finishCode = models.BooleanField(initial=False)
+    finishCode = models.StringField(initial='HCM246HCH')
     pass
 
 
@@ -33,21 +32,21 @@ class Player(BasePlayer):
 # PAGES
 class PaymentInfo(Page):
     form_model = 'player'
-    form_fields = ['redemptionCode']
+    form_fields = ['finishCode']
 
     @staticmethod
-    def vars_for_template(player: Player):
-        participant = player.participant
-        participant.redemptionCode = random.randint(100000, 999999)
-        return dict(
-                    redemptionCode=participant.redemptionCode,
-                    finishCode=player.finishCode
-                    )
+    def is_displayed(player: Player):
+        return player.participant.finished == True
     
     @staticmethod
-    def before_next_page(player: Player, timeout_happened):
-        player.finishCode = True
-        player.participant.finished = True
+    def vars_for_template(player: Player):
+        return dict(
+                    finishCode=player.finishCode,
+                    )
 
+class EndNoConsent(Page):
+    @staticmethod
+    def is_displayed(player: Player):
+        return player.participant.finished == False
 
-page_sequence = [PaymentInfo]
+page_sequence = [PaymentInfo, EndNoConsent]

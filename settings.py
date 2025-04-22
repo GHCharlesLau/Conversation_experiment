@@ -19,7 +19,7 @@ SESSION_CONFIG_DEFAULTS = dict(
     real_world_currency_per_point=1.00, participation_fee=0.5, doc=""
 )
 
-PARTICIPANT_FIELDS = ["wait_page_arrival", "prolificID", "avatar", "nickname", "taskType", "partnership", "partnerLabel", "finished", "redemptionCode"]
+PARTICIPANT_FIELDS = ["wait_page_arrival", "prolificID", "avatar", "nickname", "taskType", "partnership", "partnerLabel", "finished", "finishCode"]
 SESSION_FIELDS = []
 
 # ISO-639 code

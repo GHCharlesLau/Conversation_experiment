@@ -73,5 +73,9 @@ class Demographics(Page):
     form_model = 'player'
     form_fields = ['age', 'gender']
 
+    @staticmethod
+    def before_next_page(player: Player):
+        player.participant.finished = True
+
 
 page_sequence = [survey_prompt, survey_variables, Demographics]
