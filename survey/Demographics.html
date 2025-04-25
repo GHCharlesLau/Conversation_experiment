@@ -1,12 +1,13 @@
 {{ block title }}{{ endblock }}
 {{ block content }}
-<div style="font-size: 25px; font-weight: bold;">
-    <p>
-        Please answer the following questions.
-    </p>
-</div>
-
 <div style="font-size: 20px">
+
+    <div style="font-size: 25px; font-weight: bold;">
+        <p>
+            Please answer the following questions.
+        </p>
+    </div><hr>
+
     <!-- Var: age -->
     {{ formfield 'age' }}
     <br>
@@ -29,13 +30,13 @@
     <table class="table" style="text-align: center; vertical-align: middle;">
         <tr>
             <th>Items</th>
-            <td>Strongly Disagree (1)</td>
-            <td>Disagree (2)</td>
-            <td>Slightly Disagree (3)</td>
-            <td>Neutral (4)</td>
-            <td>Slightly Agree (5)</td>
-            <td>Agree (6)</td>
-            <td>Strongly Agree (7)</td>
+            <td>Strongly Disagree</td>
+            <td>Disagree</td>
+            <td>Slightly Disagree</td>
+            <td>Neutral</td>
+            <td>Slightly Agree</td>
+            <td>Agree</td>
+            <td>Strongly Agree</td>
         </tr>
         <tr>
             <td style="text-align: left;">{{ form.rlg_1.label }}</td>

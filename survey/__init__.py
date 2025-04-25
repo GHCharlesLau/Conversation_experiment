@@ -90,17 +90,17 @@ class Player(BasePlayer):
         label='What is your gender?',
         widget=widgets.RadioSelect,
     )
-    race = models.IntegerField(
+    race = models.StringField(
         label="What is your race?",
         choices=["White", "Black", "Asian", "Mixed", "Other"],
         widget=widgets.RadioSelect,
     )
-    education = models.IntegerField(
+    education = models.StringField(
         label="What is your educational background?",
         choices=["Below secondary school", "Black", "Asian", "Mixed", "Other"],
         widget=widgets.RadioSelect,
     )
-    income = models.IntegerField(
+    income = models.StringField(
         label="What is your annual household income on average?",
         choices=["10", "100", "1000", "10000", "100000"],
         widget=widgets.RadioSelect,
@@ -146,12 +146,12 @@ class Demographics(Page):
         'rlg_1', 'rlg_2', 'rlg_3', 'rlg_4'
     ]
 
-    # @staticmethod
-    # def before_next_page(player: Player, timeout_happened):
-    #     if timeout_happened:
-    #         player.participant.finished = False
-    #     else:
-    #         player.participant.finished = True
+    @staticmethod
+    def before_next_page(player: Player, timeout_happened):
+        if timeout_happened:
+            player.participant.finished = False
+        else:
+            player.participant.finished = True
 
 
 page_sequence = [Prompt, VariablePageA, VariablePageB, Demographics]
