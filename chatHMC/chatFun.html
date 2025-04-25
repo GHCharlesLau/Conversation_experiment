@@ -67,18 +67,21 @@
     // specify messages element
     var chat_messages = document.getElementById('chat_messages');
 
+    // specify the number of messsages
+    var num_messages = {num: 0};
+
     // function for live receiving from server
     function liveRecv(data) {
         console.log("received:", data);  
         let text = data.text;
         // check if the chat is finished
         if (text === "chat_exceeded") {
-            reminder = "Your chat is finished. Please click 'Next Page' to continue.";
+            let reminder = "Your chat is finished. Please click 'Next Page' to continue.";
             showNotification(reminder);
             // document.getElementById('form').submit();
         } else {
             let msgSpan = document.createElement('span');
-            msgSpan.textContent = data;
+            msgSpan.textContent = data.text;
             let row = `<div><div class="receiverAvatar"><img src="{{ static 'avatar/myBot.png' }}" width="45px" /> MyBot</div><div class="msg botText">${msgSpan.innerHTML}</div></div><br>`;
             chat_messages.insertAdjacentHTML('beforeend', row);  
             
@@ -86,12 +89,28 @@
             chat_messages.scrollIntoView({ behavior: 'smooth', block: 'end', inline: 'start' })
             
             // append chat log
-            logChat('Bot', data)
+            logChat('Bot', data.text)
+
+            // Assign the number as an attribute of num_messages
+            num_messages.num = data.num
         };
     };
 
-    document.addEventListener("DOMContentLoaded", function (event) {
-        liveSend({});
+    // document.addEventListener("DOMContentLoaded", function (event) {
+    //     liveSend({});
+    // });
+
+    // Get the element ID of the next page button
+    var nextButton = document.getElementById("nextButton");
+    let reminder = "Please chat at least 5 turns.";
+    nextButton.addEventListener("click", function(event) {
+        if (num_messages.num < 5){
+            showNotification(reminder);
+            // Prevent the default reaction, i.e., submitting the form
+            event.preventDefault();
+        } else {
+            document.getElementById('form').submit();
+        }
     });
 
     // function for system notification
@@ -103,7 +122,7 @@
         
         chatBox.appendChild(notification);
         
-        // Remove notification after 7 seconds
+        // Remove notification after 100 seconds
         setTimeout(() => {
             notification.remove();
         }, 100000);
@@ -111,27 +130,6 @@
         // Scroll to the bottom
         chatBox.scrollTop = chatBox.scrollHeight;
     };
-
-    function checkSubmit() {
-        let form = document.getElementById('form');
-        let isValid = form.reportValidity();
-        if (!isValid) return;
-
-        let warnings = [];
-
-        let num = js_vars.num_messages;
-        if (num < 3) {
-            warnings.push("Please chat at least 5 turns.");
-        }
-
-        if (warnings.length > 0) {
-            warnings.push("Press OK to proceed anyway.")
-            let confirmed = window.confirm(warnings.join('\r\n'));
-            if (!confirmed) return;
-        }
-
-        form.submit();
-    }
 
 </script>
 
@@ -177,7 +175,7 @@
                 <span style="color:red; font-weight: bold">
                     <span class="otree-timer__time-left"></span>
                 </span> -->
-            <button type="button" class="btn btn-primary" onclick="checkSubmit()">
+            <button type="button" class="btn btn-primary" id="nextButton">
                 Next Page
             </button>
             </p>

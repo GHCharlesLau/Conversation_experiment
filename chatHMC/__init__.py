@@ -152,7 +152,7 @@ class chatEmo(Page):
                     my_code=player.participant.code,  # participant code (exclusive)
                     my_nickname=player.participant.nickname,
                     my_avatar=player.participant.avatar, 
-                    num_messages=player.num_messages,
+                    num_messages=player.num_messages,  # Not work
                 )
     
     @staticmethod
@@ -165,12 +165,13 @@ class chatEmo(Page):
     @staticmethod
     def live_method(player: Player, data):
         player.num_messages += 1
+        print(f"num_messages: {player.num_messages}")
 
         if player.num_messages == 1:
             # start GPT with emotional task prompt
             player.msg = json.dumps([{"role": "system", "content": C.CHARACTER_PROMPT_A}])
-
-        if player.num_messages > 16:  # set maximum number of turns (should be plus 1 based on the number of turns)
+        
+        if player.num_messages > 15:  # set maximum number of turns (should be plus 1 based on the number of turns)
             player.chat_finished = True
             response = dict(
                 text="chat_exceeded",
@@ -201,9 +202,13 @@ class chatEmo(Page):
                 # write appended messages to database
                 player.msg = json.dumps(messages)
 
-                return {player.id_in_group: output}  
-            else: 
-                pass
+                # Send data to the client
+                response = dict(
+                    text=output,
+                    num=player.num_messages
+                )
+                # print("num_messages is {}".format(player.num_messages))
+                return {player.id_in_group: response}
     
     @staticmethod
     def is_displayed(player: Player):
@@ -249,7 +254,7 @@ class chatFun(Page):
             # start GPT with emotional task prompt
             player.msg = json.dumps([{"role": "system", "content": C.CHARACTER_PROMPT_B}])
 
-        if player.num_messages > 16:  # set maximum number of turns (should be plus 1 based on the number of turns)
+        if player.num_messages > 15:  # set maximum number of turns (should be plus 1 based on the number of turns)
             player.chat_finished = True
             response = dict(
                 text="chat_exceeded",
@@ -280,9 +285,13 @@ class chatFun(Page):
                 # write appended messages to database
                 player.msg = json.dumps(messages)
 
-                return {player.id_in_group: output}  
-            else: 
-                pass
+                # Send data to the client
+                response = dict(
+                    text=output,
+                    num=player.num_messages
+                )
+
+                return {player.id_in_group: response}
     
     @staticmethod
     def is_displayed(player: Player):

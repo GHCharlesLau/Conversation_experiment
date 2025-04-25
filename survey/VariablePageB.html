@@ -1,0 +1,60 @@
+{{ block title }}{{ endblock }}
+{{ block content }}
+<div class="surveyPage" style="font-size: 20px">
+    <!-- Var: AI chatbot use -->
+    <p style="color:black; font-size: 25px; font-weight: bold;">
+        In the past month, how often did you use AI chatbots?
+    </p>
+    <hr>
+    <span style="font-size: 20px;">{{ formfield 'AIU' label=''}}</span>
+    <br><br>
+
+    <!-- Var: AI Literacy -->
+    <p style="color:black; font-size: 25px; font-weight: bold;">
+        To what degree do you agree with the following statements?
+    </p>
+    <hr>
+
+    <!-- Multiple lines of the same scale. -->
+    <table class="table" style="text-align: center; vertical-align: middle">
+        <tr>
+            <th>Items</th>
+            <td>Strongly Disagree</td>
+            <td>Disagree</td>
+            <td>Slightly Disagree</td>
+            <td>Neutral</td>
+            <td>Slightly Agree</td>
+            <td>Agree</td>
+            <td>Strongly Agree</td>
+        </tr>
+        <tr>
+            <td style="text-align: left;">{{ form.AIL_1.label }}</td>
+            {{ for choice in form.AIL_1 }}
+                <td>{{ choice }}</td>
+            {{ endfor }}
+        </tr>
+        <tr>
+            <td style="text-align: left;">{{ form.AIL_2.label }}</td>
+            {{ for choice in form.AIL_2 }}
+                <td>{{ choice }}</td>
+            {{ endfor }}
+        </tr>
+        <tr>
+            <td style="text-align: left;">{{ form.AIL_3.label }}</td>
+            {{ for choice in form.AIL_3 }}
+                <td>{{ choice }}</td>
+            {{ endfor }}
+        </tr>
+        <tr>
+            <td style="text-align: left;">{{ form.AIL_4.label }}</td>
+            {{ for choice in form.AIL_4 }}
+                <td>{{ choice }}</td>
+            {{ endfor }}
+        </tr>
+    </table>
+    <br><br>
+
+</div>
+{{ next_button }}
+
+{{ endblock }}

@@ -1,0 +1,141 @@
+{{ block title }}{{ endblock }}
+{{ block content }}
+<div class="surveyPage" style="font-size: 20px">
+    <!-- Var: Sense of Agency -->
+    <p style="color:black; font-size: 25px; font-weight: bold;">
+        To what degree do you agree with the following statements?
+    </p>
+    <hr>
+
+    <!-- Multiple lines of the same scale. -->
+    <table class="table" style="text-align: center; vertical-align: middle;">
+        <tr>
+            <th >Items</th>
+            <td>Strongly Disagree</td>
+            <td>Disagree</td>
+            <td>Slightly Disagree</td>
+            <td>Neutral</td>
+            <td>Slightly Agree</td>
+            <td>Agree</td>
+            <td>Strongly Agree</td>
+        </tr>
+        <tr>
+            <td style="text-align: left;">{{ form.senA_1.label }}</td>
+            {{ for choice in form.senA_1 }}
+                <td>{{ choice }}</td>
+            {{ endfor }}
+        </tr>
+        <tr>
+            <td style="text-align: left;">{{ form.senA_2.label }}</td>
+            {{ for choice in form.senA_2 }}
+                <td>{{ choice }}</td>
+            {{ endfor }}
+        </tr>
+        <tr>
+            <td style="text-align: left;">{{ form.senA_3.label }}</td>
+            {{ for choice in form.senA_3 }}
+                <td>{{ choice }}</td>
+            {{ endfor }}
+        </tr>
+        <tr>
+            <td style="text-align: left;">{{ form.senA_4.label }}</td>
+            {{ for choice in form.senA_4 }}
+                <td>{{ choice }}</td>
+            {{ endfor }}
+        </tr>
+    </table>
+    <br><br>
+
+    <!-- Var: Feeling Heard -->
+    <p style="color:black; font-size: 25px; font-weight: bold;">
+        To what degree do you agree with the following statements?
+    </p>
+    <hr>
+
+    <!-- Multiple lines of the same scale. -->
+    <table class="table" style="text-align: center; vertical-align: middle;">
+        <tr>
+            <th>Items</th>
+            <td>Strongly Disagree</td>
+            <td>Disagree</td>
+            <td>Slightly Disagree</td>
+            <td>Neutral</td>
+            <td>Slightly Agree</td>
+            <td>Agree</td>
+            <td>Strongly Agree</td>
+        </tr>
+        <tr>
+            <td style="text-align: left;">{{ form.feeH_1.label }}</td>
+            {{ for choice in form.feeH_1 }}
+                <td>{{ choice }}</td>
+            {{ endfor }}
+        </tr>
+        <tr>
+            <td style="text-align: left;">{{ form.feeH_2.label }}</td>
+            {{ for choice in form.feeH_2 }}
+                <td>{{ choice }}</td>
+            {{ endfor }}
+        </tr>
+        <tr>
+            <td style="text-align: left;">{{ form.feeH_3.label }}</td>
+            {{ for choice in form.feeH_3 }}
+                <td>{{ choice }}</td>
+            {{ endfor }}
+        </tr>
+        <tr>
+            <td style="text-align: left;">{{ form.feeH_4.label }}</td>
+            {{ for choice in form.feeH_4 }}
+                <td>{{ choice }}</td>
+            {{ endfor }}
+        </tr>
+    </table>
+    <br><br>
+
+    <!-- Var: Conversation Engagement -->
+    <p style="color:black; font-size: 25px; font-weight: bold;">
+        To what degree do you agree with the following statements?
+    </p>
+    <hr>
+
+    <!-- Multiple lines of the same scale. -->
+    <table class="table" style="text-align: center; vertical-align: middle;">
+        <tr>
+            <th>Items</th>
+            <td>Strongly Disagree</td>
+            <td>Disagree</td>
+            <td>Slightly Disagree</td>
+            <td>Neutral</td>
+            <td>Slightly Agree</td>
+            <td>Agree</td>
+            <td>Strongly Agree</td>
+        </tr>
+        <tr>
+            <td style="text-align: left;">{{ form.CE_1.label }}</td>
+            {{ for choice in form.CE_1 }}
+                <td>{{ choice }}</td>
+            {{ endfor }}
+        </tr>
+        <tr>
+            <td style="text-align: left;">{{ form.CE_2.label }}</td>
+            {{ for choice in form.CE_2 }}
+                <td>{{ choice }}</td>
+            {{ endfor }}
+        </tr>
+        <tr>
+            <td style="text-align: left;">{{ form.CE_3.label }}</td>
+            {{ for choice in form.CE_3 }}
+                <td>{{ choice }}</td>
+            {{ endfor }}
+        </tr>
+        <tr>
+            <td style="text-align: left;">{{ form.CE_4.label }}</td>
+            {{ for choice in form.CE_4 }}
+                <td>{{ choice }}</td>
+            {{ endfor }}
+        </tr>
+    </table>
+    <br><br>
+</div>
+{{ next_button }}
+
+{{ endblock }}

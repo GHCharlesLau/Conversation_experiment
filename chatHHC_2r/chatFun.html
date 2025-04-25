@@ -36,7 +36,6 @@
 
         <!-- hidden input to save chat log -->
         <input type='hidden' name='chatLog' value='' id='id_chatLog'/>
-        <br>
 
         <!-- oTree timer -->
         <p align="center">
@@ -44,9 +43,9 @@
             <span style="color:red; font-weight: bold">
                 <span class="otree-timer__time-left"></span>
             </span> -->
-        <button class="btn btn-primary btn-large" id="next_button">
-            Next Page
-        </button>
+            <button type="button" class="btn btn-primary" id="nextButton">
+                Next Page
+            </button>
         </p>
     </div>
 </div>
@@ -108,6 +107,8 @@
 
     var chat_messages = document.getElementById('chat_messages');
 
+    var num_messages = {num: 0}
+
     // function for live receiving from server
     function liveRecv(messages) {
         console.log("received:", messages);  
@@ -116,38 +117,48 @@
         if (text === "chat_exceeded") {
             reminder = "Your chat is finished. Please click 'Next Page' to continue.";
             showNotification(reminder);
-            // document.getElementById('form').submit();
         } else if (text === "user_exited") {
             reminder = "Your partner has left. Please click 'Next Page' to continue.";
             showNotification(reminder);
-            // document.getElementById('form').submit();
         } else {
-            for (let msg of messages) {
-                // Only display messages sent by the other player
-                if (msg.sender != js_vars.my_id) {
-                    let msgSpan = document.createElement('span');
-                    msgSpan.textContent = msg.text;
-                    let sender = `<img src="{{ static alter_avatar }}" width="45px" /> ${js_vars.alter_nickname}`;
-                    let row = `<div><div class="receiverAvatar">${sender}</div><div class="msg botText">${msgSpan.innerHTML}</div></div><br>`;
-                    chat_messages.insertAdjacentHTML('beforeend', row);
+            let msg = messages;
+            // Only display messages sent by the other player
+            if (msg.sender != js_vars.my_id) {
+                let msgSpan = document.createElement('span');
+                msgSpan.textContent = msg.text;
+                let sender = `<img src="{{ static alter_avatar }}" width="45px" /> ${js_vars.alter_nickname}`;
+                let row = `<div><div class="receiverAvatar">${sender}</div><div class="msg botText">${msgSpan.innerHTML}</div></div><br>`;
+                chat_messages.insertAdjacentHTML('beforeend', row);
 
-                    // append chat log
-                    logChat(js_vars.alter_code, msg.text)
-                };
+                // append chat log
+                logChat(js_vars.alter_code, msg.text)
             };
+
+            // Assign the number as an attribute of num_messages
+            num_messages.num = msg.num
         };
 
         // scroll messages to bottom
         chat_messages.scrollIntoView({ behavior: 'smooth', block: 'end', inline: 'start' })
     };
 
-    document.addEventListener("DOMContentLoaded", function (event) {
-        liveSend({});
-    });
+    // document.addEventListener("DOMContentLoaded", function (event) {
+    //     liveSend({});
+    // });
 
-    // User leaving
-    document.getElementById('next_button').addEventListener('click', function() {
-        liveSend({'text': 'user_exited'})
+    // Get the element ID of the next page button
+    var nextButton = document.getElementById("nextButton");
+    let reminder = "Please chat at least 5 turns.";
+    nextButton.addEventListener("click", function(event) {
+        if (num_messages.num < 5){
+            showNotification(reminder);
+            // Prevent the default reaction, i.e., submitting the form
+            event.preventDefault();
+        } else {
+            // User leaving
+            liveSend({'text': 'user_exited'});
+            document.getElementById('form').submit();
+        }
     });
 
     // function for system notification

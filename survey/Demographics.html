@@ -1,13 +1,70 @@
 {{ block title }}{{ endblock }}
 {{ block content }}
-
+<div style="font-size: 25px; font-weight: bold;">
     <p>
         Please answer the following questions.
     </p>
+</div>
 
+<div style="font-size: 20px">
+    <!-- Var: age -->
+    {{ formfield 'age' }}
+    <br>
 
-    {{ formfields }}
+    <!-- Var: gender -->
+    {{ formfield 'gender' }}
+    <br>
+    
+    <!-- Var: race -->
+    {{ formfield 'race' }}
+    <br>
 
-    {{ next_button }}
+    <!-- Var: Religiosity -->
+    <p style="color:black; font-size: 25px; font-weight: bold;">
+        To what degree do you agree with the following statements?
+    </p>
+    <hr>
+
+    <!-- Multiple lines of the same scale. -->
+    <table class="table" style="text-align: center; vertical-align: middle;">
+        <tr>
+            <th>Items</th>
+            <td>Strongly Disagree (1)</td>
+            <td>Disagree (2)</td>
+            <td>Slightly Disagree (3)</td>
+            <td>Neutral (4)</td>
+            <td>Slightly Agree (5)</td>
+            <td>Agree (6)</td>
+            <td>Strongly Agree (7)</td>
+        </tr>
+        <tr>
+            <td style="text-align: left;">{{ form.rlg_1.label }}</td>
+            {{ for choice in form.rlg_1 }}
+                <td>{{ choice }}</td>
+            {{ endfor }}
+        </tr>
+        <tr>
+            <td style="text-align: left;">{{ form.rlg_2.label }}</td>
+            {{ for choice in form.rlg_2 }}
+                <td>{{ choice }}</td>
+            {{ endfor }}
+        </tr>
+        <tr>
+            <td style="text-align: left;">{{ form.rlg_3.label }}</td>
+            {{ for choice in form.rlg_3 }}
+                <td>{{ choice }}</td>
+            {{ endfor }}
+        </tr>
+        <tr>
+            <td style="text-align: left;">{{ form.rlg_4.label }}</td>
+            {{ for choice in form.rlg_4 }}
+                <td>{{ choice }}</td>
+            {{ endfor }}
+        </tr>
+    </table>
+    <br><br>
+</div>
+
+{{ next_button }}
 
 {{ endblock }}

@@ -89,27 +89,32 @@ class chatEmo(Page):
     @staticmethod
     def live_method(player: Player, data):
         player.num_messages += 1
-        my_id = player.id_in_group
         group = player.group
+        my_id = player.id_in_group
+        alter = player.get_others_in_group()[0]
+        alter_id = alter.id_in_group
+
+        print(data, f"num_messages:{player.num_messages}")
 
         if data["text"] == "user_exited":
             response = dict(
                 text="user_exited",
             )
-            return {0: response}  # Broadcast to all players
-        elif player.num_messages > 16:  # set maximum number of turns (should be plus 1 based on the number of turns)
+            return {alter_id: response}
+        elif player.num_messages > 15:  # set maximum number of turns (should be plus 1 based on the number of turns)
             player.chat_finished = True
             response = dict(
                 text="chat_exceeded",
             )
             # return {player.id_in_group: response['text']}
-            return {0: response}
+            return {0: response}  # Broadcast to all players
         else:
             if 'text' in data:
                 text = data['text']
                 msg = Message.create(group=group, sender=player, text=text)
-                return {0: [to_dict(msg)]}
-        return {my_id: [to_dict(msg) for msg in Message.filter(group=group)]}
+                msg_dict = to_dict(msg)
+                msg_dict["num"] = player.num_messages  # Add the number of messages
+                return {0: msg_dict}
     
     @staticmethod
     def is_displayed(player: Player):
@@ -144,15 +149,17 @@ class chatFun(Page):
     @staticmethod
     def live_method(player: Player, data):
         player.num_messages += 1
-        my_id = player.id_in_group
         group = player.group
+        my_id = player.id_in_group
+        alter = player.get_others_in_group()[0]
+        alter_id = alter.id_in_group
 
         if data["text"] == "user_exited":
             response = dict(
                 text="user_exited",
             )
-            return {0: response}  # Broadcast to all players
-        elif player.num_messages > 16:  # set maximum number of turns (should be plus 1 based on the number of turns)
+            return {alter_id: response}  # Broadcast to all players
+        elif player.num_messages > 15:  # set maximum number of turns (should be plus 1 based on the number of turns)
             player.chat_finished = True
             response = dict(
                 text="chat_exceeded",
@@ -163,8 +170,9 @@ class chatFun(Page):
             if 'text' in data:
                 text = data['text']
                 msg = Message.create(group=group, sender=player, text=text)
-                return {0: [to_dict(msg)]}
-        return {my_id: [to_dict(msg) for msg in Message.filter(group=group)]}
+                msg_dict = to_dict(msg)
+                msg_dict["num"] = player.num_messages  # Add the number of messages
+                return {0: msg_dict}
     
     @staticmethod
     def is_displayed(player: Player):
@@ -241,8 +249,8 @@ def group_by_arrival_time_method(subsession, waiting_players):
     else:
         pass
 
-    if len(waiting_players) >= 2:
-        return waiting_players[:2]
+    # if len(waiting_players) >= 2:
+    #     return waiting_players[:2]
     for player in waiting_players:
         if waiting_too_long(player):
             player.HHC = False  # If timeout happened, the subject should be re-assigned to the chatHMC group.

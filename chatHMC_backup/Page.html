@@ -20,9 +20,12 @@
   }
 
   /* title */
-  /* .otree-title { */
-   /* text-align: center;  */
-  /* } */
+  .otree-title {
+    text-align: center;
+    border: 0px;
+    margin: 5px;
+    padding: 0px;
+  }
 
   /* wait page (entire dialogue) */
   /* .otree-wait-page {} */
@@ -104,12 +107,14 @@
   /* System notification */
   .notification {
     align-self: center;
+    width: 70%;
+    margin:5px auto;
     background-color: #e9ecef;
     color: #6c757d;
     padding: 6px 12px;
-    border-radius: 4px;
-    margin: 5px 0;
-    font-size: 0.9em;
+    border-radius: 20px;
+    font-size: 20px;
+    color: crimson;
     text-align: center;
     /* animation: fadeInOut 7s forwards; */
   }
@@ -127,6 +132,7 @@
   .selfText {
     background: skyblue;
     color: black;
+    font-size: 25px;
     display: inline-block;
     position: relative;
     left: 95%;
@@ -142,6 +148,7 @@
   .botText {
     background: lightgray;
     color: black;
+    font-size: 25px;
     position: relative;
     left: 5%;
     display: inline-block;
@@ -155,7 +162,7 @@
   .senderAvatar {
     background: white;
     color: gray;
-    font-size: 20px;
+    font-size: 25px;
     position: relative;
     right: 0;
     text-align: right;
@@ -166,7 +173,7 @@
   .receiverAvatar {
     background: white;
     color: gray;
-    font-size: 20px;
+    font-size: 25px;
     position: relative;
     left: 0;
     text-align: left;
@@ -185,7 +192,7 @@
     margin-right: 0.5rem;
   }
 
-  input[type=button] {
+  input[type="button"] {
     background-color: #38A1F3;
     border: none;
     color: white;

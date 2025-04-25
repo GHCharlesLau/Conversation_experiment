@@ -49,6 +49,7 @@ class C(BaseConstants):
     4. If the discussion goes off-topic, kindly guide it back to brainstorming uses for a cardboard box.
     5. It is recommended that the conversation consists of 5 to 15 rounds. 
     6. Always use a friendly tone and reply in English.
+    7. Give new ideas infrequently.
     """
 
 
@@ -169,7 +170,7 @@ class chatEmo(Page):
             # start GPT with emotional task prompt
             player.msg = json.dumps([{"role": "system", "content": C.CHARACTER_PROMPT_A}])
 
-        if player.num_messages > 16:  # set maximum number of turns (should be plus 1 based on the number of turns)
+        if player.num_messages > 15:  # set maximum number of turns (should be plus 1 based on the number of turns)
             player.chat_finished = True
             response = dict(
                 text="chat_exceeded",
@@ -200,9 +201,13 @@ class chatEmo(Page):
                 # write appended messages to database
                 player.msg = json.dumps(messages)
 
-                return {player.id_in_group: output}  
-            else: 
-                pass
+                # Send data to the client
+                response = dict(
+                    text=output,
+                    num=player.num_messages
+                )
+
+                return {player.id_in_group: response}
     
     @staticmethod
     def is_displayed(player: Player):
@@ -248,7 +253,7 @@ class chatFun(Page):
             # start GPT with emotional task prompt
             player.msg = json.dumps([{"role": "system", "content": C.CHARACTER_PROMPT_B}])
 
-        if player.num_messages > 16:  # set maximum number of turns (should be plus 1 based on the number of turns)
+        if player.num_messages > 15:  # set maximum number of turns (should be plus 1 based on the number of turns)
             player.chat_finished = True
             response = dict(
                 text="You have reached the maximum number of turns. Please proceed to the next page."
@@ -278,9 +283,13 @@ class chatFun(Page):
                 # write appended messages to database
                 player.msg = json.dumps(messages)
 
-                return {player.id_in_group: output}  
-            else: 
-                pass
+                # Send data to the client
+                response = dict(
+                    text=output,
+                    num=player.num_messages
+                )
+
+                return {player.id_in_group: response}
     
     @staticmethod
     def is_displayed(player: Player):
