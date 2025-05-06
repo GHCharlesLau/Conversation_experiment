@@ -10,7 +10,7 @@
         <span style="color:black; font-size: 18px;">
             1. You will be paired with a participant in this survey. If your partner asks who you are, say that you are also a participant in this survey.<br>
             2. <span style="color:red;">You and your partner will work together to come up with as many unique and creative uses for a cardboard box as possible</span>. You are a team competing against others, and currently, Alex's team holds the high score.<br>
-                Your task is to <span style="color:red;">1) propose ideas</span>, and <span style="color:red;">2) encourage Mybot to contribute their own ideas</span>. You and your partner will take turns sharing your ideas.<br>
+                Your task is to <span style="color:red;">1) propose ideas</span>, and <span style="color:red;">2) encourage your partner to contribute their own ideas</span>. You and your partner will take turns sharing your ideas.<br>
             3. <span style="color:red;">If the discussion goes off-topic, kindly guide it back to brainstorming uses for a cardboard box.</span><br>
             4. It is recommended that the conversation consists of 5 to 15 rounds.<br>
             5. Always use a friendly tone and reply in English.<br>
@@ -27,7 +27,7 @@
         <!-- text input -->
         <div class="inputBox">
             <div class="typeInputBox">
-                <input type="text" id="chat_input" style="text-align:right;" autofocus>
+                <input type="text" id="chat_input" placeholder="Type here..." autofocus>
                 <button type="button" onclick="sendMsg()">Send</button>
             </div>
         </div>
@@ -96,7 +96,7 @@
             chat_messages.insertAdjacentHTML('beforeend', row); 
             
             // scroll messages to bottom
-            chat_messages.scrollIntoView({ behavior: 'smooth', block: 'end', inline: 'start' })
+            chat_messages.scrollIntoView({ behavior: 'instant', block: 'end', inline: 'start' })
 
             // append chat log
             logChat(js_vars.my_code, text)
@@ -140,12 +140,9 @@
         }; 
 
         // scroll messages to bottom
-        chat_messages.scrollIntoView({ behavior: 'smooth', block: 'end', inline: 'start' })
+        chat_messages.scrollIntoView({ behavior: 'instant', block: 'end', inline: 'start' })
     };
 
-    // document.addEventListener("DOMContentLoaded", function (event) {
-    //     liveSend({});
-    // });
 
     // Get the element ID of the next page button
     var nextButton = document.getElementById("nextButton");

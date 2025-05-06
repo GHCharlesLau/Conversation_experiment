@@ -93,6 +93,14 @@
     <p class="success-message">Since nobody has joined yet, you are paired with an AI chatbot.</p>
     <p class="success-message">Your partner <img src="{{ static 'avatar/myBot.png' }}" width="15%" /> <b>MyBot</b> has been ready.</p>
 
-    <button class="success-button">Continue</button>
+    <p class="success-message">The conversation will get started in 5 seconds...</p>
+    <!-- <button class="success-button">Continue</button> -->
 </div>
+
+<script>
+    // Automatically submit the form after 5 seconds
+    setTimeout(function() {
+      document.getElementById('form').submit();
+    }, 5000);
+</script>
 {{ endblock }}

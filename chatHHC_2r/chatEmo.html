@@ -27,7 +27,7 @@
         <!-- text input -->
         <div class="inputBox">
             <div class="typeInputBox">
-                <input type="text" id="chat_input" style="text-align:right;" autofocus>
+                <input type="text" id="chat_input" placeholder="Type here..." autofocus>
                 <button type="button" onclick="sendMsg()">Send</button>
             </div>
         </div>
@@ -96,7 +96,7 @@
             chat_messages.insertAdjacentHTML('beforeend', row); 
             
             // scroll messages to bottom
-            chat_messages.scrollIntoView({ behavior: 'smooth', block: 'end', inline: 'start' })
+            chat_messages.scrollIntoView({ behavior: 'instant', block: 'end', inline: 'start' })
 
             // append chat log
             logChat(js_vars.my_code, text)
@@ -138,12 +138,9 @@
         };
 
         // scroll messages to bottom
-        chat_messages.scrollIntoView({ behavior: 'smooth', block: 'end', inline: 'start' })
+        chat_messages.scrollIntoView({ behavior: 'instant', block: 'end', inline: 'start' })
     };
 
-    // document.addEventListener("DOMContentLoaded", function (event) {
-    //     liveSend({});
-    // });
 
     // Get the element ID of the next page button
     var nextButton = document.getElementById("nextButton");

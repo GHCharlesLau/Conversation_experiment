@@ -2,7 +2,7 @@
 {{ block content }}
 <div style="font-size: 20px">
 
-    <div style="font-size: 25px; font-weight: bold;">
+    <div style="font-size: 22px; font-weight: bold;">
         <p>
             Please answer the following questions.
         </p>
@@ -16,12 +16,24 @@
     {{ formfield 'gender' }}
     <br>
     
+    <!-- Var: education -->
+    {{ formfield 'education' }}
+    <br>
+
+    <!-- Var: income -->
+    {{ formfield 'income' }}
+    <br>
+
     <!-- Var: race -->
     {{ formfield 'race' }}
     <br>
 
+    <!-- Var: partisanship -->
+    {{ formfield 'partisanship' }}
+    <br>
+
     <!-- Var: Religiosity -->
-    <p style="color:black; font-size: 25px; font-weight: bold;">
+    <p style="color:black; font-size: 22px; font-weight: bold;">
         To what degree do you agree with the following statements?
     </p>
     <hr>

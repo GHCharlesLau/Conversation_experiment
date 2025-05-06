@@ -47,9 +47,9 @@ class Player(BasePlayer):
 
     # AI Literacy
     AIL_1 = make_field('I know the most important concepts of the topic "artificial intelligence".')
-    AIL_2 = make_field('I know definitions of artificial intelligence.')
-    AIL_3 = make_field('I can assess what the limitations and opportunities of using an AI.')
-    AIL_4 = make_field('I can assess what advantages and disadvantages the use of an artificial intelligence entails.')
+    AIL_2 = make_field('I can assess what the limitations and opportunities of using an AI are.')
+    AIL_3 = make_field('I can use AI applications to make my everyday life easier.')
+    AIL_4 = make_field('I can use artificial intelligence meaningfully to achieve my everyday goals.')
 
     # AI Use
     AIU = models.IntegerField(
@@ -73,42 +73,57 @@ class Player(BasePlayer):
     rlg_4 = make_field('I enjoy spending time with others of my religious affiliation.')
     
     # Conversational Engagement
-    CE_1 = make_field('I think I have a good understanding of the conversational partner in the first round.')
-    CE_2 = make_field('I was able to understand the issues in the conversation in the same way that the conversational partner in the first round understood them.')
-    CE_3 = make_field('I tend to understand the reasons why the conversational partner in the first round does what he or she does.')
-    CE_4 = make_field('During conversation, I could feel the emotions the conversational partner in the first round portrayed.')
+    CE_1 = make_field('During conversation, I could feel the emotions the conversational partner in the first round portrayed.')
+    CE_2 = make_field('The conversation with the partner in the first round was enjoyable.')
+    CE_3 = make_field('I was mentally involved in the conversation with the partner in the first round.')
+    CE_4 = make_field('While engaged in the converation, I had a vivid image of the partner in the first round.')
 
     # Demographics
     # name = models.StringField(label='What is your name?')
     age = models.IntegerField(
-        label='What is your age?', 
+        label='<b>What is your age?</b>', 
         min=13, max=125,
     )
-    gender = models.IntegerField(
-        choices=[[1,'Male'], 
-                 [2, 'Female']],
-        label='What is your gender?',
+    gender = models.StringField(
+        label='<b>What is your gender?</b>',
+        choices=['Man', 
+                 'Woman',
+                 'Nonbinary',
+                 'Something else'
+                 ],
         widget=widgets.RadioSelect,
     )
     race = models.StringField(
-        label="What is your race?",
-        choices=["White", "Black", "Asian", "Mixed", "Other"],
+        label="<b>Which race do you belong to?</b>",
+        choices=["White", "Black or African-American", "American Indian", "Asian", "Native Hawaiian or other Pacific Islander", "Mixed", "Other"],
         widget=widgets.RadioSelect,
     )
     education = models.StringField(
-        label="What is your educational background?",
-        choices=["Below secondary school", "Black", "Asian", "Mixed", "Other"],
+        label="<b>What is the highest level of school you have completed or the highest degree you have received?</b>",
+        choices=["Less than high school credential ", 
+                 "High school graduate - High school diploma or equivalent", 
+                 "Some college but no degree",
+                 "Associate degree in college",
+                 "Bachelor's degree",
+                 "Master's degree",
+                 "Professional school degree",
+                 "Doctorate degree",
+                 "Other"],
         widget=widgets.RadioSelect,
     )
     income = models.StringField(
-        label="What is your annual household income on average?",
-        choices=["10", "100", "1000", "10000", "100000"],
+        label="<b>What was the total income of your family during the past 12 months before taxes?</b>",
+        choices=["Under $9,999", "$10,000 to $29,999", "$30,000 to $59,999", "$60,000 to $99,999", "$100,000 to $149,999",
+                 "$150,000 to $249,999", "$250,000 or more"],
         widget=widgets.RadioSelect,
     )
-    partisanship = models.IntegerField(
-        label="What is your parlitical leaning?",
-        choices=[[1, 'Far demographic'], 
-                 [2, 'Demographic']],
+    partisanship = models.StringField(
+        label="<b>Do you usually think of yourself as a Democrat, a Republican, an independent, or what?</b>",
+        choices=["Democrat",
+                 "Republican",
+                 "Independent",
+                 "Other party"
+                 ],
         widget=widgets.RadioSelect,
     )
 
@@ -140,9 +155,9 @@ class Demographics(Page):
         'age',
         'gender',
         'race',
-        # 'education',
-        # 'income',
-        # 'partisanship',
+        'education',
+        'income',
+        'partisanship',
         'rlg_1', 'rlg_2', 'rlg_3', 'rlg_4'
     ]
 

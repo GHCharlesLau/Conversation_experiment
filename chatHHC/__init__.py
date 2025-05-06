@@ -89,12 +89,11 @@ class chatEmo(Page):
     @staticmethod
     def live_method(player: Player, data):
         player.num_messages += 1
+        print(data, f"num_messages:{player.num_messages}")
         group = player.group
         my_id = player.id_in_group
         alter = player.get_others_in_group()[0]
         alter_id = alter.id_in_group
-
-        print(data, f"num_messages:{player.num_messages}")
 
         if data["text"] == "user_exited":
             response = dict(
@@ -110,10 +109,12 @@ class chatEmo(Page):
             return {0: response}  # Broadcast to all players
         else:
             if 'text' in data:
+                total_messages = min(player.num_messages, alter.num_messages)
+                # print(total_messages)
                 text = data['text']
                 msg = Message.create(group=group, sender=player, text=text)
                 msg_dict = to_dict(msg)
-                msg_dict["num"] = player.num_messages  # Add the number of messages
+                msg_dict["num"] = total_messages  # Add the number of messages
                 return {0: msg_dict}
     
     @staticmethod
@@ -168,10 +169,12 @@ class chatFun(Page):
             return {0: response}
         else:
             if 'text' in data:
+                total_messages = min(player.num_messages, alter.num_messages)
+                # print(total_messages)
                 text = data['text']
                 msg = Message.create(group=group, sender=player, text=text)
                 msg_dict = to_dict(msg)
-                msg_dict["num"] = player.num_messages  # Add the number of messages
+                msg_dict["num"] = total_messages  # Add the number of messages
                 return {0: msg_dict}
     
     @staticmethod

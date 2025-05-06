@@ -11,10 +11,10 @@
     body {
         margin: 0;
         padding: 0;
-        height: 100vh; /* 使 body 高度为视口高度 */
+        height: 100vh;
         display: flex;
-        justify-content: center; /* 水平居中 */
-        align-items: center; /* 垂直居中 */
+        justify-content: center;
+        align-items: center;
         background-color: #f4f4f9;
     }
 
@@ -92,6 +92,14 @@
 
     <p class="success-message">Participant <img src="{{ static alter_avatar }}" width="15%" /> <b>{{ alter_nickname }}</b> has arrived.</p>
 
-    <button class="success-button">Continue</button>
+    <p class="success-message">The conversation will get started in 5 seconds...</p>
+    <!-- <button class="success-button">Continue</button> -->
 </div>
+
+<script>
+    // Automatically submit the form after 3 seconds
+    setTimeout(function() {
+      document.getElementById('form').submit();
+    }, 5000);
+</script>
 {{ endblock }}

@@ -108,10 +108,12 @@ class chatEmo(Page):
             return {0: response}
         else:
             if 'text' in data:
+                total_messages = min(player.num_messages, alter.num_messages)
+                # print(total_messages)
                 text = data['text']
                 msg = Message.create(group=group, sender=player, text=text)
                 msg_dict = to_dict(msg)
-                msg_dict["num"] = player.num_messages  # Add the number of messages
+                msg_dict["num"] = total_messages  # Add the number of messages
                 return {0: msg_dict}
     
     @staticmethod
@@ -172,10 +174,12 @@ class chatFun(Page):
             return {0: response}
         else:
             if 'text' in data:
+                total_messages = min(player.num_messages, alter.num_messages)
+                # print(total_messages)
                 text = data['text']
                 msg = Message.create(group=group, sender=player, text=text)
                 msg_dict = to_dict(msg)
-                msg_dict["num"] = player.num_messages  # Add the number of messages
+                msg_dict["num"] = total_messages  # Add the number of messages
                 return {0: msg_dict}
     
     @staticmethod

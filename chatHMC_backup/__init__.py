@@ -131,7 +131,11 @@ def runGPT(inputMessage):
         messages = inputMessage, 
         temperature = C.TEMP
     )
-    return completion.choices[0].message.content
+    content = completion.choices[0].message.content
+    # Transfer fullwidth characters
+    trans_table = str.maketrans({"‘": "'", "’": "'"})
+    content = content.translate(trans_table)
+    return content
 
 
 # PAGES
