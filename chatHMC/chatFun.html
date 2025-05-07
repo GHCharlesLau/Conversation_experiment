@@ -82,7 +82,14 @@
         } else {
             let msgSpan = document.createElement('span');
             msgSpan.textContent = data.text;
-            let row = `<div><div class="receiverAvatar"><img src="{{ static 'avatar/myBot.png' }}" width="45px" /> MyBot</div><div class="msg botText">${msgSpan.innerHTML}</div></div><br>`;
+            if (js_vars.partnerLabel == 'chatbot') {
+                let row = `<div><div class="receiverAvatar"><img src="{{ static 'avatar/myBot.png' }}" width="45px" /> MyBot</div><div class="msg botText">${msgSpan.innerHTML}</div></div><br>`;
+                chat_messages.insertAdjacentHTML('beforeend', row);
+            } else {
+                let row = `<div><div class="receiverAvatar"><img src="{{ static 'avatar/fox.png' }}" width="45px" /> Tommy</div><div class="msg botText">${msgSpan.innerHTML}</div></div><br>`;
+                chat_messages.insertAdjacentHTML('beforeend', row);
+            }
+
             chat_messages.insertAdjacentHTML('beforeend', row);  
             
             // append chat log
@@ -125,7 +132,7 @@
         }, 100000);
         
         // Scroll to the bottom
-        chatBox.scrollTop = chatBox.scrollHeight;
+        chatBox.scrollIntoView({ behavior: 'instant', block: 'end', inline: 'start' });
     };
 
 </script>
@@ -134,8 +141,21 @@
 
 
 {{ block content }}
-   <div class="container">
-        <div class="topPart">
+<div class="container">
+    {{ if player.participant.partnerLabel == 'human'}}
+        <div class="topPart" autofocus>
+            <!-- <h2>Chat Instruction</h2><br> -->
+            <span style="color:black; font-size: 18px;">
+                1. You will be paired with a participant in this survey. If your partner asks who you are, say that you are also a participant in this survey.<br>
+                2. <span style="color:red;">You and your partner will work together to come up with as many unique and creative uses for a cardboard box as possible</span>. You are a team competing against others, and currently, Alex's team holds the high score.<br>
+                    Your task is to <span style="color:red;">1) propose ideas</span>, and <span style="color:red;">2) encourage your partner to contribute their own ideas</span>. You and your partner will take turns sharing your ideas.<br>
+                3. <span style="color:red;">If the discussion goes off-topic, kindly guide it back to brainstorming uses for a cardboard box.</span><br>
+                4. It is recommended that the conversation consists of 5 to 15 rounds.<br>
+                5. Always use a friendly tone and reply in English.<br>
+            </span>
+        </div>
+    {{ elif player.participant.partnerLabel == 'chatbot'}}
+        <div class="topPart" autofocus>
             <!-- <h2>Chat Instruction</h2><br> -->
             <span style="color:black; font-size: 18px;">
                 1. You will be paired with a conversational AI named MyBot.<br>
@@ -146,38 +166,38 @@
                 5. Always use a friendly tone and reply in English.<br>
             </span>
         </div>
+    {{ endif }}
 
-        <div class="downPart">
-            <!-- div displaying chat messages -->
-            <div class="textBox">
-                <div id="chat_messages">
-                </div>
+    <div class="downPart">
+        <!-- div displaying chat messages -->
+        <div class="textBox">
+            <div id="chat_messages">
             </div>
-            
-            <!-- text input -->
-            <div class="inputBox">
-                <div class="typeInputBox">
-                    <input type="text" id="chat_input" placeholder="Type here..." autofocus>
-                    <button type="button" onclick="sendMsg()">Send</button>
-                </div>
-            </div>
-            
-            <!-- hidden input to save chat log -->
-            <input type='hidden' name='chatLog' value='' id='id_chatLog'/>
-            <br>
-
-            <!-- oTree timer -->
-            <p align="center">
-                <!-- Page will auto-advance in:
-                <span style="color:red; font-weight: bold">
-                    <span class="otree-timer__time-left"></span>
-                </span> -->
-            <button type="button" class="btn btn-primary" id="nextButton">
-                Next Page
-            </button>
-            </p>
         </div>
+        
+        <!-- text input -->
+        <div class="inputBox">
+            <div class="typeInputBox">
+                <input type="text" id="chat_input" placeholder="Type here...">
+                <button type="button" onclick="sendMsg()">Send</button>
+            </div>
+        </div>
+        
+        <!-- hidden input to save chat log -->
+        <input type='hidden' name='chatLog' value='' id='id_chatLog'/>
+        <br>
+
+        <!-- oTree timer -->
+        <p align="center">
+            <!-- Page will auto-advance in:
+            <span style="color:red; font-weight: bold">
+                <span class="otree-timer__time-left"></span>
+            </span> -->
+        <button type="button" class="btn btn-primary" id="nextButton">
+            Next Page
+        </button>
+        </p>
     </div>
-    </div>
+</div>
 
 {{ endblock }}

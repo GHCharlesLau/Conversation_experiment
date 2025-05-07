@@ -125,7 +125,7 @@
         }, 100000);
         
         // Scroll to the bottom
-        chatBox.scrollTop = chatBox.scrollHeight;
+        chatBox.scrollIntoView({ behavior: 'instant', block: 'end', inline: 'start' });
     };
     
 </script>
@@ -134,7 +134,7 @@
 
 {{ block content }}
    <div class="container">
-        <div class="topPart">
+        <div class="topPart" autofocus>
             <!-- <h2>Chat Instruction</h2><br> -->
             <span style="color:black; font-size: 18px;">
                 1. You will be paired with a conversational AI named MyBot.<br>
@@ -156,7 +156,7 @@
             <!-- text input -->
             <div class="inputBox">
                 <div class="typeInputBox">
-                    <input type="text" id="chat_input" placeholder="Type here..." autofocus>
+                    <input type="text" id="chat_input" placeholder="Type here...">
                     <button type="button" onclick="sendMsg()">Send</button>
                 </div>
             </div>

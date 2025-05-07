@@ -6,7 +6,7 @@
 {{ block content }}
 <!-- div displaying chat messages -->
 <div class="container">
-    <div class="topPart">
+    <div class="topPart" autofocus>
         <!-- <h2>Chat Instruction</h2><br> -->
         <span style="color:black; font-size: 18px;">
             1. You will be paired with <span style="color:red; font-weight:bold">another participant</span> in this survey. If your partner asks who you are, say that you are also a participant in this survey.<br>
@@ -28,7 +28,7 @@
         <!-- text input -->
         <div class="inputBox">
             <div class="typeInputBox">
-                <input type="text" id="chat_input" placeholder="Type here..." autofocus>
+                <input type="text" id="chat_input" placeholder="Type here...">
                 <button type="button" onclick="sendMsg()">Send</button>
             </div>
         </div>
@@ -173,7 +173,7 @@
         }, 100000);
         
         // Scroll to the bottom
-        chatBox.scrollTop = chatBox.scrollHeight;
+        chatBox.scrollIntoView({ behavior: 'instant', block: 'end', inline: 'start' });
     };
 
 </script>

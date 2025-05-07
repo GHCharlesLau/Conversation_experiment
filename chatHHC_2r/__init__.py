@@ -100,16 +100,17 @@ class chatEmo(Page):
             )
             return {alter_id: response}  # Broadcast to all players
         elif player.num_messages > 15:  # set maximum number of turns (should be plus 1 based on the number of turns)
-            player.chat_finished = True
             response = dict(
                 text="chat_exceeded",
             )
             # return {player.id_in_group: response['text']}
-            return {0: response}
+            return {my_id: response}
         else:
             if 'text' in data:
                 total_messages = min(player.num_messages, alter.num_messages)
                 # print(total_messages)
+                if total_messages >= 5:
+                    player.chat_finished = True
                 text = data['text']
                 msg = Message.create(group=group, sender=player, text=text)
                 msg_dict = to_dict(msg)
@@ -166,16 +167,17 @@ class chatFun(Page):
             )
             return {alter_id: response}  # Broadcast to all players
         elif player.num_messages > 15:  # set maximum number of turns (should be plus 1 based on the number of turns)
-            player.chat_finished = True
             response = dict(
                 text="chat_exceeded",
             )
             # return {player.id_in_group: response['text']}
-            return {0: response}
+            return {my_id: response}
         else:
             if 'text' in data:
                 total_messages = min(player.num_messages, alter.num_messages)
                 # print(total_messages)
+                if total_messages >= 5:
+                    player.chat_finished = True
                 text = data['text']
                 msg = Message.create(group=group, sender=player, text=text)
                 msg_dict = to_dict(msg)

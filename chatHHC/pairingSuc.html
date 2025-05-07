@@ -90,7 +90,11 @@
     <h1 class="success-title">Pairing Successful!</h1><br>
     <div class="success-icon">✓</div><br>
 
-    <p class="success-message">Participant <img src="{{ static alter_avatar }}" width="15%" /> <b>{{ alter_nickname }}</b> has arrived.</p>
+    {{ if player.participant.partnerLabel == 'human'}}
+        <p class="success-message">Participant <img src="{{ static alter_avatar }}" width="15%" /> <b>{{ alter_nickname }}</b> has arrived.</p>
+    {{elif player.participant.partnerLabel == 'chatbot'}}
+        <p class="success-message">Your AI partner <img src="{{ static alter_avatar }}" width="15%" /> <b>{{ alter_nickname }}</b> has been ready.</p>
+    {{ endif }}
 
     <p class="success-message">The conversation will get started in 5 seconds...</p>
     <!-- <button class="success-button">Continue</button> -->

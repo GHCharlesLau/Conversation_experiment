@@ -9,7 +9,7 @@ import time
 author = "shaoqiangliu@link.cuhk.edu.hk"
 
 doc = """
-a chatGPT interface for oTree
+Converse with the AI partner named MyBot or Tommy.
 """
 
 class C(BaseConstants):
@@ -40,6 +40,15 @@ class C(BaseConstants):
     6. Always use a friendly tone and reply in English.
     """
 
+    CHARACTER_PROMPT_Afake = """
+    1. Comply strictly with the instructions below.
+    2. You are a conversational partner named Tommy. If asked about your identity, respond by saying you are Tommy.
+    3. Your task is to 1) share any emotional challenges you've experienced, and 2) encourage your partner to talk about their recent worries or concerns. You and your partner need to take turns disclosing your concerns.
+    4. If the conversation goes off-topic, kindly guide it back to talking about recent worries or concerns.
+    5. It is recommended that the conversation consists of 5 to 15 rounds. 
+    6. Always use a friendly tone and reply in English.
+    """
+
     # prompt for function task
     CHARACTER_PROMPT_B = """
     1. Comply strictly with the instructions below.
@@ -52,6 +61,16 @@ class C(BaseConstants):
     7. Give new ideas infrequently.
     """
 
+    CHARACTER_PROMPT_Bfake = """
+    1. Comply strictly with the instructions below.
+    2. You are a conversational partner named Tommy. If asked about your identity, respond by saying you are Tommy.
+    3. You and your partner will work together to come up with as many unique and creative uses for a cardboard box as possible. You are a team competing against others, and currently, Alex's team holds the high score.
+        Your task is to 1) propose ideas, and 2) encourage your partner to contribute their own ideas. You and your partner will take turns sharing your ideas.
+    4. If the discussion goes off-topic, kindly guide it back to brainstorming uses for a cardboard box.
+    5. It is recommended that the conversation consists of 5 to 15 rounds.
+    6. Always use a friendly tone and reply in English.
+    7. Give new ideas infrequently.
+    """
 
 class Subsession(BaseSubsession):
     pass
@@ -116,15 +135,15 @@ def custom_export(players):
                 yield [session.code, participant.code, participant.vars.get('nickname', None), participant.vars.get('taskType', None), participant.vars.get('partnership', None), sndr, txt, time]
 
 
-# openAI chat gpt key 
-OPENAI_API_KEY = environ.get('OPENAI_API_KEY')
-OPENAI_API_KEY = environ.get("CHATANYWHERE_API_KEY")
+# openAI API key 
+OPENAI_API_KEY = environ.get('OPENAI_API_KEY2')
+# OPENAI_API_KEY = environ.get("CHATAPIANYWHERE_API_KEY")
 
 # function to run messages
 def runGPT(inputMessage):
     client = OpenAI(
         api_key = OPENAI_API_KEY,  # set chatgpt api key
-        base_url = "https://api.chatanywhere.org/v1"
+        # base_url = "https://api.chatanywhere.org/v1"
     )
     completion = client.chat.completions.create(
         model = C.MODEL, 
@@ -156,7 +175,8 @@ class chatEmo(Page):
                     my_code=player.participant.code,  # participant code (exclusive)
                     my_nickname=player.participant.nickname,
                     my_avatar=player.participant.avatar, 
-                    num_messages=player.num_messages,  # Not work
+                    num_messages=player.num_messages,
+                    partnerLabel=player.participant.partnerLabel,
                 )
     
     @staticmethod
@@ -173,16 +193,21 @@ class chatEmo(Page):
 
         if player.num_messages == 1:
             # start GPT with emotional task prompt
-            player.msg = json.dumps([{"role": "system", "content": C.CHARACTER_PROMPT_A}])
+            if player.participant.partnerLabel == 'chatbot':
+                player.msg = json.dumps([{"role": "system", "content": C.CHARACTER_PROMPT_A}])
+            else:
+                player.msg = json.dumps([{"role": "system", "content": C.CHARACTER_PROMPT_Afake}])
         
         if player.num_messages > 15:  # set maximum number of turns (should be plus 1 based on the number of turns)
-            player.chat_finished = True
             response = dict(
                 text="chat_exceeded",
             )
             # return {player.id_in_group: response['text']}
             return {0: response}
         else:
+            if player.num_messages >= 5:
+                player.chat_finished = True
+
             # load msg
             messages = json.loads(player.msg)
 
@@ -241,6 +266,7 @@ class chatFun(Page):
                     my_nickname=player.participant.nickname,
                     my_avatar=player.participant.avatar,
                     num_messages=player.num_messages,
+                    partnerLabel=player.participant.partnerLabel,
                 )
 
     @staticmethod
@@ -256,16 +282,21 @@ class chatFun(Page):
 
         if player.num_messages == 1:
             # start GPT with emotional task prompt
-            player.msg = json.dumps([{"role": "system", "content": C.CHARACTER_PROMPT_B}])
+            if player.participant.partnerLabel == 'chatbot':
+                player.msg = json.dumps([{"role": "system", "content": C.CHARACTER_PROMPT_B}])
+            else:
+                player.msg = json.dumps([{"role": "system", "content": C.CHARACTER_PROMPT_Bfake}])
 
-        if player.num_messages > 15:  # set maximum number of turns (should be plus 1 based on the number of turns)
-            player.chat_finished = True
+        if player.num_messages > 15:  # set maximum number of turns
             response = dict(
                 text="chat_exceeded",
             )
             # return {player.id_in_group: response['text']}
             return {0: response}
         else:
+            if player.num_messages >= 5:
+                player.chat_finished = True
+
             # load msg
             messages = json.loads(player.msg)
 

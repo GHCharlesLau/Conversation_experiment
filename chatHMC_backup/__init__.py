@@ -9,7 +9,7 @@ import time
 author = "shaoqiangliu@link.cuhk.edu.hk"
 
 doc = """
-a chatGPT interface for oTree
+A chatbot backup for the second round conversation if a participant cannot be paired with others.
 """
 
 class C(BaseConstants):
@@ -55,25 +55,6 @@ class C(BaseConstants):
 
 class Subsession(BaseSubsession):
     pass
-
-            
-# def creating_session(subsession: Subsession):
-    
-#     # set constants
-#     players = subsession.get_players()
-
-#     # randomize character prompt and save to player var
-#     expConditions = ['A', 'B']
-#     for p in players:
-#         rExp = random.choice(expConditions)
-#         p.condition = rExp
-#         p.participant.vars['condition'] = rExp
-
-#         # set prompt based on condition
-#         if rExp == 'A':
-#             p.msg = json.dumps([{"role": "system", "content": C.CHARACTER_PROMPT_A}])
-#         else:
-#             p.msg = json.dumps([{"role": "system", "content": C.CHARACTER_PROMPT_B}])
 
 
 class Group(BaseGroup):
@@ -174,14 +155,16 @@ class chatEmo(Page):
             # start GPT with emotional task prompt
             player.msg = json.dumps([{"role": "system", "content": C.CHARACTER_PROMPT_A}])
 
-        if player.num_messages > 15:  # set maximum number of turns (should be plus 1 based on the number of turns)
-            player.chat_finished = True
+        if player.num_messages > 15:  # set maximum number of turns
             response = dict(
                 text="chat_exceeded",
             )
             # return {player.id_in_group: response['text']}
             return {0: response}
         else:
+            if player.num_messages >= 5:
+                player.chat_finished = True
+
             # load msg
             messages = json.loads(player.msg)
 
@@ -258,12 +241,14 @@ class chatFun(Page):
             player.msg = json.dumps([{"role": "system", "content": C.CHARACTER_PROMPT_B}])
 
         if player.num_messages > 15:  # set maximum number of turns (should be plus 1 based on the number of turns)
-            player.chat_finished = True
             response = dict(
                 text="You have reached the maximum number of turns. Please proceed to the next page."
             )
             return {player.id_in_group: response['text']}
         else:
+            if player.num_messages >= 5:
+                player.chat_finished = True
+
             # load msg
             messages = json.loads(player.msg)
 
