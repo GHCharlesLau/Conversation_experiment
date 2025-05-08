@@ -24,7 +24,7 @@ class Group(BaseGroup):
 
 
 class Player(BasePlayer):
-    finishCode = models.StringField(initial='HCM246HCH')
+    completionCode = models.StringField(initial='CK481DOO')
     pass
 
 
@@ -32,7 +32,7 @@ class Player(BasePlayer):
 # PAGES
 class PaymentInfo(Page):
     form_model = 'player'
-    form_fields = ['finishCode']
+    form_fields = ['completionCode']
 
     @staticmethod
     def is_displayed(player: Player):
@@ -41,7 +41,7 @@ class PaymentInfo(Page):
     @staticmethod
     def vars_for_template(player: Player):
         return dict(
-                    finishCode=player.finishCode,
+                    completionCode=player.completionCode,
                     )
 
 class EndNoConsent(Page):

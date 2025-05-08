@@ -127,6 +127,13 @@ class Player(BasePlayer):
         widget=widgets.RadioSelect,
     )
 
+    # Manipulation check
+    partner_label = models.StringField(
+        label="",
+        choices=["Another participant", "An AI partner named MyBot", "I don't know"],
+        widget=widgets.RadioSelect,
+    )
+
 
 # FUNCTIONS
 # PAGES
@@ -139,12 +146,13 @@ class VariablePageA(Page):
     form_fields = [
         'senA_1', 'senA_2', 'senA_3', 'senA_4',
         'feeH_1', 'feeH_2', 'feeH_3', 'feeH_4',
-        'CE_1', 'CE_2', 'CE_3', 'CE_4'
+        'CE_1', 'CE_2', 'CE_3', 'CE_4',
     ]
 
 class VariablePageB(Page):
     form_model = 'player'
     form_fields = [
+        'partner_label',
         'AIU',
         'AIL_1', 'AIL_2', 'AIL_3', 'AIL_4',
     ]
