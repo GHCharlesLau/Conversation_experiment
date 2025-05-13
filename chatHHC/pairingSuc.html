@@ -93,7 +93,7 @@
     {{ if player.participant.partnerLabel == 'human'}}
         <p class="success-message">Participant <img src="{{ static alter_avatar }}" width="15%" /> <b>{{ alter_nickname }}</b> has arrived.</p>
     {{elif player.participant.partnerLabel == 'chatbot'}}
-        <p class="success-message">Your AI partner <img src="{{ static alter_avatar }}" width="15%" /> <b>{{ alter_nickname }}</b> has been ready.</p>
+        <p class="success-message">Your AI partner <img src="{{ static 'avatar/myBot.png' }}" width="15%" /> <b>MyBot</b> has been ready.</p>
     {{ endif }}
 
     <p class="success-message">The conversation will get started in 5 seconds...</p>

@@ -76,6 +76,7 @@ class chatEmo(Page):
                     alter_code=alter.participant.code,
                     alter_nickname=alter.participant.nickname,
                     alter_avatar=alter.participant.avatar,
+                    partnerLabel=player.participant.partnerLabel,
                     )
 
     @staticmethod
@@ -138,6 +139,7 @@ class chatFun(Page):
                     alter_code=alter.participant.code,
                     alter_nickname=alter.participant.nickname,
                     alter_avatar=alter.participant.avatar,
+                    partnerLabel=player.participant.partnerLabel,
                     )
 
     @staticmethod

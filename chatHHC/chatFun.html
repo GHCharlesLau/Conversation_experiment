@@ -141,7 +141,11 @@
             if (msg.sender != js_vars.my_id) {
                 let msgSpan = document.createElement('span');
                 msgSpan.textContent = msg.text;
-                let sender = `<img src="{{ static alter_avatar }}" width="45px" /> ${js_vars.alter_nickname}`;
+                if (js_vars.partnerLabel == "human") {
+                    var sender = `<img src="{{ static alter_avatar }}" width="45px" /> ${js_vars.alter_nickname}`;
+                } else {
+                    var sender = `<img src="{{ static 'avatar/myBot.png' }}" width="45px" /> MyBot`;
+                }
                 let row = `<div><div class="receiverAvatar">${sender}</div><div class="msg botText">${msgSpan.innerHTML}</div></div><br>`;
                 chat_messages.insertAdjacentHTML('beforeend', row);
 

@@ -6,7 +6,7 @@
         In the past month, how often did you use AI chatbots?
     </p>
     <hr>
-    <span style="font-size: 20px;">{{ formfield 'AIU' label=''}}</span>
+    <span style="font-size: 18px; white-space: nowrap;">{{ formfield 'AIU' label=''}}</span>
     <br><br>
 
     <!-- Var: AI Literacy -->
@@ -18,7 +18,7 @@
     <!-- Multiple lines of the same scale. -->
     <table class="table" style="text-align: center; vertical-align: middle">
         <tr>
-            <th>Items</th>
+            <th>Statements</th>
             <td>Strongly Disagree</td>
             <td>Disagree</td>
             <td>Slightly Disagree</td>
@@ -56,10 +56,14 @@
 
     <!-- Var: Manipulation Check -->
     <p style="color:black; font-size: 22px; font-weight: bold;">
-        Could you recall which partner you were conversing with <span style="color: red">in the first round</span>?
+        Could you recall which partner you were told to converse with <span style="font-style: italic; color: red">in the first round</span>?
     </p>
     <hr>
     {{ formfield 'partner_label' }}
+    <br><br>
+
+    <!-- Var: Open-Ended Question -->
+    {{ formfield 'open_ended' }}
     <br><br>
 </div>
 

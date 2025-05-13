@@ -63,7 +63,7 @@ class Player(BasePlayer):
             [6, "Very Frequently"],
             [7, "Always"],
         ],
-        widget=widgets.RadioSelect,
+        widget=widgets.RadioSelectHorizontal,
     )
 
     # Religiosity
@@ -95,26 +95,42 @@ class Player(BasePlayer):
     )
     race = models.StringField(
         label="<b>Which race do you belong to?</b>",
-        choices=["White", "Black or African-American", "American Indian", "Asian", "Native Hawaiian or other Pacific Islander", "Mixed", "Other"],
+        choices=["White", "Black or African American", "American Indian or Alaska Native", "Asian", "Native Hawaiian or other Pacific Islander", "Other"],
         widget=widgets.RadioSelect,
     )
     education = models.StringField(
         label="<b>What is the highest level of school you have completed or the highest degree you have received?</b>",
-        choices=["Less than high school credential ", 
-                 "High school graduate - High school diploma or equivalent", 
+        choices=["Less than high school credential", 
+                 "High school graduate - High school diploma or equivalent (e.g., GED)", 
                  "Some college but no degree",
-                 "Associate degree in college",
-                 "Bachelor's degree",
-                 "Master's degree",
-                 "Professional school degree",
-                 "Doctorate degree",
+                 "Associate degree in college - Occupational/vocational program",
+                 "Associate degree in college - Academic program",
+                 "Bachelor's degree (e.g., BA, AB, BS)",
+                 "Master's degree (e.g., MA, MS, MEng, MEd, MSW, MBA)",
+                 "Professional school degree (e.g., MD, DDS, DVM, LLB, JD)",
+                 "Doctorate degree (e.g., PhD, EdD)",
                  "Other"],
         widget=widgets.RadioSelect,
     )
     income = models.StringField(
         label="<b>What was the total income of your family during the past 12 months before taxes?</b>",
-        choices=["Under $9,999", "$10,000 to $29,999", "$30,000 to $59,999", "$60,000 to $99,999", "$100,000 to $149,999",
-                 "$150,000 to $249,999", "$250,000 or more"],
+        choices=["Less than $5,000",
+                 "$5,000 to $7,499",
+                 "$7,500 to $9,999",
+                 "$10,000 to $12,499",
+                 "$12,500 to $14,999",
+                 "$15,000 to $19,999",
+                 "$20,000 to $24,999",
+                 "$25,000 to $29,999",
+                 "$30,000 to $34,999",
+                 "$35,000 to $39,999",
+                 "$40,000 to $49,999",
+                 "$50,000 to $59,999",
+                 "$60,000 to $74,999",
+                 "$75,000 to $99,999",
+                 "$100,000 to $149,999",
+                 "$150,000 or more"
+                 ],
         widget=widgets.RadioSelect,
     )
     partisanship = models.StringField(
@@ -122,7 +138,7 @@ class Player(BasePlayer):
         choices=["Democrat",
                  "Republican",
                  "Independent",
-                 "Other party"
+                 "Other"
                  ],
         widget=widgets.RadioSelect,
     )
@@ -130,8 +146,14 @@ class Player(BasePlayer):
     # Manipulation check
     partner_label = models.StringField(
         label="",
-        choices=["Another participant", "An AI partner named MyBot", "I don't know"],
+        choices=["Another participant in this survey", "An AI partner named MyBot", "I don't know"],
         widget=widgets.RadioSelect,
+    )
+
+    # Open-ended question (for the pilot study)
+    open_ended = models.LongStringField(
+        label="<b>Could you leave any additional comments or suggestions for this study? Your suggestions are important to us!</b><hr>",
+        blank=True
     )
 
 
@@ -155,6 +177,7 @@ class VariablePageB(Page):
         'partner_label',
         'AIU',
         'AIL_1', 'AIL_2', 'AIL_3', 'AIL_4',
+        'open_ended'
     ]
 
 class Demographics(Page):
