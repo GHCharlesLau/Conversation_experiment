@@ -32,10 +32,8 @@ USE_POINTS = True
 
 ROOMS = [
     dict(
-        name='Room_A',
-        display_name='Room A',
-        participant_label_file='_rooms/econ101.txt',
-        use_secure_urls=True,
+        name='Room_A_pilot1',
+        display_name='Room A (no participant labels)',
     ),
     dict(
         name='Room_B', 
@@ -47,7 +45,9 @@ ROOMS = [
     ),
     dict(
         name='Room_D', 
-        display_name='Room D (no participant labels)',
+        display_name='Room D (need participant labels)',
+        # participant_label_file='_rooms/econ101.txt',
+        # use_secure_urls=True,
     ),
 ]
 
@@ -59,6 +59,10 @@ DEMO_PAGE_INTRO_HTML = """
 Welcome to this experiment.
 """
 
+DEBUG = 0
+# Set following var in environment variable to enable production mode
+# OTREE_PRODUCTION = 1
+# OTREE_AUTH_LEVEL = "STUDY"  # Or "DEMO" for public demo mode
 
 SECRET_KEY = '{{ secret_key }}'
 
