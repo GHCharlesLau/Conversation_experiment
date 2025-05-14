@@ -80,13 +80,12 @@
             let msgSpan = document.createElement('span');
             msgSpan.textContent = data.text
             if (js_vars.partnerLabel == 'chatbot') {
-                let row = `<div><div class="receiverAvatar"><img src="{{ static 'avatar/myBot.png' }}" width="45px" /> MyBot</div><div class="msg botText">${msgSpan.innerHTML}</div></div><br>`;
-                chat_messages.insertAdjacentHTML('beforeend', row);
+                var row = `<div><div class="receiverAvatar"><img src="{{ static 'avatar/myBot.png' }}" width="45px" /> MyBot</div><div class="msg botText">${msgSpan.innerHTML}</div></div><br>`;
             } else {
-                let row = `<div><div class="receiverAvatar"><img src="{{ static 'avatar/fox.png' }}" width="45px" /> Tommy</div><div class="msg botText">${msgSpan.innerHTML}</div></div><br>`;
-                chat_messages.insertAdjacentHTML('beforeend', row);
+                var row = `<div><div class="receiverAvatar"><img src="{{ static 'avatar/fox.png' }}" width="45px" /> Tommy</div><div class="msg botText">${msgSpan.innerHTML}</div></div><br>`;
             }
-            
+
+            chat_messages.insertAdjacentHTML('beforeend', row);
             // append chat log
             logChat('Bot', data.text)
 

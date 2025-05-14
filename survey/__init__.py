@@ -76,7 +76,7 @@ class Player(BasePlayer):
     CE_1 = make_field('During conversation, I could feel the emotions the conversational partner in the first round portrayed.')
     CE_2 = make_field('The conversation with the partner in the first round was enjoyable.')
     CE_3 = make_field('I was mentally involved in the conversation with the partner in the first round.')
-    CE_4 = make_field('While engaged in the converation, I had a vivid image of the partner in the first round.')
+    CE_4 = make_field('While engaged in the conversation, I had a vivid image of the partner in the first round.')
 
     # Demographics
     # name = models.StringField(label='What is your name?')
@@ -94,8 +94,14 @@ class Player(BasePlayer):
         widget=widgets.RadioSelect,
     )
     race = models.StringField(
-        label="<b>Which race do you belong to?</b>",
-        choices=["White", "Black or African American", "American Indian or Alaska Native", "Asian", "Native Hawaiian or other Pacific Islander", "Other"],
+        label="<b>Which race/ethnicity do you belong to?</b>",
+        choices=["White",
+                 "Black or African American",
+                 "American Indian or Alaska Native",
+                 "Asian",
+                 "Native Hawaiian or other Pacific Islander",
+                 "Hispanic or Latino",
+                 "Other"],
         widget=widgets.RadioSelect,
     )
     education = models.StringField(
