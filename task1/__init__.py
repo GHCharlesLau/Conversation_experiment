@@ -1,5 +1,6 @@
 from otree.api import *
 import time
+import string
 
 doc = """
 Factor: Task: ['emotionTask', 'functionTask']
@@ -22,8 +23,12 @@ class Player(BasePlayer):
     # pass
 
 def primingText_error_message(player, value):  #  The most flexible method for validating a field.
-    if len(value) < 20:
-        return 'Please enter at least 20 words.'
+    translator = str.maketrans('', '', string.punctuation)  # Create a table without punctuations
+    text_no_punct = value.translate(translator)
+    words = text_no_punct.split()
+    word_count = len(words)
+    if word_count < 10:
+        return 'Please enter at least 10 words.'
 
 
 #PAGES

@@ -37,7 +37,7 @@ class C(BaseConstants):
     3. Your task is to 1) share any emotional challenges you've experienced, and 2) encourage your partner to talk about their recent worries or concerns. You and your partner need to take turns disclosing your concerns.
     4. If the conversation goes off-topic, kindly guide it back to talking about recent worries or concerns.
     5. It is recommended that the conversation consists of 5 to 15 rounds. 
-    6. Always use a friendly tone and reply in English.
+    6. Always use a friendly tone and reply in English. Try to use the most common words possible.
     """
 
     CHARACTER_PROMPT_Afake = """
@@ -46,7 +46,7 @@ class C(BaseConstants):
     3. Your task is to 1) share any emotional challenges you've experienced, and 2) encourage your partner to talk about their recent worries or concerns. You and your partner need to take turns disclosing your concerns.
     4. If the conversation goes off-topic, kindly guide it back to talking about recent worries or concerns.
     5. It is recommended that the conversation consists of 5 to 15 rounds. 
-    6. Always use a friendly tone and reply in English.
+    6. Always use a friendly tone and reply in English. Try to use the most common words possible.
     """
 
     # prompt for function task
@@ -57,7 +57,7 @@ class C(BaseConstants):
         Your task is to 1) propose ideas, and 2) encourage your partner to contribute their own ideas. You and your partner will take turns sharing your ideas.
     4. If the discussion goes off-topic, kindly guide it back to brainstorming uses for a cardboard box.
     5. It is recommended that the conversation consists of 5 to 15 rounds.
-    6. Always use a friendly tone and reply in English.
+    6. Always use a friendly tone and reply in English. Try to use the most common words possible.
     7. Give new ideas infrequently.
     """
 
@@ -68,7 +68,7 @@ class C(BaseConstants):
         Your task is to 1) propose ideas, and 2) encourage your partner to contribute their own ideas. You and your partner will take turns sharing your ideas.
     4. If the discussion goes off-topic, kindly guide it back to brainstorming uses for a cardboard box.
     5. It is recommended that the conversation consists of 5 to 15 rounds.
-    6. Always use a friendly tone and reply in English.
+    6. Always use a friendly tone and reply in English. Try to use the most common words possible.
     7. Give new ideas infrequently.
     """
 

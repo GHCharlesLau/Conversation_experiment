@@ -40,7 +40,7 @@ class Player(BasePlayer):
     senA_4 = make_field('The conversational partner in the first round can experience emotions.')
 
     # Feeling Heard
-    feeH_1 = make_field('The conversational partner in the first round is interested in what I have to say.')
+    feeH_1 = make_field('The conversational partner in the first round is interested in what I have said.')
     feeH_2 = make_field('The conversational partner in the first round encourages me to speak openly.')
     feeH_3 = make_field('The conversational partner in the first round understands my thoughts.')
     feeH_4 = make_field('The conversational partner in the first round cares about me.')
@@ -82,7 +82,7 @@ class Player(BasePlayer):
     # name = models.StringField(label='What is your name?')
     age = models.IntegerField(
         label='<b>What is your age?</b>', 
-        min=13, max=125,
+        min=18, max=125,
     )
     gender = models.StringField(
         label='<b>What is your gender?</b>',
@@ -193,7 +193,7 @@ class Demographics(Page):
         'gender',
         'race',
         'education',
-        'income',
+        # 'income',
         'partisanship',
         'rlg_1', 'rlg_2', 'rlg_3', 'rlg_4'
     ]
