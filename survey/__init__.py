@@ -193,7 +193,6 @@ class Demographics(Page):
         'gender',
         'race',
         'education',
-        # 'income',
         'partisanship',
         'rlg_1', 'rlg_2', 'rlg_3', 'rlg_4'
     ]
