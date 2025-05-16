@@ -21,7 +21,6 @@
         }
     });
 
-    
 
     // function to log chat
     function logChat(sender, chatText) {
@@ -54,15 +53,15 @@
             chat_messages.insertAdjacentHTML('beforeend', row);    
             
             // scroll messages to bottom
-            chat_messages.scrollIntoView({ behavior: 'instant', block: 'end', inline: 'start' })
+            chat_messages.scrollIntoView({ behavior: 'instant', block: 'end', inline: 'start' });
+            nextButton.scrollIntoView({ behavior: 'instant', block: 'end', inline: 'start' });
 
             // append chat log
             logChat(js_vars.my_code, text)
         }
         
         chat_input.value = '';
-        
-    }
+    };
 
     // specify messages element
     var chat_messages = document.getElementById('chat_messages');
@@ -88,7 +87,7 @@
                 var row = `<div><div class="receiverAvatar"><img src="{{ static 'avatar/fox.png' }}" width="45px" /> Tommy</div><div class="msg botText">${msgSpan.innerHTML}</div></div><br>`;
             }
 
-            chat_messages.insertAdjacentHTML('beforeend', row);  
+            chat_messages.insertAdjacentHTML('beforeend', row);
             
             // append chat log
             logChat('Bot', data.text)
@@ -98,7 +97,8 @@
         };
 
         // scroll messages to bottom
-        chat_messages.scrollIntoView({ behavior: 'instant', block: 'end', inline: 'start' })
+        chat_messages.scrollIntoView({ behavior: 'instant', block: 'end', inline: 'start' });
+        nextButton.scrollIntoView({ behavior: 'instant', block: 'end', inline: 'start' });
     };
 
 
@@ -131,6 +131,7 @@
         
         // Scroll to the bottom
         chatBox.scrollIntoView({ behavior: 'instant', block: 'end', inline: 'start' });
+        nextButton.scrollIntoView({ behavior: 'instant', block: 'end', inline: 'start' });
     };
 
 </script>

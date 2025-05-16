@@ -164,6 +164,11 @@ class Player(BasePlayer):
 
 
 # FUNCTIONS
+def age_error_message(player, value):  #  The most flexible method for validating a field.
+    if value < 18 or value > 125:
+        return 'The age is out of range.'
+
+
 # PAGES
 class Prompt(Page):
     pass

@@ -54,7 +54,8 @@
             chat_messages.insertAdjacentHTML('beforeend', row);    
             
             // scroll messages to bottom
-            chat_messages.scrollIntoView({ behavior: 'instant', block: 'end', inline: 'start' })
+            chat_messages.scrollIntoView({ behavior: 'instant', block: 'end', inline: 'start' });
+            nextButton.scrollIntoView({ behavior: 'instant', block: 'end', inline: 'start' });
 
             // append chat log
             logChat(js_vars.my_code, text)
@@ -93,7 +94,8 @@
         };
     
         // scroll messages to bottom
-        chat_messages.scrollIntoView({ behavior: 'instant', block: 'end', inline: 'start' })
+        chat_messages.scrollIntoView({ behavior: 'instant', block: 'end', inline: 'start' });
+        nextButton.scrollIntoView({ behavior: 'instant', block: 'end', inline: 'start' });
     };
 
 
@@ -126,6 +128,7 @@
         
         // Scroll to the bottom
         chatBox.scrollIntoView({ behavior: 'instant', block: 'end', inline: 'start' });
+        nextButton.scrollIntoView({ behavior: 'instant', block: 'end', inline: 'start' });
     };
     
 </script>

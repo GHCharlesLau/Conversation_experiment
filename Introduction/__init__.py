@@ -1,5 +1,6 @@
 from otree.api import *
 import time
+import datetime as dt
 
 
 class C(BaseConstants):
@@ -24,6 +25,12 @@ def creating_session(subsession):
         p.taskType = treatment[0]
         p.partnership = treatment[1]
         p.partnerLabel = treatment[2]
+
+    # Add a label for the session
+    session = subsession.session
+    now = dt.datetime.now()
+    format_date = now.strftime("%Y-%m-%d %H:%M:%S")
+    session.label = format_date
 
 
 class Group(BaseGroup):

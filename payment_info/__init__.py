@@ -24,7 +24,7 @@ class Group(BaseGroup):
 
 
 class Player(BasePlayer):
-    completionCode = models.StringField(initial='CK481DOO')
+    completionCode = models.StringField(initial='CK2BTZB0')  # previous: CK481DOO
     pass
 
 
