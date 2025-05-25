@@ -188,7 +188,7 @@ class VariablePageB(Page):
         'partner_label',
         'AIU',
         'AIL_1', 'AIL_2', 'AIL_3', 'AIL_4',
-        'open_ended'
+        # 'open_ended'
     ]
 
 class Demographics(Page):
