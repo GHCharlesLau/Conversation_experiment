@@ -32,22 +32,46 @@ USE_POINTS = True
 
 ROOMS = [
     dict(
-        name='Room_A_pilot1',
-        display_name='Room A (no participant labels)',
+        name='Room_1_pilot1',
+        display_name='Room 1 (pilot 1, no participant labels)',
     ),
     dict(
-        name='Room_B', 
-        display_name='Room B (no participant labels)',
+        name='Room_2', 
+        display_name='Room 2 (no participant labels)',
     ),
     dict(
-        name='Room_C', 
-        display_name='Room C (no participant labels)',
+        name='Room_3', 
+        display_name='Room 3 (no participant labels)',
     ),
     dict(
-        name='Room_D', 
-        display_name='Room D (need participant labels)',
+        name='Room_4', 
+        display_name='Room 4 (no participant labels)',
         # participant_label_file='_rooms/econ101.txt',
         # use_secure_urls=True,
+    ),
+    dict(
+        name='Room_5', 
+        display_name='Room 5 (no participant labels)',
+    ),
+    dict(
+        name='Room_6', 
+        display_name='Room 6 (no participant labels)',
+    ),
+    dict(
+        name='Room_7', 
+        display_name='Room 7 (no participant labels)',
+    ),
+    dict(
+        name='Room_8', 
+        display_name='Room 8 (no participant labels)',
+    ),
+    dict(
+        name='Room_9', 
+        display_name='Room 9 (no participant labels)',
+    ),
+    dict(
+        name='Room_10', 
+        display_name='Room 10 (no participant labels)',
     ),
 ]
 
