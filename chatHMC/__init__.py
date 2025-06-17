@@ -167,7 +167,8 @@ class pairingSuc(Page):
 class chatEmo(Page):
     form_model = 'player'
     form_fields = ['chatLog']  # May need to define another field to store messages in the second time conversation
-    timeout_seconds = 1200
+    timeout_seconds = 60*10
+    timer_text = 'The page will advance automatically in:'
 
     @staticmethod
     def js_vars(player: Player):
@@ -257,7 +258,8 @@ class chatEmo(Page):
 class chatFun(Page):
     form_model = 'player'
     form_fields = ['chatLog']
-    timeout_seconds = 1200
+    timeout_seconds = 60*10
+    timer_text = 'The page will advance automatically in:'
 
     @staticmethod
     def js_vars(player: Player):

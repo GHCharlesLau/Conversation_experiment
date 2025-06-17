@@ -62,9 +62,10 @@ class pairingSuc(Page):
 
 
 class chatEmo(Page):
-    timeout_seconds = 1200
     form_model = 'player'
     form_fields = ['chatLog']
+    timeout_seconds = 60*10
+    timer_text = 'The page will advance automatically in:'
     
     @staticmethod
     def js_vars(player: Player):
@@ -129,9 +130,10 @@ class chatEmo(Page):
 
 
 class chatFun(Page):
-    timeout_seconds = 1200
     form_model = 'player'
     form_fields = ['chatLog']
+    timeout_seconds = 60*10
+    timer_text = 'The page will advance automatically in:'
     
     @staticmethod
     def js_vars(player: Player):

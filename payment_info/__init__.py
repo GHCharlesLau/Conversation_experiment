@@ -1,5 +1,6 @@
 from otree.api import *
 import random
+import datetime as dt
 
 
 
@@ -36,6 +37,8 @@ class PaymentInfo(Page):
 
     @staticmethod
     def is_displayed(player: Player):
+        timestamp = dt.datetime.now(dt.timezone.utc)
+        player.participant.end_utc = timestamp.strftime("%Y-%m-%d %H:%M:%S")
         return player.participant.finished == True
     
     @staticmethod

@@ -80,6 +80,11 @@ class ConsentPage(Page):
     form_fields = ['agreement']
 
     @staticmethod
+    def is_displayed(player: Player):
+        timestamp = dt.datetime.now(dt.timezone.utc)
+        player.participant.start_utc = timestamp.strftime("%Y-%m-%d %H:%M:%S")
+        return True
+    @staticmethod
     def app_after_this_page(player, upcoming_apps):  # Skip to the final page if the participant does not agree to participate (have to delete the button in the template)
         if player.agreement == False:
             return upcoming_apps[-1]
@@ -88,6 +93,7 @@ class ConsentPage(Page):
     def before_next_page(player: Player, timeout_happened):
         if player.agreement == False:
             player.participant.finished = False
+
 
 def make_image_data(image_names):
     return [dict(name=name, path='avatar/{}'.format(name), index=i) for i, name in enumerate(image_names)]
@@ -100,7 +106,7 @@ class WelcomePage(Page):
     @staticmethod
     def before_next_page(player: Player, timeout_happened):  # record the timestamp when the participant arrives at the wait page
         player.participant.wait_page_arrival = time.time()
-        player.participant.prolificID = player.prolificID
+        player.participant.prolificID = str(player.prolificID)
         player.participant.avatar = player.avatar
         player.participant.nickname = player.nickname
         print(f"The player's (idInGroup: {player.id_in_group}) nickname is {player.participant.nickname}")
