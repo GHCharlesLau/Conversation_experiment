@@ -7,4 +7,3 @@ sentry-sdk==0.7.9
 openai>=1.59
 gunicorn==20.1.0
 redis==6.2.0
-sentry-sdk
