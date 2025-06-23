@@ -1,5 +1,6 @@
 from otree.api import *
 import json
+from redis_conn import publish_message, subscribe_message
 
 
 doc = """
@@ -97,6 +98,15 @@ class chatEmo(Page):
         alter = player.get_others_in_group()[0]
         alter_id = alter.id_in_group
 
+        # Integrate Redis channel to communicate between multiple servers
+        channel = f"room_{group}"  # Set channel name
+        if 'text' in data:  # Publsih the message to Redis channel
+            message = data
+            publish_message(channel, message)  
+        for msg in subscribe_message(channel):  # listen to the channel and get each message once Redis publishes it
+            data = msg
+
+        # Communicate with the frontend
         if data["text"] == "user_exited":
             response = dict(
                 text="user_exited",
