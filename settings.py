@@ -91,8 +91,3 @@ DEBUG = 0
 SECRET_KEY = '{{ secret_key }}'
 
 INSTALLED_APPS = ['otree']
-
-# Scout settings
-SCOUT_MONITOR = True
-# SCOUT_KEY = "[AVAILABLE IN THE SCOUT UI]"
-SCOUT_NAME = "Scout Demo"

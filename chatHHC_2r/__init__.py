@@ -65,7 +65,7 @@ class chatEmo(Page):
     form_model = 'player'
     form_fields = ['chatLog']
     timeout_seconds = 60*10
-    timer_text = 'The page will advance automatically in:'
+    timer_text = 'The page will automatically advance in:'
     
     @staticmethod
     def js_vars(player: Player):
@@ -133,7 +133,7 @@ class chatFun(Page):
     form_model = 'player'
     form_fields = ['chatLog']
     timeout_seconds = 60*10
-    timer_text = 'The page will advance automatically in:'
+    timer_text = 'The page will automatically advance in:'
     
     @staticmethod
     def js_vars(player: Player):
