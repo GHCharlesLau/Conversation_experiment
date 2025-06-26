@@ -1,2 +1,2 @@
-web: otree prodserver1of2 --timeout 20
+web: otree prodserver1of2
 worker: otree prodserver2of2
