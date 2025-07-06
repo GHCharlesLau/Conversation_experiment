@@ -94,4 +94,18 @@ DEBUG = 0
 
 SECRET_KEY = '{{ secret_key }}'
 
-INSTALLED_APPS = ['otree']
+INSTALLED_APPS = ['otree', 'channels']  # pay attention to the order
+
+# 使用 Channels 替代默认的 WSGI
+ASGI_APPLICATION = 'otree.asgi.application'
+
+# Redis 配置
+CHANNEL_LAYERS = {
+    "default": {
+        "BACKEND": "channels_redis.core.RedisChannelLayer",
+        "CONFIG": {
+            # "hosts": [environ.get("REDIS_URL", "redis://127.0.0.1:6379")],
+            "hosts": ["redis://127.0.0.1:6379"],
+        },
+    },
+}
