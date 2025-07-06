@@ -1,7 +1,5 @@
 import newrelic.agent
 newrelic.agent.initialize('newrelic.ini')
-
-# YOUR_OTHER_IMPORTS
 from os import environ
 
 
@@ -104,8 +102,7 @@ CHANNEL_LAYERS = {
     "default": {
         "BACKEND": "channels_redis.core.RedisChannelLayer",
         "CONFIG": {
-            # "hosts": [environ.get("REDIS_URL", "redis://127.0.0.1:6379")],
-            "hosts": ["redis://127.0.0.1:6379"],
+            "hosts": [environ.get("REDISCLOUD_URL", "redis://127.0.0.1:6379")],
         },
     },
 }
