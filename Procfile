@@ -1,2 +1,2 @@
-web: daphne -u /tmp/daphne.sock otree.asgi:application --access-log - --proxy-headers
+web: daphne asgi:application --port $PORT --bind 0.0.0.0
 worker: otree prodserver2of2
