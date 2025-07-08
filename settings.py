@@ -1,5 +1,5 @@
-import newrelic.agent
-newrelic.agent.initialize('newrelic.ini')
+# import newrelic.agent
+# newrelic.agent.initialize('newrelic.ini')
 from os import environ
 
 
@@ -92,17 +92,5 @@ DEBUG = 0
 
 SECRET_KEY = '{{ secret_key }}'
 
-INSTALLED_APPS = ['otree', 'channels']  # pay attention to the order
+INSTALLED_APPS = ['otree']  # pay attention to the order
 
-# 使用 Channels 替代默认的 WSGI
-ASGI_APPLICATION = 'otree.asgi.application'
-
-# Redis 配置
-CHANNEL_LAYERS = {
-    "default": {
-        "BACKEND": "channels_redis.core.RedisChannelLayer",
-        "CONFIG": {
-            "hosts": [environ.get("REDISCLOUD_URL", "redis://127.0.0.1:6379")],
-        },
-    },
-}

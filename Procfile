@@ -1,2 +1,2 @@
-web: daphne asgi:application --port $PORT --bind 0.0.0.0
+web: otree prodserver1of2
 worker: otree prodserver2of2

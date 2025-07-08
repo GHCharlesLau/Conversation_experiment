@@ -5,9 +5,15 @@ import json
 from datetime import datetime, timezone
 from snowflake import SnowflakeGenerator  # for generating unique channel IDs
 
-# Instantiate a Redis client
-url = urlparse.urlparse(os.environ.get('REDISCLOUD_URL'))
-r = redis.Redis(host=url.hostname, port=url.port, password=url.password)
+# Instantiate a Redis client (For Heroku Redis)
+# url = urlparse.urlparse(os.environ.get('REDISCLOUD_URL'))
+# r = redis.Redis(host=url.hostname, port=url.port, password=url.password)
+
+# For Render Redis
+r = redis.from_url(os.environ['REDIS_URL'])
+# r = redis.Redis(host='localhost', port=6379, db=0)
+# r.set('key', 'redis-py')
+# print(r.get('key').decode())
 
 # Or, connecting to localhost on port 6379
 # r = redis.Redis(
