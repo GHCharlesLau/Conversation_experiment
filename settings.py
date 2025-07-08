@@ -1,7 +1,3 @@
-import newrelic.agent
-newrelic.agent.initialize('newrelic.ini')
-
-# YOUR_OTHER_IMPORTS
 from os import environ
 
 
