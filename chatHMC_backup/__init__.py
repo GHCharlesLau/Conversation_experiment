@@ -99,7 +99,7 @@ def custom_export(players):
 
 # openAI chat gpt key 
 OPENAI_API_KEY = environ.get('OPENAI_API_KEY')
-OPENAI_API_KEY = environ.get("CHATANYWHERE_API_KEY")
+# OPENAI_API_KEY = environ.get("CHATANYWHERE_API_KEY")
 
 # function to run messages
 def runGPT(inputMessage):

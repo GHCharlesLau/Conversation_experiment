@@ -136,7 +136,7 @@ def custom_export(players):
 
 
 # openAI API key 
-OPENAI_API_KEY = environ.get('OPENAI_API_KEY2')
+OPENAI_API_KEY = environ.get('OPENAI_API_KEY')
 # OPENAI_API_KEY = environ.get("CHATAPIANYWHERE_API_KEY")
 
 # function to run messages
