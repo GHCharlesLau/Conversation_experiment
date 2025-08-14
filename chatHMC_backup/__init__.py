@@ -105,7 +105,7 @@ OPENAI_API_KEY = environ.get('OPENAI_API_KEY')
 def runGPT(inputMessage):
     client = OpenAI(
         api_key = OPENAI_API_KEY,  # set chatgpt api key
-        base_url = "https://api.chatanywhere.org/v1"
+        # base_url = "https://api.chatanywhere.org/v1"
     )
     completion = client.chat.completions.create(
         model = C.MODEL, 
