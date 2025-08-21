@@ -46,6 +46,13 @@ class PaymentInfo(Page):
         return dict(
                     completionCode=player.completionCode,
                     )
+    
+    @staticmethod              
+    def js_vars(player):
+        return dict(
+            completionlink=
+              player.subsession.session.config['completionlink']
+        )
 
 class EndNoConsent(Page):
     @staticmethod
