@@ -23,23 +23,18 @@
 {{ endblock }}
 {{ block scripts }}
 
-    <script>
+    <!-- <script>
         const completionlink = js_vars.completionlink;
         // Count down after page loaded
         window.addEventListener('load', () => {
-            const delaySec = 10;
+            const delaySec = 30;
             const delayMs  = delaySec * 1000;
 
-            setTimeout(() => {
-                // 这里可以直接改 href，也可以使用 location.assign / replace
-                // assign 会在浏览器历史记录中留下这一步
-                // replace 会直接替换当前记录（用户点击“返回”不会回到此页面）
-                location.assign(completionlink);
-                // 若不想留下历史记录，用下面这行：
-                // location.replace(completionlink);
+            setTimeout(function() {
+                window.location.href = completionlink;
             }, delayMs);
         });
-    </script>
+    </script> -->
 
 {{ endblock }}
 

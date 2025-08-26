@@ -34,11 +34,14 @@ class Player(BasePlayer):
 class PaymentInfo(Page):
     form_model = 'player'
     form_fields = ['completionCode']
+    # timeout_seconds = 30
+    # timer_text = 'The page will automatically advance in:'
 
     @staticmethod
     def is_displayed(player: Player):
         timestamp = dt.datetime.now(dt.timezone.utc)
         player.participant.end_utc = timestamp.strftime("%Y-%m-%d %H:%M:%S")
+        print(f"Participant {player.participant.code} finished the experiment.")
         return player.participant.finished == True
     
     @staticmethod
