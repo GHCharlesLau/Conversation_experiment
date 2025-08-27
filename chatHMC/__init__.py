@@ -1,10 +1,13 @@
 from otree.api import *
 from os import environ
-from openai import OpenAI
+from openai import OpenAI, AsyncOpenAI
+from openai import DefaultAsyncHttpxClient
 import random
 import json
 from datetime import datetime
 import time
+import asyncio
+from concurrent.futures import ThreadPoolExecutor
 
 author = "shaoqiangliu@link.cuhk.edu.hk"
 
@@ -140,16 +143,25 @@ OPENAI_API_KEY = environ.get('OPENAI_API_KEY')
 # OPENAI_API_KEY = environ.get("CHATAPIANYWHERE_API_KEY")
 
 # function to run messages
-def runGPT(inputMessage):
-    client = OpenAI(
-        api_key = OPENAI_API_KEY,  # set chatgpt api key
-        # base_url = "https://api.chatanywhere.org/v1"
-    )
-    completion = client.chat.completions.create(
-        model = C.MODEL, 
-        messages = inputMessage, 
-        temperature = C.TEMP
-    )
+async def runGPT(inputMessage):
+    async with AsyncOpenAI(
+        api_key=OPENAI_API_KEY,
+        http_client=DefaultAsyncHttpxClient(),
+    ) as client:
+        completion = await client.chat.completions.create(
+            model=C.MODEL, 
+            messages=inputMessage, 
+            temperature=C.TEMP
+        )
+    # client = AsyncOpenAI(
+    #     api_key = OPENAI_API_KEY,  # set chatgpt api key
+    #     # base_url = "https://api.chatanywhere.org/v1"
+    # )
+    # completion = client.chat.completions.create(
+    #     model = C.MODEL, 
+    #     messages = inputMessage, 
+    #     temperature = C.TEMP
+    # )
     content = completion.choices[0].message.content
     # Transfer fullwidth characters
     trans_table = str.maketrans({"‘": "'", "’": "'"})
@@ -223,7 +235,12 @@ class chatEmo(Page):
                 messages.append(inputMsg)
                 # t = random.uniform(0, 2)
                 # time.sleep(t)  # sleep for 0.5-3 seconds
-                output = runGPT(messages)
+                with ThreadPoolExecutor(max_workers=8) as executor:
+                    future = executor.submit(lambda p: asyncio.run(runGPT(p)), messages)
+                try:
+                    output = future.result(timeout=10)
+                except TimeoutError:
+                    return {player.id_in_group: {"text": "Chat timeout, please try again."}}
                 
                 # also append messages with bot message
                 botMsg = {'role': 'assistant', 'content': output}
@@ -313,7 +330,12 @@ class chatFun(Page):
                 messages.append(inputMsg)
                 # t = random.uniform(0, 2)
                 # time.sleep(t)  # sleep for 0-2 seconds
-                output = runGPT(messages)
+                with ThreadPoolExecutor(max_workers=8) as executor:
+                    future = executor.submit(lambda p: asyncio.run(runGPT(p)), messages)
+                try:
+                    output = future.result(timeout=10)
+                except TimeoutError:
+                    return {player.id_in_group: {"text": "Chat timeout, please try again."}}
                 
                 # also append messages with bot message
                 botMsg = {'role': 'assistant', 'content': output}
