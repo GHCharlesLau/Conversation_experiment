@@ -6,7 +6,7 @@ SESSION_CONFIGS = [
         name='HMCvsHHC',
         app_sequence=['Introduction', 'task1', 'chatHHC', 'chatHMC', 
                       'task2', 'chatHHC_2r', 'chatHMC_backup', 'survey', 'payment_info'], 
-        num_demo_participants=8,
+        num_demo_participants=12,
         completionlink = 'https://app.prolific.co/submissions/complete?cc=11111111',
     ),
 ]
