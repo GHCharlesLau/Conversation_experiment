@@ -18,7 +18,7 @@ def creating_session(subsession):
 
     # Task, Partnership, PartnerLabel
     treatments = itertools.cycle(
-        itertools.product(['emotionTask', 'functionTask'], ['HMC', 'HHC', 'HHC'], ['chatbot', 'human'])
+        itertools.product(['emotionTask', 'functionTask'], ['HMC', 'HHC'], ['chatbot', 'human'])
     )
     for p in subsession.get_players():
         treatment = next(treatments)
